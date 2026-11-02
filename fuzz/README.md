@@ -2,7 +2,7 @@
 
 Every file reader, and the .gp writer, is fuzzed with [cargo-fuzz](https://github.com/rust-fuzz/cargo-fuzz) (libFuzzer): a malformed file may fail to open, but must never crash, hang or run out of memory (FMT-1). M1's gate is six hours per reader without a crash.
 
-This folder is its own Cargo workspace, outside the main one, and needs nightly Rust.
+This folder is its own Cargo workspace, outside the main one, and needs nightly Rust. The score model and the plugin SDK come from OxiGuitar's repository by git tag (v0.11.0), as in the main workspace.
 
 ## Targets
 
@@ -15,7 +15,6 @@ This folder is its own Cargo workspace, outside the main one, and needs nightly 
 | `gp_writer` | the .gp writer: any file a reader takes, written as .gp; what we write must read back, and a second round trip must lose nothing and read back the same (FMT-4) | every file in `fixtures/` |
 | `any_file` | format detection (FMT-6), then whichever reader it picks | every file in `fixtures/` |
 | `plugin_dispatch` | the file as each of our five format plugins answers the host's request to read it: the SDK's `dispatch`, the answer encoded and decoded as it crosses the plugin interface, and the score converted back into the model | every file in `fixtures/` |
-| `plugin_tab` | a plugin's answer with a tab's contents (interface 1.1), as the core takes it: decoded, checked, and each canvas turned into a display list and drawn | `fixtures/plugin/*.answer`: the test plugin's tab, and the canvas line this target found |
 
 The first three skip inputs that are not recognised as their format, so their time goes to their reader. Seeds come from the public fixtures only (`seeds.sh`), never from the private corpus.
 
@@ -37,7 +36,7 @@ cd fuzz && cargo +nightly fuzz run guitar_pro_7 corpus/guitar_pro_7
 
 `.github/workflows/fuzz.yml`:
 
-- **Pull requests** that touch `oxiguitar-formats`, `oxiguitar-model`, `oxiguitar-display`, `oxiguitar-render`, the plugin interface or SDK, `plugins/`, `fixtures/` or this folder: four minutes of every target.
+- **Pull requests** that touch `oxiguitar-formats`, `plugins/`, `fixtures/` or this folder: four minutes of every target.
 - **By hand** (Actions → Fuzz → Run workflow, "minutes" per reader, 360 by default): the four readers and `plugin_dispatch`, each in two jobs of half the time, the second continuing from the first one's corpus (a job on a standard runner may take at most six hours). At most four fuzz jobs run at a time. The final corpora are kept as artifacts for 30 days.
 
 A crash fails the job, its message becomes an error on the run, and the input is kept as the artifact "fuzz-crash \<target\>".
