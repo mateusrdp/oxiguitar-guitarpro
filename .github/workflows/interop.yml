@@ -17,8 +17,7 @@ on:
   pull_request:
     paths:
       - crates/oxiguitar-formats/**
-      - crates/oxiguitar-model/**
-      - crates/oxiguitar-testgen/**
+      - plugins/**
       - fixtures/**
       - scripts/interop/**
       - .github/workflows/interop.yml
