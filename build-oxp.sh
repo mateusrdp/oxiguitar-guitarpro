@@ -7,7 +7,7 @@
 #
 #   dist/gp3-VERSION-SYSTEM-ARCH.oxp, gp4-..., gp5-..., gpx-..., gp-...
 #
-# such as dist/gp5-1.0.0-linux-x86_64.oxp, named the way OxiGuitar's plugins
+# such as dist/gp5-0.1.0-linux-x86_64.oxp, named the way OxiGuitar's plugins
 # are (docs/plugins/template in github.com/mateusrdp/oxiguitar). On macOS it
 # builds both processors and joins them into one universal file (needs both
 # Rust targets: rustup target add aarch64-apple-darwin x86_64-apple-darwin).
