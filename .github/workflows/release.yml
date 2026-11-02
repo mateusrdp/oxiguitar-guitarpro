@@ -28,7 +28,7 @@ concurrency:
 
 jobs:
   release:
-    uses: mateusrdp/oxiguitar/.github/workflows/plugin-release.yml@9d050adcd032f511ff3f0fcec0908e16be9d47be
+    uses: mateusrdp/oxiguitar/.github/workflows/plugin-release.yml@plugin-release-several-files
     with:
       name: guitarpro
       title: "Guitar Pro (3, 4, 5, 6, 7-8)"
@@ -38,6 +38,6 @@ jobs:
       # ci.yml has run the tests on six systems.
       test: false
       # The packaging scripts come from the same commit of oxiguitar.
-      tools-ref: 9d050adcd032f511ff3f0fcec0908e16be9d47be
+      tools-ref: plugin-release-several-files
     permissions:
       contents: write
