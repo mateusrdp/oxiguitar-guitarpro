@@ -166,7 +166,7 @@ dependencies = [
  "oxiguitar-host",
  "oxiguitar-model",
  "oxiguitar-plugin",
- "oxiguitar-plugin-api",
+ "oxiguitar-plugin-api 0.10.0",
  "oxiguitar-plugin-test",
  "quick-xml",
  "serde_json",
@@ -230,7 +230,7 @@ source = "git+https://github.com/mateusrdp/oxiguitar?tag=v0.11.0#292dc2810445423
 dependencies = [
  "libloading",
  "object",
- "oxiguitar-plugin-api",
+ "oxiguitar-plugin-api 1.4.0",
  "serde_json",
 ]
 
@@ -239,7 +239,7 @@ name = "oxiguitar-model"
 version = "0.11.0"
 source = "git+https://github.com/mateusrdp/oxiguitar?tag=v0.11.0#292dc2810445423343fb33f5f029027fd60e6ed0"
 dependencies = [
- "oxiguitar-plugin-api",
+ "oxiguitar-plugin-api 1.4.0",
 ]
 
 [[package]]
@@ -247,7 +247,17 @@ name = "oxiguitar-plugin"
 version = "1.4.0"
 source = "git+https://github.com/mateusrdp/oxiguitar?tag=v0.11.0#292dc2810445423343fb33f5f029027fd60e6ed0"
 dependencies = [
- "oxiguitar-plugin-api",
+ "oxiguitar-plugin-api 1.4.0",
+ "serde_json",
+]
+
+[[package]]
+name = "oxiguitar-plugin-api"
+version = "0.10.0"
+source = "git+https://github.com/mateusrdp/oxiguitar?tag=v0.10.0#8472ec8472b3caaa3c8edd37f90183b580c307fd"
+dependencies = [
+ "postcard",
+ "serde",
  "serde_json",
 ]
 
