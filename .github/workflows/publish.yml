@@ -23,6 +23,7 @@ jobs:
     with:
       name: guitarpro
       tag: ${{ inputs.tag }}
-      winget-id: mateusrdp.OxiGuitar.GuitarPro
+      # Not submitted to winget yet (no third parties for now): put the id back to turn it on.
+      # winget-id: mateusrdp.OxiGuitar.GuitarPro
       tools-ref: 99722a630b8bf1d886f74281e092c2399cd38a18
     secrets: inherit
