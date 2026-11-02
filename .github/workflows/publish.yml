@@ -19,10 +19,10 @@ permissions:
 
 jobs:
   publish:
-    uses: mateusrdp/oxiguitar/.github/workflows/plugin-publish.yml@900c38e0ac4680f98381a39ed89d862a706f0d8c
+    uses: mateusrdp/oxiguitar/.github/workflows/plugin-publish.yml@9d050adcd032f511ff3f0fcec0908e16be9d47be
     with:
       name: guitarpro
       tag: ${{ inputs.tag }}
       winget-id: mateusrdp.OxiGuitar.GuitarPro
-      tools-ref: 900c38e0ac4680f98381a39ed89d862a706f0d8c
+      tools-ref: 9d050adcd032f511ff3f0fcec0908e16be9d47be
     secrets: inherit
