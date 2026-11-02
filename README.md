@@ -44,6 +44,10 @@ What is where:
 - `corpus/`: the manifest of a private test collection. The files are never committed.
 - `scripts/interop/`: checks that alphaTab and MuseScore read the files we write as we mean them.
 
+## Releases
+
+A release is made by the maintainer pushing a `v*` tag (`v` plus the version in `Cargo.toml`) on `main`. [`release.yml`](.github/workflows/release.yml) then builds the five plugins for every system with OxiGuitar's reusable [plugin-release workflow](https://github.com/mateusrdp/oxiguitar/blob/develop/.github/workflows/plugin-release.yml), makes the packages and a draft release; publishing the draft starts [`publish.yml`](.github/workflows/publish.yml), which tells the package repositories. Every pull request gets the same builds as test builds, kept for 14 days under its Release run.
+
 ## History
 
 These plugins lived in the [OxiGuitar repository](https://github.com/mateusrdp/oxiguitar) until its version 0.11.0. Their history came along (`git log` and `git blame` reach back to the first reader); an issue number such as `mateusrdp/oxiguitar#123` in an old commit message is in that repository.

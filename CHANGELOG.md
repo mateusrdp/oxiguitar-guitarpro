@@ -23,6 +23,7 @@ names and behaviour are unchanged.
 - `build-oxp.sh`, which builds the five `.oxp` files for the system it runs
   on, and a contract test in each plugin that checks the built file through
   OxiGuitar's plugin host.
+- `release.yml` and `publish.yml`: test builds on every pull request, and on a `v*` tag a draft release with a zip per system, `.deb` and `.rpm` packages, a per-user Windows installer, a macOS `.pkg` and `SHA256SUMS`, made by OxiGuitar's reusable workflows.
 - `crates/oxiguitar-formats/tests/host.rs`, which reads every public fixture
   through the five files and compares with reading in the same process.
 
