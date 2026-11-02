@@ -16,10 +16,9 @@ libfuzzer-sys = "0.4"
 oxiguitar-formats = { path = "../crates/oxiguitar-formats" }
 # The plugin_dispatch target: our format plugins as libraries, the SDK's
 # dispatch and the score's way back into the model.
-oxiguitar-plugin = { path = "../crates/oxiguitar-plugin" }
-oxiguitar-model = { path = "../crates/oxiguitar-model", features = ["wire"] }
-oxiguitar-display = { path = "../crates/oxiguitar-display", features = ["wire"] }
-oxiguitar-render = { path = "../crates/oxiguitar-render" }
+# OxiGuitar's SDK and model, by git tag, as the workspace has them.
+oxiguitar-plugin = { git = "https://github.com/mateusrdp/oxiguitar", tag = "v0.11.0" }
+oxiguitar-model = { git = "https://github.com/mateusrdp/oxiguitar", tag = "v0.11.0", features = ["wire"] }
 oxiguitar-gp3-plugin = { path = "../plugins/gp3" }
 oxiguitar-gp4-plugin = { path = "../plugins/gp4" }
 oxiguitar-gp5-plugin = { path = "../plugins/gp5" }
@@ -80,13 +79,6 @@ bench = false
 [[bin]]
 name = "plugin_dispatch"
 path = "fuzz_targets/plugin_dispatch.rs"
-test = false
-doc = false
-bench = false
-
-[[bin]]
-name = "plugin_tab"
-path = "fuzz_targets/plugin_tab.rs"
 test = false
 doc = false
 bench = false
