@@ -11,7 +11,7 @@ publish = false
 
 [lib]
 # An ordinary library for tests, and gp5.oxp when built with
-# `--features oxp --crate-type cdylib` (scripts/build-plugins.sh,
+# `--features oxp --crate-type cdylib` (build-oxp.sh,
 # oxiguitar-plugin-test).
 crate-type = ["lib"]
 
@@ -25,6 +25,9 @@ oxiguitar-plugin.workspace = true
 oxiguitar-formats = { path = "../../crates/oxiguitar-formats", default-features = false, features = ["gp5", "plugin"] }
 
 [dev-dependencies]
+# The contract suite (tests/contract.rs): builds the .oxp file and checks it
+# through OxiGuitar's own plugin host.
+oxiguitar-plugin-test.workspace = true
 serde_json.workspace = true
 
 # Plugins deny `unsafe` rather than forbid it: `export_plugin!` allows it on

@@ -19,11 +19,6 @@ on:
   pull_request:
     paths:
       - crates/oxiguitar-formats/**
-      - crates/oxiguitar-model/**
-      - crates/oxiguitar-display/**
-      - crates/oxiguitar-render/**
-      - crates/oxiguitar-plugin/**
-      - crates/oxiguitar-plugin-api/**
       - plugins/**
       - fuzz/**
       - fixtures/**
@@ -56,11 +51,11 @@ jobs:
       max-parallel: 4
       matrix:
         # The four readers, the .gp writer and the plugins' dispatch; the any-file target
-        # (format detection, then any reader) and plugin tabs' answers run
+        # (format detection, then any reader) runs
         # on pull requests only.
-        target: ${{ fromJSON(github.event_name == 'pull_request' && '["guitar_pro_3_5","guitar_pro_6","guitar_pro_7","gpif","gp_writer","any_file","plugin_dispatch","plugin_tab"]' || '["guitar_pro_3_5","guitar_pro_6","guitar_pro_7","gpif","gp_writer","plugin_dispatch"]') }}
+        target: ${{ fromJSON(github.event_name == 'pull_request' && '["guitar_pro_3_5","guitar_pro_6","guitar_pro_7","gpif","gp_writer","any_file","plugin_dispatch"]' || '["guitar_pro_3_5","guitar_pro_6","guitar_pro_7","gpif","gp_writer","plugin_dispatch"]') }}
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
       - name: Seconds per job
         run: |
           # Four minutes on a pull request; half the minutes asked for by hand.
@@ -85,14 +80,14 @@ jobs:
         run: fuzz/run.sh "${{ matrix.target }}" "$FUZZ_SECONDS"
       - name: Keep the input that crashed
         if: failure()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: fuzz-crash ${{ matrix.target }}
           path: fuzz/artifacts/${{ matrix.target }}/
           if-no-files-found: ignore
       - name: Keep the corpus for the second half
         if: ${{ !cancelled() && github.event_name == 'workflow_dispatch' }}
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: fuzz-corpus ${{ matrix.target }}
           path: fuzz/corpus/${{ matrix.target }}/
@@ -110,7 +105,7 @@ jobs:
       matrix:
         target: [guitar_pro_3_5, guitar_pro_6, guitar_pro_7, gpif, gp_writer, plugin_dispatch]
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
       - name: Seconds per job
         run: echo "FUZZ_SECONDS=$(( MINUTES * 30 ))" >> "$GITHUB_ENV"
       - uses: dtolnay/rust-toolchain@nightly
@@ -120,7 +115,7 @@ jobs:
       - run: cargo install cargo-fuzz --locked
       - run: fuzz/seeds.sh
       - name: Continue from the first half's corpus
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: fuzz-corpus ${{ matrix.target }}
           path: fuzz/corpus/${{ matrix.target }}/
@@ -128,14 +123,14 @@ jobs:
         run: fuzz/run.sh "${{ matrix.target }}" "$FUZZ_SECONDS"
       - name: Keep the input that crashed
         if: failure()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: fuzz-crash ${{ matrix.target }} (2)
           path: fuzz/artifacts/${{ matrix.target }}/
           if-no-files-found: ignore
       - name: Keep the final corpus
         if: ${{ !cancelled() }}
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: fuzz-corpus ${{ matrix.target }} (final)
           path: fuzz/corpus/${{ matrix.target }}/

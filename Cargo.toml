@@ -1,0 +1,53 @@
+# oxiguitar-guitarpro: the Guitar Pro format plugins for OxiGuitar (gp3, gp4,
+# gp5, gpx and gp .oxp files) and the readers and writers they carry.
+# Moved out of github.com/mateusrdp/oxiguitar with its history (#165).
+[workspace]
+resolver = "3"
+members = ["crates/*", "plugins/*"]
+# The fuzz targets (nightly Rust, see fuzz/README.md) have a workspace and
+# lock file of their own.
+exclude = ["fuzz"]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2024"
+# Rust from rustup, raised only when something needs it (CONTRIBUTING.md).
+rust-version = "1.99"
+license = "GPL-3.0-or-later"
+authors = ["Mateus Rocha de Paula", "The OxiGuitar contributors"]
+repository = "https://github.com/mateusrdp/oxiguitar-guitarpro"
+homepage = "https://github.com/mateusrdp/oxiguitar-guitarpro"
+publish = false
+
+[workspace.dependencies]
+# OxiGuitar's SDK and score model, by git tag: the interface (1.4) is frozen
+# at v0.11.0. Nothing of OxiGuitar's is on crates.io. The readers read into
+# the core's model and convert it for the plugin interface.
+oxiguitar-model = { git = "https://github.com/mateusrdp/oxiguitar", tag = "v0.11.0" }
+oxiguitar-plugin-api = { git = "https://github.com/mateusrdp/oxiguitar", tag = "v0.11.0" }
+oxiguitar-plugin = { git = "https://github.com/mateusrdp/oxiguitar", tag = "v0.11.0" }
+oxiguitar-plugin-test = { git = "https://github.com/mateusrdp/oxiguitar", tag = "v0.11.0" }
+oxiguitar-formats = { path = "crates/oxiguitar-formats" }
+serde_json = "1"
+# Guitar Pro 7/8 files are ZIP archives. No default features: they build
+# the zstd C library. zlib-rs is a pure-Rust deflate.
+zip = { version = "9", default-features = false, features = ["deflate-flate2-zlib-rs"] }
+# XML for GPIF (Guitar Pro 6-8).
+quick-xml = "0.42"
+
+[workspace.lints.rust]
+unsafe_code = "forbid"
+missing_docs = "warn"
+rust_2018_idioms = { level = "warn", priority = -1 }
+unreachable_pub = "warn"
+
+[workspace.lints.clippy]
+all = { level = "warn", priority = -1 }
+dbg_macro = "warn"
+todo = "warn"
+print_stderr = "allow"
+
+[profile.release]
+lto = "thin"
+codegen-units = 1
+strip = "symbols"
