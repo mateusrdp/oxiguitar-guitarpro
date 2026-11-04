@@ -1,4 +1,4 @@
-# Test builds and releases (#165). The work is oxiguitar's reusable workflow
+# Test builds and releases (#165). The work is oxiguitar-packages' reusable workflow
 # plugin-release.yml: it runs build-oxp.sh on Linux (x86_64, ARM64), Windows
 # (x86_64, ARM64) and macOS and makes, from the five plugin files, a zip per
 # target, a .deb and an .rpm (oxiguitar-guitarpro), a per-user Windows
@@ -28,7 +28,7 @@ concurrency:
 
 jobs:
   release:
-    uses: mateusrdp/oxiguitar/.github/workflows/plugin-release.yml@99722a630b8bf1d886f74281e092c2399cd38a18
+    uses: mateusrdp/oxiguitar-packages/.github/workflows/plugin-release.yml@main
     with:
       name: guitarpro
       title: "Guitar Pro (3, 4, 5, 6, 7-8)"
@@ -38,6 +38,5 @@ jobs:
       # ci.yml has run the tests on six systems.
       test: false
       # The packaging scripts come from the same commit of oxiguitar.
-      tools-ref: 99722a630b8bf1d886f74281e092c2399cd38a18
     permissions:
       contents: write
