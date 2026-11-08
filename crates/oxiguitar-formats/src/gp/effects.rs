@@ -28,8 +28,8 @@ pub(super) struct BeatNoteEffects {
 
 impl BeatNoteEffects {
     pub(super) fn apply(&self, note: &mut Note) {
-        if self.vibrato {
-            note.effects.vibrato = true;
+        if self.vibrato && note.effects.vibrato.is_none() {
+            note.effects.vibrato = Some(oxiguitar_model::Vibrato::Slight);
         }
         if self.harmonic.is_some() && note.effects.harmonic.is_none() {
             note.effects.harmonic = self.harmonic;
@@ -51,8 +51,12 @@ impl Reader<'_> {
                 notes.harmonic = Some(Harmonic::Artificial { semitones: 12 });
             }
         }
-        fx.vibrato_wide = flags1 & 0x02 != 0;
-        fx.fade_in = flags1 & 0x10 != 0;
+        if flags1 & 0x02 != 0 {
+            fx.bridge_vibrato = Some(oxiguitar_model::Vibrato::Wide);
+        }
+        if flags1 & 0x10 != 0 {
+            fx.fade = Some(oxiguitar_model::Fade::In);
+        }
         if flags1 & 0x20 != 0 {
             let kind = self.c.u8()?;
             fx.technique = match kind {
@@ -108,10 +112,8 @@ impl Reader<'_> {
             };
         }
         if flags2 & 0x01 != 0 {
-            self.log.warn(
-                "rasgueado is not supported yet (comes with M4)",
-                self.here(),
-            );
+            // Guitar Pro 5 marks a rasgueado without a pattern.
+            fx.rasgueado = Some(oxiguitar_model::Rasgueado::Ii);
         }
         if flags2 & 0x02 != 0 {
             fx.pick_stroke = match self.c.i8()? {
@@ -192,7 +194,7 @@ impl Reader<'_> {
         fx.staccato = flags2 & 0x01 != 0;
         fx.palm_mute = flags2 & 0x02 != 0;
         if flags2 & 0x40 != 0 {
-            fx.vibrato = true;
+            fx.vibrato = Some(oxiguitar_model::Vibrato::Slight);
         }
         Ok(grace)
     }

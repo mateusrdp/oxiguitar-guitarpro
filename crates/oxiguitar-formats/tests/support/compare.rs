@@ -76,8 +76,10 @@ fn note_fx(e: &NoteEffects) -> String {
     if let Some(h) = &e.harmonic {
         v.push(format!("{h:?}"));
     }
+    if e.vibrato.is_some() {
+        v.push("vibrato".to_owned());
+    }
     for (on, name) in [
-        (e.vibrato, "vibrato"),
         (e.palm_mute, "pm"),
         (e.let_ring, "ring"),
         (e.dead, "dead"),
@@ -102,7 +104,7 @@ fn beat_fx(b: &Beat) -> String {
         e.pick_stroke,
         e.technique,
         e.tremolo_picking,
-        e.fade_in,
+        e.fade.is_some(),
         e.whammy.is_some()
     )
 }

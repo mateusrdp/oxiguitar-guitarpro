@@ -20,13 +20,14 @@ homepage = "https://github.com/mateusrdp/oxiguitar-guitarpro"
 publish = false
 
 [workspace.dependencies]
-# OxiGuitar's SDK and score model, by git tag: the interface (1.4) is frozen
-# at v0.11.0. Nothing of OxiGuitar's is on crates.io. The readers read into
+# OxiGuitar's SDK and score model, by git tag. Interface 1.6 (v0.17's
+# palette) is pinned to the commit of OxiGuitar's pull request until v0.17.0
+# is tagged, then moves to the tag. Nothing of OxiGuitar's is on crates.io. The readers read into
 # the core's model and convert it for the plugin interface.
-oxiguitar-model = { git = "https://github.com/mateusrdp/oxiguitar", tag = "v0.11.0" }
-oxiguitar-plugin-api = { git = "https://github.com/mateusrdp/oxiguitar", tag = "v0.11.0" }
-oxiguitar-plugin = { git = "https://github.com/mateusrdp/oxiguitar", tag = "v0.11.0" }
-oxiguitar-plugin-test = { git = "https://github.com/mateusrdp/oxiguitar", tag = "v0.11.0" }
+oxiguitar-model = { git = "https://github.com/mateusrdp/oxiguitar", rev = "3da8d485df815ea3f202a10b3ca426e9a1465681" }
+oxiguitar-plugin-api = { git = "https://github.com/mateusrdp/oxiguitar", rev = "3da8d485df815ea3f202a10b3ca426e9a1465681" }
+oxiguitar-plugin = { git = "https://github.com/mateusrdp/oxiguitar", rev = "3da8d485df815ea3f202a10b3ca426e9a1465681" }
+oxiguitar-plugin-test = { git = "https://github.com/mateusrdp/oxiguitar", rev = "3da8d485df815ea3f202a10b3ca426e9a1465681" }
 oxiguitar-formats = { path = "crates/oxiguitar-formats" }
 serde_json = "1"
 # Guitar Pro 7/8 files are ZIP archives. No default features: they build

@@ -38,7 +38,7 @@ zip.workspace = true
 oxiguitar-model = { workspace = true, features = ["wire"] }
 oxiguitar-plugin-api.workspace = true
 # tests/host.rs: the five plugins as .oxp files, through OxiGuitar's plugin host.
-oxiguitar-host = { git = "https://github.com/mateusrdp/oxiguitar", tag = "v0.11.0" }
+oxiguitar-host = { git = "https://github.com/mateusrdp/oxiguitar", rev = "3da8d485df815ea3f202a10b3ca426e9a1465681" }
 oxiguitar-plugin-test.workspace = true
 serde_json.workspace = true
 

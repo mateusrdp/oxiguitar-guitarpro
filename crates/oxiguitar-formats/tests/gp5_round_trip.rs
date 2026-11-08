@@ -49,6 +49,8 @@ fn under(dir: &str) -> Vec<PathBuf> {
 fn normal(s: &Score) -> Score {
     let mut s = s.clone();
     s.initial_tempo = s.initial_tempo.round();
+    // Bars per system are left out, an Info.
+    s.layout.clear();
     for mb in &mut s.master_bars {
         mb.tempo_changes.sort_by_key(|t| t.position);
         for t in &mut mb.tempo_changes {
@@ -58,6 +60,7 @@ fn normal(s: &Score) -> Score {
     }
     for t in &mut s.tracks {
         t.short_name.clear();
+        t.layout.clear();
         t.mix.volume = (t.mix.volume * 16.0).round() / 16.0;
         t.mix.pan = ((t.mix.pan + 1.0) * 8.0).round() / 8.0 - 1.0;
         t.lyrics.retain(|l| !l.text.trim().is_empty());
@@ -234,6 +237,9 @@ fn first_difference(a: &Score, b: &Score) -> String {
             a.initial_tempo, a.tempo_label, b.initial_tempo, b.tempo_label
         );
     }
+    if a.layout != b.layout {
+        return format!("bars per system: {:?} vs {:?}", a.layout, b.layout);
+    }
     if a.master_bars.len() != b.master_bars.len() {
         return "bar count".into();
     }
@@ -249,6 +255,12 @@ fn first_difference(a: &Score, b: &Score) -> String {
         let t = ti + 1;
         if (&x.name, &x.short_name, x.color) != (&y.name, &y.short_name, y.color) {
             return format!("track {t} name or colour");
+        }
+        if x.layout != y.layout {
+            return format!(
+                "track {t} bars per system: {:?} vs {:?}",
+                x.layout, y.layout
+            );
         }
         if x.instrument != y.instrument {
             return format!(

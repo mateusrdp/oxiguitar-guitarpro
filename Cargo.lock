@@ -225,8 +225,8 @@ dependencies = [
 
 [[package]]
 name = "oxiguitar-host"
-version = "0.11.0"
-source = "git+https://github.com/mateusrdp/oxiguitar?tag=v0.11.0#292dc2810445423343fb33f5f029027fd60e6ed0"
+version = "0.16.0"
+source = "git+https://github.com/mateusrdp/oxiguitar?rev=3da8d485df815ea3f202a10b3ca426e9a1465681#3da8d485df815ea3f202a10b3ca426e9a1465681"
 dependencies = [
  "libloading",
  "object",
@@ -236,16 +236,16 @@ dependencies = [
 
 [[package]]
 name = "oxiguitar-model"
-version = "0.11.0"
-source = "git+https://github.com/mateusrdp/oxiguitar?tag=v0.11.0#292dc2810445423343fb33f5f029027fd60e6ed0"
+version = "0.16.0"
+source = "git+https://github.com/mateusrdp/oxiguitar?rev=3da8d485df815ea3f202a10b3ca426e9a1465681#3da8d485df815ea3f202a10b3ca426e9a1465681"
 dependencies = [
  "oxiguitar-plugin-api",
 ]
 
 [[package]]
 name = "oxiguitar-plugin"
-version = "1.4.0"
-source = "git+https://github.com/mateusrdp/oxiguitar?tag=v0.11.0#292dc2810445423343fb33f5f029027fd60e6ed0"
+version = "1.6.0"
+source = "git+https://github.com/mateusrdp/oxiguitar?rev=3da8d485df815ea3f202a10b3ca426e9a1465681#3da8d485df815ea3f202a10b3ca426e9a1465681"
 dependencies = [
  "oxiguitar-plugin-api",
  "serde_json",
@@ -253,8 +253,8 @@ dependencies = [
 
 [[package]]
 name = "oxiguitar-plugin-api"
-version = "1.4.0"
-source = "git+https://github.com/mateusrdp/oxiguitar?tag=v0.11.0#292dc2810445423343fb33f5f029027fd60e6ed0"
+version = "1.6.0"
+source = "git+https://github.com/mateusrdp/oxiguitar?rev=3da8d485df815ea3f202a10b3ca426e9a1465681#3da8d485df815ea3f202a10b3ca426e9a1465681"
 dependencies = [
  "postcard",
  "serde",
@@ -263,8 +263,8 @@ dependencies = [
 
 [[package]]
 name = "oxiguitar-plugin-test"
-version = "1.4.0"
-source = "git+https://github.com/mateusrdp/oxiguitar?tag=v0.11.0#292dc2810445423343fb33f5f029027fd60e6ed0"
+version = "1.6.0"
+source = "git+https://github.com/mateusrdp/oxiguitar?rev=3da8d485df815ea3f202a10b3ca426e9a1465681#3da8d485df815ea3f202a10b3ca426e9a1465681"
 dependencies = [
  "libc",
  "oxiguitar-host",

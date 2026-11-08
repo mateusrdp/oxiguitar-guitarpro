@@ -660,6 +660,9 @@ impl<'s> Writer<'s> {
         if !track.short_name.is_empty() {
             self.kept_as("short track names are left out");
         }
+        if !track.layout.is_empty() || (!self.score.layout.is_empty() && ti == 0) {
+            self.kept_as("bars per system set in Design Mode are left out");
+        }
         self.i32(i32::try_from(plan_tuning.len()).unwrap_or(6));
         for i in 0..MAX_STRINGS {
             self.i32(i32::from(plan_tuning.get(i).copied().unwrap_or(0)));
@@ -737,6 +740,21 @@ impl<'s> Writer<'s> {
         let expected = self.score.tracks.get(ti).map(super::clef_for);
         if expected.is_some_and(|c| c != bar.clef) {
             self.loss("clefs follow the instrument, as Guitar Pro 5 has no clef of its own");
+        }
+        if bar.simile.is_some() {
+            self.kept_as("repeat signs are written out as the bars they repeat");
+        }
+        if !mb.fermatas.is_empty() && ti == 0 {
+            self.loss("fermatas are left out");
+        }
+        if bar
+            .voices
+            .iter()
+            .flat_map(|v| &v.beats)
+            .flat_map(|b| &b.notes)
+            .any(|n| n.spelling.is_some())
+        {
+            self.kept_as("chosen spellings are left out: Guitar Pro 5 works them out itself");
         }
         if bar.voices.len() > 2 {
             self.loss("only two voices of a bar are kept");
@@ -1003,17 +1021,57 @@ impl<'s> Writer<'s> {
 
     // ---- the beat's effects ---------------------------------------------
 
+    /// Names what Guitar Pro 5 can't hold of a beat's marks (v0.17).
+    fn unheld_beat_marks(&mut self, beat: &Beat) {
+        let e = &beat.effects;
+        let unheld = [
+            (beat.slur, "slurs are left out"),
+            (beat.hairpin.is_some(), "hairpins are left out"),
+            (beat.ottava.is_some(), "ottava lines are left out"),
+            (beat.slash, "slash notation is left out"),
+            (
+                beat.beaming != oxiguitar_model::Beaming::Automatic,
+                "beaming changes are left out",
+            ),
+            (beat.tuplet_group, "forced tuplet groups are left out"),
+            (beat.barre.is_some(), "barres are left out"),
+            (e.pedal.is_some(), "sustain pedal marks are left out"),
+            (e.wah.is_some(), "wah-wah marks are left out"),
+            (e.arpeggio.is_some(), "arpeggios are left out"),
+            (e.golpe.is_some(), "golpes are left out"),
+            (e.pick_scrape.is_some(), "pick scrapes are left out"),
+            (e.dead_slap, "dead slaps are left out"),
+        ];
+        for (here, what) in unheld {
+            if here {
+                self.loss(what);
+            }
+        }
+    }
+
     /// The two flag bytes of the beat's effects.
     fn beat_effects_flags(&mut self, beat: &Beat) -> (u8, u8) {
         let e = &beat.effects;
         let mut f1 = 0u8;
         let mut f2 = 0u8;
-        if e.vibrato_wide {
+        if e.bridge_vibrato.is_some() {
             f1 |= 0x02;
+            if e.bridge_vibrato == Some(oxiguitar_model::Vibrato::Slight) {
+                self.kept_as("a slight whammy-bar vibrato is kept as a wide one");
+            }
         }
-        if e.fade_in {
-            f1 |= 0x10;
+        match e.fade {
+            Some(oxiguitar_model::Fade::In) => f1 |= 0x10,
+            Some(_) => self.loss("fade-outs and volume swells are left out"),
+            None => {}
         }
+        if e.rasgueado.is_some() {
+            f2 |= 0x01;
+            if e.rasgueado != Some(oxiguitar_model::Rasgueado::Ii) {
+                self.kept_as("a rasgueado's pattern is left out (Guitar Pro 5 has none)");
+            }
+        }
+        self.unheld_beat_marks(beat);
         if e.technique.is_some() {
             f1 |= 0x20;
         }
@@ -1309,8 +1367,17 @@ impl<'s> Writer<'s> {
         if fx.trill.is_some() {
             effects2 |= 0x20;
         }
-        if fx.vibrato {
+        if fx.vibrato.is_some() {
             effects2 |= 0x40;
+            if fx.vibrato == Some(oxiguitar_model::Vibrato::Wide) {
+                self.kept_as("a wide vibrato is kept as a plain one");
+            }
+        }
+        if fx.ornament.is_some() {
+            self.loss("ornaments are left out");
+        }
+        if fx.string_number {
+            self.loss("string numbers are left out");
         }
         if fx.left_hand_tap {
             self.loss("left-hand tapping on a note is left out");

@@ -26,10 +26,17 @@ use std::fmt::Write as _;
 use std::io::Write as _;
 
 use oxiguitar_model::{
-    Accent, Bar, Beat, BeatKind, BeatTechnique, BendPoint, ChordDiagram, Clef, Direction, Duration,
-    Dynamic, GraceKind, Harmonic, KeyMode, MasterBar, Note, NotePlace, NoteValue, Pitch, Ratio,
-    Score, Slide, Staff, StrokeDirection, Track, TripletFeel,
+    Accent, Bar, Beaming, Beat, BeatKind, BeatTechnique, BendPoint, ChordDiagram, Clef, Direction,
+    Duration, Dynamic, Fade, FermataKind, Golpe, GraceKind, Hairpin, Harmonic, KeyMode, MasterBar,
+    Note, NotePlace, NoteValue, Ornament, Ottava, Pedal, Pitch, Ratio, Score, Simile, Slide,
+    Spelling, Staff, StrokeDirection, Track, TripletFeel, Vibrato, Wah,
 };
+
+/// Bars per system as GPIF lists them ("4 4 3 4").
+fn systems(layout: &[u8]) -> String {
+    let parts: Vec<String> = layout.iter().map(u8::to_string).collect();
+    parts.join(" ")
+}
 
 use super::TICKS_PER_QUARTER;
 use crate::error::ImportLog;
@@ -232,6 +239,27 @@ fn pitch_xml(midi: i32) -> String {
     format!(
         "<Pitch><Step>{step}</Step><Accidental>{accidental}</Accidental><Octave>{}</Octave></Pitch>",
         midi.div_euclid(12)
+    )
+}
+
+/// A pitch as Guitar Pro writes it, spelled as chosen: the octave is the
+/// natural step's (B sharp 4 sounds as C 5 but is written in octave 4).
+fn spelled_pitch_xml(midi: i32, sp: Spelling) -> String {
+    const STEPS: [&str; 7] = ["C", "D", "E", "F", "G", "A", "B"];
+    const NATURALS: [i32; 7] = [0, 2, 4, 5, 7, 9, 11];
+    let step = usize::from(sp.step);
+    let natural = NATURALS.get(step).copied().unwrap_or(0);
+    let octave = (midi - i32::from(sp.alter) - natural).div_euclid(12);
+    let accidental = match sp.alter {
+        -2 => "bb",
+        -1 => "b",
+        1 => "#",
+        2 => "x",
+        _ => "",
+    };
+    format!(
+        "<Pitch><Step>{}</Step><Accidental>{accidental}</Accidental><Octave>{octave}</Octave></Pitch>",
+        STEPS.get(step).copied().unwrap_or("C")
     )
 }
 
@@ -630,6 +658,13 @@ impl<'s> Writer<'s> {
             let _ = writeln!(x, "<{tag}>{}</{tag}>", cdata(text));
         }
         let _ = writeln!(x, "<Notices>{}</Notices>", cdata(&info.notices.join("\n")));
+        if !self.score.layout.is_empty() {
+            let _ = writeln!(
+                x,
+                "<ScoreSystemsDefaultLayout>4</ScoreSystemsDefaultLayout>\n<ScoreSystemsLayout>{}</ScoreSystemsLayout>",
+                systems(&self.score.layout)
+            );
+        }
         x.push_str("</Score>\n");
     }
 
@@ -699,7 +734,15 @@ impl<'s> Writer<'s> {
         let _ = writeln!(x, "<ShortName>{}</ShortName>", cdata(&track.short_name));
         let c = track.color;
         let _ = writeln!(x, "<Color>{} {} {}</Color>", c.r, c.g, c.b);
-        x.push_str("<SystemsDefautLayout>3</SystemsDefautLayout>\n<PalmMute>0</PalmMute>\n<PlayingStyle>Default</PlayingStyle>\n");
+        x.push_str("<SystemsDefautLayout>3</SystemsDefautLayout>\n");
+        if !track.layout.is_empty() {
+            let _ = writeln!(
+                x,
+                "<SystemsLayout>{}</SystemsLayout>",
+                systems(&track.layout)
+            );
+        }
+        x.push_str("<PalmMute>0</PalmMute>\n<PlayingStyle>Default</PlayingStyle>\n");
         let s = plan.sound;
         let _ = write!(
             x,
@@ -788,9 +831,43 @@ impl<'s> Writer<'s> {
         x.push_str("</Staves>\n");
         let _ = writeln!(
             x,
-            "<Automations>\n<Automation>\n<Type>Sound</Type>\n<Linear>false</Linear>\n<Bar>0</Bar>\n<Position>0</Position>\n<Visible>true</Visible>\n<Value>{}</Value>\n</Automation>\n</Automations>\n</Track>",
+            "<Automations>\n<Automation>\n<Type>Sound</Type>\n<Linear>false</Linear>\n<Bar>0</Bar>\n<Position>0</Position>\n<Visible>true</Visible>\n<Value>{}</Value>\n</Automation>",
             cdata(&format!("{};;User", s.path))
         );
+        // The sustain pedal: an automation at each mark, at its place in
+        // the bar (from its first staff's voices).
+        for (bi, bar) in track
+            .staves
+            .first()
+            .map_or(&[][..], |s| &s.bars[..])
+            .iter()
+            .enumerate()
+        {
+            let length = self
+                .score
+                .master_bars
+                .get(bi)
+                .and_then(|m| m.time_signature.bar_length())
+                .map_or(1.0, Ratio::to_f64);
+            for voice in &bar.voices {
+                let mut at = 0.0;
+                for b in &voice.beats {
+                    if b.grace.is_some() {
+                        continue;
+                    }
+                    if let Some(p) = b.effects.pedal {
+                        let value = if p == Pedal::Down { 1 } else { 3 };
+                        let _ = writeln!(
+                            x,
+                            "<Automation>\n<Type>SustainPedal</Type>\n<Linear>false</Linear>\n<Bar>{bi}</Bar>\n<Position>{}</Position>\n<Visible>true</Visible>\n<Value>0 {value}</Value>\n</Automation>",
+                            (at / length).clamp(0.0, 1.0)
+                        );
+                    }
+                    at += b.duration.length().map_or(0.0, Ratio::to_f64);
+                }
+            }
+        }
+        x.push_str("</Automations>\n</Track>\n");
         if both {
             self.track_loss("a track can't be both muted and soloed; it is soloed");
         }
@@ -894,6 +971,26 @@ impl<'s> Writer<'s> {
         if mb.free_time {
             x.push_str("<FreeTime />\n");
         }
+        if !mb.fermatas.is_empty() {
+            x.push_str("<Fermatas>\n");
+            for f in &mb.fermatas {
+                // The offset in quarter notes.
+                let at = f.position * Ratio::from_integer(4);
+                let kind = match f.kind {
+                    FermataKind::Short => "Short",
+                    FermataKind::Medium => "Medium",
+                    FermataKind::Long => "Long",
+                };
+                let _ = writeln!(
+                    x,
+                    "<Fermata>\n<Type>{kind}</Type>\n<Offset>{}/{}</Offset>\n<Length>{}</Length>\n</Fermata>",
+                    at.numer(),
+                    at.denom(),
+                    f.length
+                );
+            }
+            x.push_str("</Fermatas>\n");
+        }
         if let Some(m) = &mb.marker {
             let _ = writeln!(
                 x,
@@ -964,9 +1061,15 @@ impl<'s> Writer<'s> {
                 *slot = id.to_string();
             }
         }
+        let simile = match bar.simile {
+            Some(Simile::Simple) => "<SimileMark>Simple</SimileMark>\n",
+            Some(Simile::FirstOfDouble) => "<SimileMark>FirstOfDouble</SimileMark>\n",
+            Some(Simile::SecondOfDouble) => "<SimileMark>SecondOfDouble</SimileMark>\n",
+            None => "",
+        };
         let id = self.bars.len();
         self.bars.push(format!(
-            "<Bar id=\"{id}\">\n<Clef>{clef}</Clef>\n<Voices>{}</Voices>\n</Bar>\n",
+            "<Bar id=\"{id}\">\n<Clef>{clef}</Clef>\n<Voices>{}</Voices>\n{simile}</Bar>\n",
             voice_ids.join(" ")
         ));
         id
@@ -1089,8 +1192,59 @@ impl<'s> Writer<'s> {
         if !beat.text.is_empty() {
             let _ = writeln!(b, "<FreeText>{}</FreeText>", cdata(&beat.text));
         }
-        if fx.fade_in {
-            b.push_str("<Fadding>FadeIn</Fadding>\n");
+        match fx.fade {
+            Some(Fade::In) => b.push_str("<Fadding>FadeIn</Fadding>\n"),
+            Some(Fade::Out) => b.push_str("<Fadding>FadeOut</Fadding>\n"),
+            Some(Fade::Swell) => b.push_str("<Fadding>VolumeSwell</Fadding>\n"),
+            None => {}
+        }
+        if let Some(h) = beat.hairpin {
+            let h = if h == Hairpin::Crescendo {
+                "Crescendo"
+            } else {
+                "Decrescendo"
+            };
+            let _ = writeln!(b, "<Hairpin>{h}</Hairpin>");
+        }
+        if let Some(d) = fx.arpeggio {
+            let d = if d == StrokeDirection::Up {
+                "Up"
+            } else {
+                "Down"
+            };
+            let _ = writeln!(b, "<Arpeggio>{d}</Arpeggio>");
+        }
+        if let Some(o) = beat.ottava {
+            let o = match o {
+                Ottava::Alta8 => "8va",
+                Ottava::Bassa8 => "8vb",
+                Ottava::Alta15 => "15ma",
+                Ottava::Bassa15 => "15mb",
+            };
+            let _ = writeln!(b, "<Ottavia>{o}</Ottavia>");
+        }
+        if let Some(w) = fx.wah {
+            let w = if w == Wah::Open { "Open" } else { "Closed" };
+            let _ = writeln!(b, "<Wah>{w}</Wah>");
+        }
+        if let Some(g) = fx.golpe {
+            let g = if g == Golpe::Thumb { "Thumb" } else { "Finger" };
+            let _ = writeln!(b, "<Golpe>{g}</Golpe>");
+        }
+        if beat.slur {
+            b.push_str("<Legato origin=\"true\" destination=\"false\" />\n");
+        }
+        if beat.slash {
+            b.push_str("<Slashed />\n");
+        }
+        if fx.dead_slap {
+            b.push_str("<DeadSlapped />\n");
+        }
+        if fx.pick_scrape.is_some() {
+            self.loss("pick scrapes are left out: their Guitar Pro form isn't known");
+        }
+        if beat.tuplet_group {
+            self.loss("forced tuplet groups are left out: their Guitar Pro form isn't known");
         }
         if let Some(t) = tremolo {
             let speed = match t {
@@ -1106,8 +1260,10 @@ impl<'s> Writer<'s> {
             };
             let _ = writeln!(b, "<Tremolo>{speed}</Tremolo>");
         }
-        if fx.vibrato_wide {
-            b.push_str("<Vibrato>Wide</Vibrato>\n");
+        match fx.bridge_vibrato {
+            Some(Vibrato::Wide) => b.push_str("<Vibrato>Wide</Vibrato>\n"),
+            Some(Vibrato::Slight) => b.push_str("<Vibrato>Slight</Vibrato>\n"),
+            None => {}
         }
 
         let mut props = String::new();
@@ -1179,14 +1335,52 @@ impl<'s> Writer<'s> {
                 bend_props(&mut props, &points, names);
             }
         }
+        if let Some(name) = fx.rasgueado.and_then(|r| {
+            super::effects::RASGUEADOS
+                .iter()
+                .find(|(_, x)| *x == r)
+                .map(|(n, _)| *n)
+        }) {
+            let _ = writeln!(
+                props,
+                "<Property name=\"Rasgueado\">\n<Rasgueado>{name}</Rasgueado>\n</Property>"
+            );
+        }
+        if let Some(barre) = beat.barre {
+            let _ = writeln!(
+                props,
+                "<Property name=\"BarreFret\">\n<Fret>{}</Fret>\n</Property>\n<Property name=\"BarreString\">\n<String>{}</String>\n</Property>",
+                barre.fret,
+                u8::from(barre.half)
+            );
+        }
         if !props.is_empty() {
             let _ = write!(b, "<Properties>\n{props}</Properties>\n");
         }
+        let mut xprops = String::new();
         if let Some(t) = brush_ticks {
             let _ = writeln!(
-                b,
-                "<XProperties>\n<XProperty id=\"687935489\">\n<Int>{t}</Int>\n</XProperty>\n</XProperties>"
+                xprops,
+                "<XProperty id=\"687935489\">\n<Int>{t}</Int>\n</XProperty>"
             );
+        }
+        let (join, secondary) = match beat.beaming {
+            Beaming::Automatic => (None, false),
+            Beaming::Force => (Some(1), false),
+            Beaming::Break => (Some(2), false),
+            Beaming::BreakSecondary => (None, true),
+        };
+        if let Some(v) = join {
+            let _ = writeln!(
+                xprops,
+                "<XProperty id=\"1124204546\">\n<Int>{v}</Int>\n</XProperty>"
+            );
+        }
+        if secondary {
+            xprops.push_str("<XProperty id=\"1124204552\">\n<Int>1</Int>\n</XProperty>\n");
+        }
+        if !xprops.is_empty() {
+            let _ = write!(b, "<XProperties>\n{xprops}</XProperties>\n");
         }
         let id = self.beats.len();
         self.beats.push(format!("<Beat id=\"{id}\">\n{b}</Beat>\n"));
@@ -1295,8 +1489,10 @@ impl<'s> Writer<'s> {
         if fx.let_ring || let_ring {
             head.push_str("<LetRing />\n");
         }
-        if fx.vibrato {
-            head.push_str("<Vibrato>Slight</Vibrato>\n");
+        match fx.vibrato {
+            Some(Vibrato::Wide) => head.push_str("<Vibrato>Wide</Vibrato>\n"),
+            Some(Vibrato::Slight) => head.push_str("<Vibrato>Slight</Vibrato>\n"),
+            None => {}
         }
         if fx.ghost {
             head.push_str("<AntiAccent>Normal</AntiAccent>\n");
@@ -1337,6 +1533,15 @@ impl<'s> Writer<'s> {
                 }
             }
         }
+        if let Some(o) = fx.ornament {
+            let o = match o {
+                Ornament::UpperMordent => "UpperMordent",
+                Ornament::LowerMordent => "LowerMordent",
+                Ornament::Turn => "Turn",
+                Ornament::InvertedTurn => "InvertedTurn",
+            };
+            let _ = writeln!(tail, "<Ornament>{o}</Ornament>");
+        }
         let articulation = if percussion {
             match note.place {
                 NotePlace::Pitched(Pitch(p)) => tables::drum_articulation(p).unwrap_or(0),
@@ -1351,6 +1556,24 @@ impl<'s> Writer<'s> {
         );
 
         let mut props = String::new();
+        if fx.string_number {
+            props.push_str("<Property name=\"ShowStringNumber\">\n<Enable />\n</Property>\n");
+        }
+        // A chosen spelling is the written note's: it goes into the
+        // transposed pitch, and into the concert pitch too when the staff
+        // isn't transposed.
+        let written = sounding - transpose;
+        let spelled = note.spelling.filter(|sp| {
+            !percussion && u8::try_from(written.rem_euclid(12)).is_ok_and(|pc| sp.spells(Pitch(pc)))
+        });
+        let concert = match spelled.filter(|_| transpose == 0) {
+            Some(sp) => spelled_pitch_xml(sounding, sp),
+            None => pitch_xml(sounding),
+        };
+        let transposed = match spelled {
+            Some(sp) => spelled_pitch_xml(written, sp),
+            None => pitch_xml(written),
+        };
         let bend = fx.bend.as_ref().map(|b| fit_curve(&b.points));
         if let Some((points, fits)) = bend.filter(|(p, _)| p.iter().any(|p| p.cents != 0)) {
             if !fits {
@@ -1373,8 +1596,7 @@ impl<'s> Writer<'s> {
         }
         let _ = writeln!(
             props,
-            "<Property name=\"ConcertPitch\">\n{}\n</Property>",
-            pitch_xml(sounding)
+            "<Property name=\"ConcertPitch\">\n{concert}\n</Property>"
         );
         props.push_str(&place_props);
         if let Some(h) = fx.harmonic {
@@ -1435,8 +1657,7 @@ impl<'s> Writer<'s> {
         }
         let _ = writeln!(
             props,
-            "<Property name=\"TransposedPitch\">\n{}\n</Property>",
-            pitch_xml(sounding - transpose)
+            "<Property name=\"TransposedPitch\">\n{transposed}\n</Property>"
         );
         let _ = write!(tail, "<Properties>\n{props}</Properties>\n");
 
