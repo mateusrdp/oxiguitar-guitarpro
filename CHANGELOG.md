@@ -8,6 +8,8 @@ the plugins' own; the plugin interface they use is in each plugin's
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-11-08
+
 ### Added
 
 - **The rest of Guitar Pro 8's palette** (OxiGuitar v0.17, plugin
