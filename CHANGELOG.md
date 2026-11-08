@@ -16,6 +16,13 @@ the plugins' own; the plugin interface they use is in each plugin's
   spelling. It is now written as OxiGuitar spells it in the bar's key (as
   Guitar Pro itself would). Found by OxiGuitar's edit-and-save test, which
   failed once 0.2.0 was published.
+- **Guitar Pro 7 and 8 files no longer open with forced line breaks.**
+  Guitar Pro writes a bars-per-line layout in every file whether or not
+  anyone chose one (its default, 3 or 4 bars a line), and 0.2.0 read it as
+  a Design Mode choice. A layout that is only Guitar Pro's default now
+  opens with OxiGuitar's own layout; a chosen one is still kept, and the
+  writer makes sure a chosen layout never looks like the default. Found by
+  OxiGuitar's Guitar Pro 7.6 comparison test.
 
 ## [0.2.0] - 2026-11-08
 

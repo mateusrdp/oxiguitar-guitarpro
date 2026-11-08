@@ -401,15 +401,31 @@ impl<'a> Reader<'a> {
             }
         }
         // Bars per system: the score's and each track's (Design Mode).
-        score.layout = root
-            .path(&["Score", "ScoreSystemsLayout"])
-            .map(|l| systems(l.text()))
-            .unwrap_or_default();
+        // Guitar Pro writes a layout whether or not anyone chose one: its
+        // default bars per system in rows, the rest last (each track), or
+        // the default alone whatever the length (the score, "4"). Those
+        // are no choice, and read as OxiGuitar's own layout.
+        let bars = score.master_bars.len();
+        let chosen = |layout: Option<&str>, default: Option<&str>| {
+            let layout = layout.map(systems).unwrap_or_default();
+            let default = default.and_then(num::<usize>);
+            if default.is_some_and(|d| is_default_layout(&layout, d, bars)) {
+                Vec::new()
+            } else {
+                layout
+            }
+        };
+        let score_el = root.child("Score");
+        score.layout = chosen(
+            score_el.and_then(|e| e.child_text("ScoreSystemsLayout")),
+            score_el.and_then(|e| e.child_text("ScoreSystemsDefaultLayout")),
+        );
         for (track, el) in score.tracks.iter_mut().zip(&order) {
-            track.layout = el
-                .child_text("SystemsLayout")
-                .map(systems)
-                .unwrap_or_default();
+            // Guitar Pro spells it SystemsDefautLayout.
+            track.layout = chosen(
+                el.child_text("SystemsLayout"),
+                el.child_text("SystemsDefautLayout"),
+            );
         }
         // The sustain pedal: each track's automations, on its first staff's
         // first voice, at the beat that starts at (or after) its place.
@@ -1284,6 +1300,42 @@ fn dynamic(text: &str) -> Option<Dynamic> {
 }
 
 /// Bars per system as GPIF lists them ("4 4 3 4").
+/// Guitar Pro's own layout of `bars` bars, `per` a system: rows of `per`,
+/// the rest in the last.
+pub(crate) fn default_rows(per: usize, bars: usize) -> Vec<u8> {
+    let Ok(row) = u8::try_from(per) else {
+        return Vec::new();
+    };
+    if row == 0 {
+        return Vec::new();
+    }
+    let mut rows = vec![row; bars / per];
+    if let Ok(rest) = u8::try_from(bars % per)
+        && rest > 0
+    {
+        rows.push(rest);
+    }
+    rows
+}
+
+/// Whether `layout` is only Guitar Pro's default of `per` bars a system:
+/// its rows for `bars` bars, or nothing but `per` (as it writes the
+/// score's layout whatever the length).
+pub(crate) fn is_default_layout(layout: &[u8], per: usize, bars: usize) -> bool {
+    layout == default_rows(per, bars).as_slice()
+        || (!layout.is_empty() && layout.iter().all(|&n| usize::from(n) == per))
+}
+
+/// The bars per system to write as Guitar Pro's default beside a chosen
+/// `layout`: 3 (or 4 for the score), unless that default's own rows are
+/// the chosen layout, which would then read back as no choice.
+pub(crate) fn default_beside(layout: &[u8], usual: usize, bars: usize) -> usize {
+    (usual..=64)
+        .chain((1..usual).rev())
+        .find(|&d| layout.is_empty() || !is_default_layout(layout, d, bars))
+        .unwrap_or(usual)
+}
+
 fn systems(text: &str) -> Vec<u8> {
     text.split_whitespace()
         .filter_map(|n| n.parse::<u8>().ok())
@@ -1295,6 +1347,37 @@ fn systems(text: &str) -> Vec<u8> {
 mod tests {
     #![allow(clippy::unwrap_used, clippy::indexing_slicing)]
     use super::*;
+
+    #[test]
+    fn guitar_pros_default_rows() {
+        assert_eq!(default_rows(3, 4), [3, 1]);
+        assert_eq!(default_rows(3, 8), [3, 3, 2]);
+        assert_eq!(default_rows(3, 6), [3, 3]);
+        assert_eq!(default_rows(3, 2), [2]);
+        assert!(default_rows(3, 0).is_empty());
+        assert!(default_rows(0, 5).is_empty());
+        // A chosen layout equal to the usual default's rows gets another
+        // default, so it reads back as chosen.
+        // Three bars: every default from 3 up makes one row of 3.
+        assert_eq!(default_beside(&[3], 3, 3), 2);
+        assert!(
+            is_default_layout(&[4], 4, 1),
+            "the score's, as Guitar Pro writes it"
+        );
+        assert!(is_default_layout(&[3, 1], 3, 4));
+        assert!(!is_default_layout(&[2, 2], 3, 4));
+        assert_eq!(default_beside(&[2, 1], 4, 3), 4);
+        assert_eq!(default_beside(&[], 3, 9), 3);
+        for bars in 1..20 {
+            for layout in [default_rows(3, bars), default_rows(4, bars), vec![1; bars]] {
+                let d = default_beside(&layout, 3, bars);
+                assert!(
+                    !is_default_layout(&layout, d, bars) || bars == 1,
+                    "{bars} {layout:?}"
+                );
+            }
+        }
+    }
 
     #[test]
     fn chord_diagram_strings_and_base_fret() {

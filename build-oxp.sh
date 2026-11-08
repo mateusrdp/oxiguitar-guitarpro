@@ -20,7 +20,7 @@ set -euo pipefail
 
 # The plugin files' names; the package is oxiguitar-NAME-plugin and the
 # library oxiguitar_NAME_plugin.
-NAMES=(gp3 gp4 gp5 gpx gp)
+NAMES=(gp)
 
 cd "$(dirname "$0")"
 version="$(cargo pkgid -p oxiguitar-gp3-plugin)"

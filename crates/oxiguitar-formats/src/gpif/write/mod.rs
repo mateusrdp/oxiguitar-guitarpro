@@ -659,9 +659,11 @@ impl<'s> Writer<'s> {
         }
         let _ = writeln!(x, "<Notices>{}</Notices>", cdata(&info.notices.join("\n")));
         if !self.score.layout.is_empty() {
+            let bars = self.score.master_bars.len();
             let _ = writeln!(
                 x,
-                "<ScoreSystemsDefaultLayout>4</ScoreSystemsDefaultLayout>\n<ScoreSystemsLayout>{}</ScoreSystemsLayout>",
+                "<ScoreSystemsDefaultLayout>{}</ScoreSystemsDefaultLayout>\n<ScoreSystemsLayout>{}</ScoreSystemsLayout>",
+                super::default_beside(&self.score.layout, 4, bars),
                 systems(&self.score.layout)
             );
         }
@@ -734,7 +736,13 @@ impl<'s> Writer<'s> {
         let _ = writeln!(x, "<ShortName>{}</ShortName>", cdata(&track.short_name));
         let c = track.color;
         let _ = writeln!(x, "<Color>{} {} {}</Color>", c.r, c.g, c.b);
-        x.push_str("<SystemsDefautLayout>3</SystemsDefautLayout>\n");
+        // A default whose rows aren't the chosen layout, which would then
+        // read back as no choice (`default_rows`).
+        let _ = writeln!(
+            x,
+            "<SystemsDefautLayout>{}</SystemsDefautLayout>",
+            super::default_beside(&track.layout, 3, self.score.master_bars.len())
+        );
         if !track.layout.is_empty() {
             let _ = writeln!(
                 x,
