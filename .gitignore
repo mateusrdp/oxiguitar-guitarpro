@@ -19,3 +19,8 @@ Thumbs.db
 /fuzz/artifacts
 /fuzz/fuzz-*.log
 /dist/
+
+# Understand Anything analysis artifacts
+.ua/intermediate/
+.ua/tmp/
+.ua/trash-*/
