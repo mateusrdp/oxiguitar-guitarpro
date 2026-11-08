@@ -633,6 +633,7 @@ impl Reader<'_> {
         let mut bar = Bar {
             clef: score.tracks.get(ti).map_or(Clef::Treble8vb, clef_for),
             voices: Vec::new(),
+            simile: None,
         };
         let voices = if self.is(5) { 2 } else { 1 };
         for vi in 0..voices {

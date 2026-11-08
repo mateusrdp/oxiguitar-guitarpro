@@ -4,8 +4,9 @@
 //! Beats' and notes' effects in GPIF.
 
 use oxiguitar_model::{
-    Accent, BeatEffects, BeatTechnique, Bend, BendPoint, Harmonic, Note, NoteEffects, NotePlace,
-    NoteValue, Pitch, Ratio, Slide, Stroke, StrokeDirection, Trill,
+    Accent, Barre, Beaming, Beat, BeatTechnique, Bend, BendPoint, Fade, Golpe, Hairpin, Harmonic,
+    Note, NoteEffects, NotePlace, NoteValue, Ornament, Ottava, Pitch, Rasgueado, Ratio, Slide,
+    Spelling, Stroke, StrokeDirection, Trill, Vibrato, Wah,
 };
 
 use super::{
@@ -19,6 +20,66 @@ const CENTS_PER_UNIT: f64 = 2.0;
 const BEND_STEPS: f64 = 60.0;
 /// The brush (strum) length Guitar Pro uses when the file does not say.
 const DEFAULT_BRUSH_TICKS: i64 = 120;
+
+/// Guitar Pro's rasgueado patterns, by their names in GPIF.
+pub(super) const RASGUEADOS: [(&str, Rasgueado); 18] = [
+    ("ii_1", Rasgueado::Ii),
+    ("mi_1", Rasgueado::Mi),
+    ("mii_1", Rasgueado::MiiTriplet),
+    ("mii_2", Rasgueado::MiiAnapaest),
+    ("pmp_1", Rasgueado::PmpTriplet),
+    ("pmp_2", Rasgueado::PmpAnapaest),
+    ("pei_1", Rasgueado::PeiTriplet),
+    ("pei_2", Rasgueado::PeiAnapaest),
+    ("pai_1", Rasgueado::PaiTriplet),
+    ("pai_2", Rasgueado::PaiAnapaest),
+    ("ami_1", Rasgueado::AmiTriplet),
+    ("ami_2", Rasgueado::AmiAnapaest),
+    ("ppp_1", Rasgueado::Ppp),
+    ("amii_1", Rasgueado::Amii),
+    ("amip_1", Rasgueado::Amip),
+    ("eami_1", Rasgueado::Eami),
+    ("eamii_1", Rasgueado::Eamii),
+    ("peami_1", Rasgueado::Peami),
+];
+
+fn rasgueado(name: &str) -> Option<Rasgueado> {
+    RASGUEADOS.iter().find(|(n, _)| *n == name).map(|(_, r)| *r)
+}
+
+/// An ottava line by its GPIF name.
+pub(super) fn ottava(name: &str) -> Option<Ottava> {
+    match name {
+        "8va" => Some(Ottava::Alta8),
+        "8vb" => Some(Ottava::Bassa8),
+        "15ma" => Some(Ottava::Alta15),
+        "15mb" => Some(Ottava::Bassa15),
+        _ => None,
+    }
+}
+
+/// A `<Pitch>`'s step and accidental (its octave is the note's own).
+fn spelling(pitch: Element<'_>) -> Option<Spelling> {
+    let step = match pitch.child_text("Step")? {
+        "C" => 0,
+        "D" => 1,
+        "E" => 2,
+        "F" => 3,
+        "G" => 4,
+        "A" => 5,
+        "B" => 6,
+        _ => return None,
+    };
+    let alter = match pitch.child_text("Accidental").unwrap_or("") {
+        "" => 0,
+        "#" => 1,
+        "b" => -1,
+        "x" | "##" => 2,
+        "bb" => -2,
+        _ => return None,
+    };
+    Some(Spelling { step, alter })
+}
 
 /// Guitar Pro 6 names drum sounds by element and variation instead of MIDI
 /// note. Our best General MIDI match for each, by variation 0, 1, 2. Rim
@@ -45,13 +106,17 @@ const GP6_DRUMS: [[u8; 3]; 17] = [
 ];
 
 impl Reader<'_> {
-    pub(super) fn beat_effects(&mut self, el: Element<'_>, fx: &mut BeatEffects) {
+    pub(super) fn beat_effects(&mut self, el: Element<'_>, beat: &mut Beat) {
+        let mut barre: (Option<u8>, bool) = (None, false);
         for child in el.children() {
+            let fx = &mut beat.effects;
             match child.name() {
                 "Fadding" => match child.text() {
-                    "FadeIn" => fx.fade_in = true,
+                    "FadeIn" => fx.fade = Some(Fade::In),
+                    "FadeOut" => fx.fade = Some(Fade::Out),
+                    "VolumeSwell" => fx.fade = Some(Fade::Swell),
                     other => self.log.warn(
-                        format!("the \"{other}\" volume effect is not supported yet"),
+                        format!("the \"{other}\" volume effect is not supported"),
                         self.here(),
                     ),
                 },
@@ -78,26 +143,40 @@ impl Reader<'_> {
                         (a("destinationOffset"), a("destinationValue")),
                     ]);
                 }
-                "Vibrato" => fx.vibrato_wide = true,
-                "Arpeggio" => self
-                    .log
-                    .warn("arpeggios are not supported yet", self.here()),
-                "Hairpin" => self.log.warn("hairpins are not supported yet", self.here()),
-                "Ottavia" => self
-                    .log
-                    .warn("ottava lines are not supported yet", self.here()),
-                "Wah" => self
-                    .log
-                    .warn("wah marks are not supported yet (M4)", self.here()),
-                "Golpe" => self
-                    .log
-                    .warn("golpe is not supported yet (M4)", self.here()),
-                "Legato" => self
-                    .log
-                    .warn("slurs between beats are not supported yet", self.here()),
-                "Ornament" => self
-                    .log
-                    .warn("ornaments are not supported yet", self.here()),
+                "Vibrato" => {
+                    fx.bridge_vibrato = Some(if child.text() == "Slight" {
+                        Vibrato::Slight
+                    } else {
+                        Vibrato::Wide
+                    });
+                }
+                "Arpeggio" => {
+                    fx.arpeggio = Some(if child.text() == "Up" {
+                        StrokeDirection::Up
+                    } else {
+                        StrokeDirection::Down
+                    });
+                }
+                "Hairpin" => match child.text() {
+                    "Crescendo" => beat.hairpin = Some(Hairpin::Crescendo),
+                    "Decrescendo" => beat.hairpin = Some(Hairpin::Decrescendo),
+                    _ => {}
+                },
+                "Ottavia" => beat.ottava = ottava(child.text()),
+                "Wah" => match child.text() {
+                    "Open" => fx.wah = Some(Wah::Open),
+                    "Closed" => fx.wah = Some(Wah::Closed),
+                    _ => {}
+                },
+                "Golpe" => match child.text() {
+                    "Thumb" => fx.golpe = Some(Golpe::Thumb),
+                    "Finger" => fx.golpe = Some(Golpe::Finger),
+                    _ => {}
+                },
+                "Legato" => beat.slur = child.attr("origin") == Some("true"),
+                "Slashed" => beat.slash = true,
+                "DeadSlapped" => fx.dead_slap = true,
+                "Ornament" => {}
                 // Read elsewhere, or not needed to show and play the score.
                 "Rhythm"
                 | "Notes"
@@ -126,13 +205,28 @@ impl Reader<'_> {
         let mut brush_ticks = DEFAULT_BRUSH_TICKS;
         if let Some(x) = el.child("XProperties") {
             for p in x.children_named("XProperty") {
-                if p.attr("id") == Some("687935489")
-                    && let Some(t) = p.child_text("Int").and_then(num::<i64>).filter(|t| *t > 0)
-                {
-                    brush_ticks = t;
+                let int = p.child_text("Int").and_then(num::<i64>);
+                match p.attr("id") {
+                    Some("687935489") => {
+                        if let Some(t) = int.filter(|t| *t > 0) {
+                            brush_ticks = t;
+                        }
+                    }
+                    // Beaming: 1 joins the next beat, 2 parts them; the
+                    // secondary break only when not parted.
+                    Some("1124204546") => match int {
+                        Some(1) => beat.beaming = Beaming::Force,
+                        Some(2) => beat.beaming = Beaming::Break,
+                        _ => {}
+                    },
+                    Some("1124204552") if int == Some(1) && beat.beaming != Beaming::Break => {
+                        beat.beaming = Beaming::BreakSecondary;
+                    }
+                    _ => {}
                 }
             }
         }
+        let fx = &mut beat.effects;
         for (name, p) in properties(el) {
             let value = || p.child_text("Float").and_then(float);
             match name {
@@ -160,14 +254,16 @@ impl Reader<'_> {
                 "WhammyBarMiddleOffset1" => whammy.offsets[1] = value(),
                 "WhammyBarMiddleOffset2" => whammy.offsets[2] = value(),
                 "WhammyBarDestinationOffset" => whammy.offsets[3] = value(),
-                "VibratoWTremBar" => fx.vibrato_wide = true,
-                "Rasgueado" => self
-                    .log
-                    .warn("rasgueado is not supported yet (M4)", self.here()),
-                "BarreFret" | "BarreString" => {
-                    self.log
-                        .warn("barre marks are not supported yet (M4)", self.here());
+                "VibratoWTremBar" => {
+                    if fx.bridge_vibrato.is_none() {
+                        fx.bridge_vibrato = Some(Vibrato::Wide);
+                    }
                 }
+                "Rasgueado" => {
+                    fx.rasgueado = p.child_text("Rasgueado").and_then(rasgueado);
+                }
+                "BarreFret" => barre.0 = p.child_text("Fret").and_then(num::<u8>),
+                "BarreString" => barre.1 = p.child_text("String") == Some("1"),
                 "WhammyBarExtend"
                 | "PrimaryPickupTone"
                 | "SecondaryPickupTone"
@@ -179,6 +275,11 @@ impl Reader<'_> {
                 ),
             }
         }
+        beat.barre = barre.0.filter(|f| *f > 0).map(|fret| Barre {
+            fret,
+            half: barre.1,
+        });
+        let fx = &mut beat.effects;
         if whammy.enabled && fx.whammy.is_none() {
             fx.whammy = curve([
                 (whammy.offsets[0], whammy.values[0]),
@@ -205,6 +306,9 @@ impl Reader<'_> {
         let mut bend = BendProps::default();
         let mut harmonic_type: Option<&str> = None;
         let mut harmonic_fret: Option<f64> = None;
+        // The note's spelling as written (transposed when the staff is),
+        // else as it sounds.
+        let mut spelled: (Option<Spelling>, Option<Spelling>) = (None, None);
 
         for (name, p) in properties(el) {
             let flag = || p.child("Enable").is_some();
@@ -246,10 +350,12 @@ impl Reader<'_> {
                 "BendDestinationOffset" => bend.offsets[3] = value(),
                 "HarmonicType" => harmonic_type = p.child_text("HType"),
                 "HarmonicFret" => harmonic_fret = p.child_text("HFret").and_then(float),
-                // Spelling and display details we work out ourselves.
-                "ConcertPitch" | "TransposedPitch" | "HopoDestination" | "Harmonic"
-                | "ShowStringNumber" | "Tapped" | "LeftHandTapped" | "HopoOrigin" | "PalmMuted"
-                | "Muted" => {}
+                "ConcertPitch" => spelled.0 = p.child("Pitch").and_then(spelling),
+                "TransposedPitch" => spelled.1 = p.child("Pitch").and_then(spelling),
+                "ShowStringNumber" => fx.string_number = flag(),
+                // Display details we work out ourselves.
+                "HopoDestination" | "Harmonic" | "Tapped" | "LeftHandTapped" | "HopoOrigin"
+                | "PalmMuted" | "Muted" => {}
                 other => self.log.info(
                     format!("the note property \"{other}\" was ignored"),
                     self.here(),
@@ -261,7 +367,13 @@ impl Reader<'_> {
         for child in el.children() {
             match child.name() {
                 "Tie" => tie = child.attr("destination") == Some("true"),
-                "Vibrato" => fx.vibrato = true,
+                "Vibrato" => {
+                    fx.vibrato = Some(if child.text() == "Wide" {
+                        Vibrato::Wide
+                    } else {
+                        Vibrato::Slight
+                    });
+                }
                 "LetRing" => fx.let_ring = true,
                 "AntiAccent" => fx.ghost = true,
                 "Accent" => {
@@ -296,13 +408,16 @@ impl Reader<'_> {
                 }
                 "LeftFingering" => fx.left_finger = finger(child.text()),
                 "RightFingering" => fx.right_finger = finger(child.text()),
-                "Accidental" => self.log.info(
-                    "accidental spellings chosen in Guitar Pro are worked out again",
-                    self.here(),
-                ),
-                "Ornament" => self
-                    .log
-                    .warn("ornaments are not supported yet", self.here()),
+                "Ornament" => {
+                    fx.ornament = match child.text() {
+                        "UpperMordent" => Some(Ornament::UpperMordent),
+                        "LowerMordent" => Some(Ornament::LowerMordent),
+                        "Turn" => Some(Ornament::Turn),
+                        "InvertedTurn" => Some(Ornament::InvertedTurn),
+                        _ => None,
+                    };
+                }
+                "Accidental" => {}
                 "Properties" | "XProperties" | "InstrumentArticulation" | "Lyrics" => {}
                 other => self.log.info(
                     format!("the note element <{other}> was ignored"),
@@ -338,6 +453,9 @@ impl Reader<'_> {
             tie,
             dynamic: oxiguitar_model::Dynamic::default(),
             effects: fx,
+            // The core keeps it only where it differs from its own
+            // (`plain_spellings`, when the file opens).
+            spelling: spelled.1.or(spelled.0),
         })
     }
 

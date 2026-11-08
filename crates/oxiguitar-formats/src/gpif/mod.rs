@@ -22,10 +22,10 @@ use std::collections::HashMap;
 use std::str::FromStr;
 
 use oxiguitar_model::{
-    Bar, Beat, BeatKind, ChordDiagram, Clef, Color, Direction, Duration, Dynamic, GraceKind,
-    Instrument, KeyMode, KeySignature, LyricLine, Marker, MasterBar, Mix, NotePlace, NoteValue,
-    Pitch, Ratio, Score, ScoreInfo, Staff, TempoChange, TimeSignature, Track, TripletFeel, Tuplet,
-    Voice,
+    Bar, Beat, BeatKind, ChordDiagram, Clef, Color, Direction, Duration, Dynamic, Fermata,
+    FermataKind, GraceKind, Instrument, KeyMode, KeySignature, LyricLine, Marker, MasterBar, Mix,
+    NotePlace, NoteValue, Pedal, Pitch, Ratio, Score, ScoreInfo, Simile, Staff, TempoChange,
+    TimeSignature, Track, TripletFeel, Tuplet, Voice,
 };
 
 use crate::container::{self, GpFiles};
@@ -342,6 +342,127 @@ impl<'a> Reader<'a> {
                 }
             }
         }
+        // Guitar Pro spells every note; only the spellings that differ from
+        // the one OxiGuitar would choose are kept (OxiGuitar does the same
+        // when a file opens, `plain_spellings`).
+        let keys: Vec<_> = score.master_bars.iter().map(|m| m.key_signature).collect();
+        for track in &mut score.tracks {
+            let drums = track.instrument.percussion;
+            for staff in &mut track.staves {
+                let probe = Staff {
+                    tuning: staff.tuning.clone(),
+                    capo: staff.capo,
+                    ..Staff::default()
+                };
+                let shift = i32::from(staff.transposition);
+                for (bar, b) in staff.bars.iter_mut().enumerate() {
+                    let key = keys.get(bar).copied().unwrap_or_default();
+                    for n in b
+                        .voices
+                        .iter_mut()
+                        .flat_map(|v| &mut v.beats)
+                        .flat_map(|b| &mut b.notes)
+                    {
+                        let Some(own) = n.spelling else { continue };
+                        let sounding = match n.place {
+                            NotePlace::Fretted { string, fret } => probe.pitch_of(string, fret),
+                            NotePlace::Pitched(p) => Some(p),
+                        };
+                        let written = sounding.and_then(|p| {
+                            u8::try_from((i32::from(p.0) + shift).rem_euclid(12)).ok()
+                        });
+                        let keep = !drums
+                            && written.is_some_and(|w| {
+                                own.spells(Pitch(w))
+                                    && own != oxiguitar_model::Spelling::automatic(Pitch(w), key)
+                            });
+                        if !keep {
+                            n.spelling = None;
+                        }
+                    }
+                }
+            }
+        }
+        // A simile bar holds a copy of the bars it repeats, so it plays and
+        // edits as any bar (docs/design/palette.md in OxiGuitar).
+        for staff in score.tracks.iter_mut().flat_map(|t| t.staves.iter_mut()) {
+            for i in 0..staff.bars.len() {
+                let back = match staff.bars.get(i).and_then(|b| b.simile) {
+                    Some(Simile::Simple) => 1,
+                    Some(Simile::FirstOfDouble | Simile::SecondOfDouble) => 2,
+                    None => continue,
+                };
+                if let Some(source) = i.checked_sub(back).and_then(|j| staff.bars.get(j)) {
+                    let voices = source.voices.clone();
+                    if let Some(bar) = staff.bars.get_mut(i) {
+                        bar.voices = voices;
+                    }
+                }
+            }
+        }
+        // Bars per system: the score's and each track's (Design Mode).
+        score.layout = root
+            .path(&["Score", "ScoreSystemsLayout"])
+            .map(|l| systems(l.text()))
+            .unwrap_or_default();
+        for (track, el) in score.tracks.iter_mut().zip(&order) {
+            track.layout = el
+                .child_text("SystemsLayout")
+                .map(systems)
+                .unwrap_or_default();
+        }
+        // The sustain pedal: each track's automations, on its first staff's
+        // first voice, at the beat that starts at (or after) its place.
+        for (ti, el) in order.iter().enumerate() {
+            let Some(autos) = el.child("Automations") else {
+                continue;
+            };
+            for a in autos.children_named("Automation") {
+                if a.child_text("Type") != Some("SustainPedal") {
+                    continue;
+                }
+                let bar = a.child_text("Bar").and_then(num::<usize>).unwrap_or(0);
+                let at = a.child_text("Position").and_then(float).unwrap_or(0.0);
+                let down = match a
+                    .child_text("Value")
+                    .and_then(|v| v.split_whitespace().nth(1))
+                {
+                    Some("1") => true,
+                    Some("3") => false,
+                    _ => continue,
+                };
+                let length = score
+                    .master_bars
+                    .get(bar)
+                    .and_then(|m| m.time_signature.bar_length())
+                    .map_or(1.0, Ratio::to_f64);
+                let Some(voice) = score
+                    .tracks
+                    .get_mut(ti)
+                    .and_then(|t| t.staves.first_mut())
+                    .and_then(|s| s.bars.get_mut(bar))
+                    .and_then(|b| b.voices.first_mut())
+                else {
+                    continue;
+                };
+                let mut pos = 0.0;
+                let mut target = None;
+                for (k, b) in voice.beats.iter().enumerate() {
+                    if b.grace.is_some() {
+                        continue;
+                    }
+                    if pos + 1e-9 >= at * length {
+                        target = Some(k);
+                        break;
+                    }
+                    target = Some(k);
+                    pos += b.duration.length().map_or(0.0, Ratio::to_f64);
+                }
+                if let Some(b) = target.and_then(|k| voice.beats.get_mut(k)) {
+                    b.effects.pedal = Some(if down { Pedal::Down } else { Pedal::Up });
+                }
+            }
+        }
         Ok(score)
     }
 
@@ -636,11 +757,28 @@ impl<'a> Reader<'a> {
                 }
             }
         }
-        if el.child("Fermatas").is_some_and(|f| f.has_children()) {
-            self.log.warn(
-                "fermatas are not supported yet",
-                format!("bar {}", self.place.0),
-            );
+        if let Some(fermatas) = el.child("Fermatas") {
+            for f in fermatas.children_named("Fermata") {
+                // The offset is in quarter notes ("1/2" is an eighth in).
+                let position = f
+                    .child_text("Offset")
+                    .and_then(|o| {
+                        let (n, d) = o.split_once('/')?;
+                        Ratio::new(num::<i64>(n)?, num::<i64>(d)?.checked_mul(4)?)
+                    })
+                    .unwrap_or(Ratio::ZERO);
+                let kind = match f.child_text("Type") {
+                    Some("Short") => FermataKind::Short,
+                    Some("Long") => FermataKind::Long,
+                    _ => FermataKind::Medium,
+                };
+                let length = f.child_text("Length").and_then(float).unwrap_or(0.0) as f32;
+                mb.fermatas.push(Fermata {
+                    position,
+                    kind,
+                    length,
+                });
+            }
         }
         mb.free_time = el.child("FreeTime").is_some();
         mb
@@ -716,14 +854,17 @@ impl<'a> Reader<'a> {
     fn bar(&mut self, el: Element<'_>, ctx: &TrackContext, staff_index: usize) -> Bar {
         let ottava = el.child_text("Ottavia");
         let clef = self.clef(el.child_text("Clef").unwrap_or("G2"), ottava, ctx);
-        if el.child("SimileMark").is_some() {
-            self.log
-                .warn("simile marks are not supported yet", self.here());
-        }
+        let simile = match el.child_text("SimileMark") {
+            Some("Simple") => Some(Simile::Simple),
+            Some("FirstOfDouble") => Some(Simile::FirstOfDouble),
+            Some("SecondOfDouble") => Some(Simile::SecondOfDouble),
+            _ => None,
+        };
         let sctx = ctx.staves.get(staff_index).cloned().unwrap_or_default();
         let mut bar = Bar {
             clef,
             voices: Vec::new(),
+            simile,
         };
         let ids: Vec<&str> = el
             .child_text("Voices")
@@ -858,7 +999,7 @@ impl<'a> Reader<'a> {
                 );
             }
         }
-        self.beat_effects(el, &mut beat.effects);
+        self.beat_effects(el, &mut beat);
 
         let ids: Vec<&str> = el
             .child_text("Notes")
@@ -963,6 +1104,7 @@ impl Reader<'_> {
 
 fn empty_bar(ctx: &TrackContext) -> Bar {
     Bar {
+        simile: None,
         clef: if ctx.percussion {
             Clef::Neutral
         } else if ctx.octave_shift == -1 {
@@ -1139,6 +1281,14 @@ fn dynamic(text: &str) -> Option<Dynamic> {
         "FFF" => Dynamic::FFF,
         _ => return None,
     })
+}
+
+/// Bars per system as GPIF lists them ("4 4 3 4").
+fn systems(text: &str) -> Vec<u8> {
+    text.split_whitespace()
+        .filter_map(|n| n.parse::<u8>().ok())
+        .filter(|n| *n > 0)
+        .collect()
 }
 
 #[cfg(test)]

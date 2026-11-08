@@ -1,8 +1,8 @@
 {
-  "interface": "1.2",
+  "interface": "1.6",
   "id": "oxiguitar.gp",
   "name": "Guitar Pro 7–8",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Reads and writes Guitar Pro 7 and 8 files (.gp).",
   "authors": ["Mateus Rocha de Paula", "The OxiGuitar contributors"],
   "license": "GPL-3.0-or-later",

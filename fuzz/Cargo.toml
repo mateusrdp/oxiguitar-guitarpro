@@ -17,8 +17,8 @@ oxiguitar-formats = { path = "../crates/oxiguitar-formats" }
 # The plugin_dispatch target: our format plugins as libraries, the SDK's
 # dispatch and the score's way back into the model.
 # OxiGuitar's SDK and model, by git tag, as the workspace has them.
-oxiguitar-plugin = { git = "https://github.com/mateusrdp/oxiguitar", tag = "v0.11.0" }
-oxiguitar-model = { git = "https://github.com/mateusrdp/oxiguitar", tag = "v0.11.0", features = ["wire"] }
+oxiguitar-plugin = { git = "https://github.com/mateusrdp/oxiguitar", tag = "v0.17.0" }
+oxiguitar-model = { git = "https://github.com/mateusrdp/oxiguitar", tag = "v0.17.0", features = ["wire"] }
 oxiguitar-gp3-plugin = { path = "../plugins/gp3" }
 oxiguitar-gp4-plugin = { path = "../plugins/gp4" }
 oxiguitar-gp5-plugin = { path = "../plugins/gp5" }
