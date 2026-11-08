@@ -1,0 +1,4234 @@
+{
+  "version": "1.0.0",
+  "project": {
+    "name": "oxiguitar-guitarpro",
+    "description": "Rust workspace providing complete read and write support for Guitar Pro file formats (GP3 through GP8). Core formats crate with five thin plugin crates.",
+    "languages": [
+      "rust",
+      "yaml",
+      "markdown",
+      "toml",
+      "shell",
+      "gp",
+      "gpif"
+    ],
+    "frameworks": [],
+    "analyzedAt": "2026-11-07T19:51:46.670Z",
+    "gitCommitHash": "b4e1b580a1ec345572f04346214202e9b6ebbe68"
+  },
+  "nodes": [
+    {
+      "id": "config:.github/dependabot.yml",
+      "type": "config",
+      "name": "dependabot.yml",
+      "filePath": ".github/dependabot.yml",
+      "summary": "GitHub Dependabot configuration for dependency updates",
+      "tags": [
+        "config"
+      ],
+      "language": "yaml",
+      "complexity": "simple"
+    },
+    {
+      "id": "document:.github/pull_request_template.md",
+      "type": "document",
+      "name": "pull_request_template.md",
+      "filePath": ".github/pull_request_template.md",
+      "summary": "Project documentation file",
+      "tags": [
+        "document"
+      ],
+      "language": "markdown",
+      "complexity": "simple"
+    },
+    {
+      "id": "pipeline:.github/workflows/ci.yml",
+      "type": "pipeline",
+      "name": "ci.yml",
+      "filePath": ".github/workflows/ci.yml",
+      "summary": "CI workflow: build, test, clippy, and fmt checks",
+      "tags": [
+        "pipeline"
+      ],
+      "language": "yaml",
+      "complexity": "simple"
+    },
+    {
+      "id": "pipeline:.github/workflows/fuzz.yml",
+      "type": "pipeline",
+      "name": "fuzz.yml",
+      "filePath": ".github/workflows/fuzz.yml",
+      "summary": "CI workflow: cargo fuzz testing on nightly",
+      "tags": [
+        "pipeline"
+      ],
+      "language": "yaml",
+      "complexity": "simple"
+    },
+    {
+      "id": "pipeline:.github/workflows/interop.yml",
+      "type": "pipeline",
+      "name": "interop.yml",
+      "filePath": ".github/workflows/interop.yml",
+      "summary": "CI workflow: cross-format interoperability testing",
+      "tags": [
+        "pipeline"
+      ],
+      "language": "yaml",
+      "complexity": "simple"
+    },
+    {
+      "id": "pipeline:.github/workflows/publish.yml",
+      "type": "pipeline",
+      "name": "publish.yml",
+      "filePath": ".github/workflows/publish.yml",
+      "summary": "CI workflow: crate publishing to crates.io",
+      "tags": [
+        "pipeline"
+      ],
+      "language": "yaml",
+      "complexity": "simple"
+    },
+    {
+      "id": "pipeline:.github/workflows/release.yml",
+      "type": "pipeline",
+      "name": "release.yml",
+      "filePath": ".github/workflows/release.yml",
+      "summary": "CI workflow: release automation",
+      "tags": [
+        "pipeline"
+      ],
+      "language": "yaml",
+      "complexity": "simple"
+    },
+    {
+      "id": "document:CHANGELOG.md",
+      "type": "document",
+      "name": "CHANGELOG.md",
+      "filePath": "CHANGELOG.md",
+      "summary": "Version history and release notes",
+      "tags": [
+        "document"
+      ],
+      "language": "markdown",
+      "complexity": "simple"
+    },
+    {
+      "id": "document:CLAUDE.md",
+      "type": "document",
+      "name": "CLAUDE.md",
+      "filePath": "CLAUDE.md",
+      "summary": "Claude Code project configuration and conventions",
+      "tags": [
+        "document"
+      ],
+      "language": "markdown",
+      "complexity": "simple"
+    },
+    {
+      "id": "document:CONTRIBUTING.md",
+      "type": "document",
+      "name": "CONTRIBUTING.md",
+      "filePath": "CONTRIBUTING.md",
+      "summary": "Contributor guidelines for development workflow",
+      "tags": [
+        "document"
+      ],
+      "language": "markdown",
+      "complexity": "simple"
+    },
+    {
+      "id": "config:Cargo.toml",
+      "type": "config",
+      "name": "Cargo.toml",
+      "filePath": "Cargo.toml",
+      "summary": "Rust workspace manifest: edition 2024, rust-version 1.99, 6 crates (oxiguitar-formats + 5 plugins)",
+      "tags": [
+        "config"
+      ],
+      "language": "toml",
+      "complexity": "simple"
+    },
+    {
+      "id": "document:README.md",
+      "type": "document",
+      "name": "README.md",
+      "filePath": "README.md",
+      "summary": "Project README: overview, features, and usage of the oxiguitar-guitarpro crate",
+      "tags": [
+        "document"
+      ],
+      "language": "markdown",
+      "complexity": "simple"
+    },
+    {
+      "id": "script:build-oxp.sh",
+      "type": "script",
+      "name": "build-oxp.sh",
+      "filePath": "build-oxp.sh",
+      "summary": "Shell script to build Guitar Pro plugin packages (.oxp)",
+      "tags": [
+        "script"
+      ],
+      "language": "shell",
+      "complexity": "simple"
+    },
+    {
+      "id": "config:clippy.toml",
+      "type": "config",
+      "name": "clippy.toml",
+      "filePath": "clippy.toml",
+      "summary": "Clippy lint configuration rules",
+      "tags": [
+        "config"
+      ],
+      "language": "toml",
+      "complexity": "simple"
+    },
+    {
+      "id": "config:corpus/MANIFEST.toml",
+      "type": "config",
+      "name": "MANIFEST.toml",
+      "filePath": "corpus/MANIFEST.toml",
+      "summary": "Private corpus manifest listing test file paths and metadata",
+      "tags": [
+        "config"
+      ],
+      "language": "toml",
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:corpus/README.md",
+      "type": "document",
+      "name": "README.md",
+      "filePath": "corpus/README.md",
+      "summary": "Project README: overview, features, and usage of the oxiguitar-guitarpro crate",
+      "tags": [
+        "document"
+      ],
+      "language": "markdown",
+      "complexity": "simple"
+    },
+    {
+      "id": "config:crates/oxiguitar-formats/Cargo.toml",
+      "type": "config",
+      "name": "oxiguitar-formats",
+      "filePath": "crates/oxiguitar-formats/Cargo.toml",
+      "summary": "Cargo manifest for oxiguitar-formats",
+      "tags": [
+        "config"
+      ],
+      "language": "toml",
+      "complexity": "simple"
+    },
+    {
+      "id": "file:crates/oxiguitar-formats/examples/corpus_manifest/main.rs",
+      "type": "file",
+      "name": "main",
+      "filePath": "crates/oxiguitar-formats/examples/corpus_manifest/main.rs",
+      "summary": "Example: main",
+      "tags": [
+        "file",
+        "examples"
+      ],
+      "language": "rust",
+      "complexity": "simple"
+    },
+    {
+      "id": "file:crates/oxiguitar-formats/examples/corpus_manifest/sha256.rs",
+      "type": "file",
+      "name": "sha256",
+      "filePath": "crates/oxiguitar-formats/examples/corpus_manifest/sha256.rs",
+      "summary": "Example: sha256",
+      "tags": [
+        "file",
+        "examples"
+      ],
+      "language": "rust",
+      "complexity": "simple"
+    },
+    {
+      "id": "file:crates/oxiguitar-formats/examples/write_gp.rs",
+      "type": "file",
+      "name": "write_gp",
+      "filePath": "crates/oxiguitar-formats/examples/write_gp.rs",
+      "summary": "Example: write_gp",
+      "tags": [
+        "file",
+        "examples"
+      ],
+      "language": "rust",
+      "complexity": "simple"
+    },
+    {
+      "id": "file:crates/oxiguitar-formats/src/binary.rs",
+      "type": "file",
+      "name": "binary",
+      "filePath": "crates/oxiguitar-formats/src/binary.rs",
+      "summary": "Binary I/O utilities: typed read/write for cursor-based parsing of GP binary formats",
+      "tags": [
+        "file",
+        "formats",
+        "binary-io"
+      ],
+      "language": "rust",
+      "complexity": "simple"
+    },
+    {
+      "id": "file:crates/oxiguitar-formats/src/container.rs",
+      "type": "file",
+      "name": "container",
+      "filePath": "crates/oxiguitar-formats/src/container.rs",
+      "summary": "GPX/GP7 container: ZIP archive handling, BCFZ decompression, multi-file song extraction",
+      "tags": [
+        "file",
+        "formats",
+        "container"
+      ],
+      "language": "rust",
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:crates/oxiguitar-formats/src/detect.rs",
+      "type": "file",
+      "name": "detect",
+      "filePath": "crates/oxiguitar-formats/src/detect.rs",
+      "summary": "Format detection: magic byte matching for GP3/4/5/GPX/GP/GPIF file identification",
+      "tags": [
+        "file",
+        "formats",
+        "detection"
+      ],
+      "language": "rust",
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:crates/oxiguitar-formats/src/error.rs",
+      "type": "file",
+      "name": "error",
+      "filePath": "crates/oxiguitar-formats/src/error.rs",
+      "summary": "Error types: ReadError with severity levels, warnings, and import logging",
+      "tags": [
+        "file",
+        "formats",
+        "error-handling"
+      ],
+      "language": "rust",
+      "complexity": "simple"
+    },
+    {
+      "id": "file:crates/oxiguitar-formats/src/gp/effects.rs",
+      "type": "file",
+      "name": "effects",
+      "filePath": "crates/oxiguitar-formats/src/gp/effects.rs",
+      "summary": "GP effects: beat note effects (bends, vibrato, tremolo, hammer-on, pull-off, etc.)",
+      "tags": [
+        "file",
+        "formats",
+        "gp-reader",
+        "effects"
+      ],
+      "language": "rust",
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:crates/oxiguitar-formats/src/gp/mod.rs",
+      "type": "file",
+      "name": "mod",
+      "filePath": "crates/oxiguitar-formats/src/gp/mod.rs",
+      "summary": "GP3/GP4/GP5 binary reader: parses song structure, tracks, beats, notes, and effects",
+      "tags": [
+        "file",
+        "formats",
+        "gp-reader"
+      ],
+      "language": "rust",
+      "complexity": "complex"
+    },
+    {
+      "id": "file:crates/oxiguitar-formats/src/gp/write.rs",
+      "type": "file",
+      "name": "write",
+      "filePath": "crates/oxiguitar-formats/src/gp/write.rs",
+      "summary": "GP5 writer: serializes oxiguitar-model songs back to GP5 binary format",
+      "tags": [
+        "file",
+        "formats",
+        "gp-writer"
+      ],
+      "language": "rust",
+      "complexity": "complex"
+    },
+    {
+      "id": "file:crates/oxiguitar-formats/src/gpif/effects.rs",
+      "type": "file",
+      "name": "effects",
+      "filePath": "crates/oxiguitar-formats/src/gpif/effects.rs",
+      "summary": "GPIF effects: beat and note effects from XML, including bends and articulations",
+      "tags": [
+        "file",
+        "formats",
+        "gpif-reader",
+        "effects"
+      ],
+      "language": "rust",
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:crates/oxiguitar-formats/src/gpif/mod.rs",
+      "type": "file",
+      "name": "mod",
+      "filePath": "crates/oxiguitar-formats/src/gpif/mod.rs",
+      "summary": "GPIF reader (GP6/GP7/GP8): XML-based format parser for Guitar Pro 6+ songs",
+      "tags": [
+        "file",
+        "formats",
+        "gpif-reader"
+      ],
+      "language": "rust",
+      "complexity": "complex"
+    },
+    {
+      "id": "file:crates/oxiguitar-formats/src/gpif/write/chord.rs",
+      "type": "file",
+      "name": "chord",
+      "filePath": "crates/oxiguitar-formats/src/gpif/write/chord.rs",
+      "summary": "Chord spelling: note name generation, accidental handling, degree spelling",
+      "tags": [
+        "file",
+        "formats",
+        "gpif-writer"
+      ],
+      "language": "rust",
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:crates/oxiguitar-formats/src/gpif/write/mod.rs",
+      "type": "file",
+      "name": "mod",
+      "filePath": "crates/oxiguitar-formats/src/gpif/write/mod.rs",
+      "summary": "GP/GPIF writer: serializes songs to Guitar Pro 6+ XML format",
+      "tags": [
+        "file",
+        "formats",
+        "gpif-writer"
+      ],
+      "language": "rust",
+      "complexity": "complex"
+    },
+    {
+      "id": "file:crates/oxiguitar-formats/src/gpif/write/tables.rs",
+      "type": "file",
+      "name": "tables",
+      "filePath": "crates/oxiguitar-formats/src/gpif/write/tables.rs",
+      "summary": "Sound tables: instrument mapping, drum element/articulation definitions",
+      "tags": [
+        "file",
+        "formats",
+        "gpif-writer"
+      ],
+      "language": "rust",
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:crates/oxiguitar-formats/src/lib.rs",
+      "type": "file",
+      "name": "lib",
+      "filePath": "crates/oxiguitar-formats/src/lib.rs",
+      "summary": "Main library entry: re-exports read/write API, format detection, and plugin integration",
+      "tags": [
+        "file",
+        "formats"
+      ],
+      "language": "rust",
+      "complexity": "simple"
+    },
+    {
+      "id": "file:crates/oxiguitar-formats/src/plugin.rs",
+      "type": "file",
+      "name": "plugin",
+      "filePath": "crates/oxiguitar-formats/src/plugin.rs",
+      "summary": "Plugin integration: unified read/write API using oxiguitar-plugin traits",
+      "tags": [
+        "file",
+        "formats",
+        "plugin-integration"
+      ],
+      "language": "rust",
+      "complexity": "simple"
+    },
+    {
+      "id": "file:crates/oxiguitar-formats/src/xml.rs",
+      "type": "file",
+      "name": "xml",
+      "filePath": "crates/oxiguitar-formats/src/xml.rs",
+      "summary": "XML parser: lightweight DOM-like reader for GPIF/GPX XML documents",
+      "tags": [
+        "file",
+        "formats",
+        "xml"
+      ],
+      "language": "rust",
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:crates/oxiguitar-formats/tests/corpus.rs",
+      "type": "file",
+      "name": "corpus",
+      "filePath": "crates/oxiguitar-formats/tests/corpus.rs",
+      "summary": "Test module: corpus",
+      "tags": [
+        "file",
+        "testing"
+      ],
+      "language": "rust",
+      "complexity": "simple"
+    },
+    {
+      "id": "file:crates/oxiguitar-formats/tests/gp5_round_trip.rs",
+      "type": "file",
+      "name": "gp5_round_trip",
+      "filePath": "crates/oxiguitar-formats/tests/gp5_round_trip.rs",
+      "summary": "Test module: gp5_round_trip",
+      "tags": [
+        "file",
+        "testing"
+      ],
+      "language": "rust",
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:crates/oxiguitar-formats/tests/gpif.rs",
+      "type": "file",
+      "name": "gpif",
+      "filePath": "crates/oxiguitar-formats/tests/gpif.rs",
+      "summary": "Test module: gpif",
+      "tags": [
+        "file",
+        "testing"
+      ],
+      "language": "rust",
+      "complexity": "simple"
+    },
+    {
+      "id": "file:crates/oxiguitar-formats/tests/guitar_pro.rs",
+      "type": "file",
+      "name": "guitar_pro",
+      "filePath": "crates/oxiguitar-formats/tests/guitar_pro.rs",
+      "summary": "Test module: guitar_pro",
+      "tags": [
+        "file",
+        "testing"
+      ],
+      "language": "rust",
+      "complexity": "simple"
+    },
+    {
+      "id": "file:crates/oxiguitar-formats/tests/guitar_pro_7_6_own.rs",
+      "type": "file",
+      "name": "guitar_pro_7_6_own",
+      "filePath": "crates/oxiguitar-formats/tests/guitar_pro_7_6_own.rs",
+      "summary": "Test module: guitar_pro_7_6_own",
+      "tags": [
+        "file",
+        "testing"
+      ],
+      "language": "rust",
+      "complexity": "simple"
+    },
+    {
+      "id": "file:crates/oxiguitar-formats/tests/host.rs",
+      "type": "file",
+      "name": "host",
+      "filePath": "crates/oxiguitar-formats/tests/host.rs",
+      "summary": "Test module: host",
+      "tags": [
+        "file",
+        "testing"
+      ],
+      "language": "rust",
+      "complexity": "simple"
+    },
+    {
+      "id": "file:crates/oxiguitar-formats/tests/plugin_formats.rs",
+      "type": "file",
+      "name": "plugin_formats",
+      "filePath": "crates/oxiguitar-formats/tests/plugin_formats.rs",
+      "summary": "Test module: plugin_formats",
+      "tags": [
+        "file",
+        "testing"
+      ],
+      "language": "rust",
+      "complexity": "simple"
+    },
+    {
+      "id": "file:crates/oxiguitar-formats/tests/round_trip.rs",
+      "type": "file",
+      "name": "round_trip",
+      "filePath": "crates/oxiguitar-formats/tests/round_trip.rs",
+      "summary": "Test module: round_trip",
+      "tags": [
+        "file",
+        "testing"
+      ],
+      "language": "rust",
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:crates/oxiguitar-formats/tests/support/compare.rs",
+      "type": "file",
+      "name": "compare",
+      "filePath": "crates/oxiguitar-formats/tests/support/compare.rs",
+      "summary": "Test module: compare",
+      "tags": [
+        "file",
+        "testing"
+      ],
+      "language": "rust",
+      "complexity": "simple"
+    },
+    {
+      "id": "file:crates/oxiguitar-formats/tests/support/gp_writer.rs",
+      "type": "file",
+      "name": "gp_writer",
+      "filePath": "crates/oxiguitar-formats/tests/support/gp_writer.rs",
+      "summary": "Test module: gp_writer",
+      "tags": [
+        "file",
+        "testing"
+      ],
+      "language": "rust",
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:crates/oxiguitar-formats/tests/support/gpif_writer.rs",
+      "type": "file",
+      "name": "gpif_writer",
+      "filePath": "crates/oxiguitar-formats/tests/support/gpif_writer.rs",
+      "summary": "Test module: gpif_writer",
+      "tags": [
+        "file",
+        "testing"
+      ],
+      "language": "rust",
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:crates/oxiguitar-formats/tests/support/song_check.rs",
+      "type": "file",
+      "name": "song_check",
+      "filePath": "crates/oxiguitar-formats/tests/support/song_check.rs",
+      "summary": "Test module: song_check",
+      "tags": [
+        "file",
+        "testing"
+      ],
+      "language": "rust",
+      "complexity": "simple"
+    },
+    {
+      "id": "file:crates/oxiguitar-formats/tests/wire.rs",
+      "type": "file",
+      "name": "wire",
+      "filePath": "crates/oxiguitar-formats/tests/wire.rs",
+      "summary": "Test module: wire",
+      "tags": [
+        "file",
+        "testing"
+      ],
+      "language": "rust",
+      "complexity": "simple"
+    },
+    {
+      "id": "config:deny.toml",
+      "type": "config",
+      "name": "deny.toml",
+      "filePath": "deny.toml",
+      "summary": "Cargo deny configuration for security advisories, licenses, and bans",
+      "tags": [
+        "config"
+      ],
+      "language": "toml",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/gp/oxiguitar-test-song.gp",
+      "type": "data",
+      "name": "oxiguitar-test-song.gp",
+      "filePath": "fixtures/gp/oxiguitar-test-song.gp",
+      "summary": "Guitar Pro GP fixture file (3 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/gp/oxiguitar-test-song.gp3",
+      "type": "data",
+      "name": "oxiguitar-test-song.gp3",
+      "filePath": "fixtures/gp/oxiguitar-test-song.gp3",
+      "summary": "Guitar Pro GP3 fixture file (1 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp3",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/gp/oxiguitar-test-song.gp4",
+      "type": "data",
+      "name": "oxiguitar-test-song.gp4",
+      "filePath": "fixtures/gp/oxiguitar-test-song.gp4",
+      "summary": "Guitar Pro GP4 fixture file (1 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp4",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/gp/oxiguitar-test-song.gp5",
+      "type": "data",
+      "name": "oxiguitar-test-song.gp5",
+      "filePath": "fixtures/gp/oxiguitar-test-song.gp5",
+      "summary": "Guitar Pro GP5 fixture file (5 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp5",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/gp/oxiguitar-test-song.gpx",
+      "type": "data",
+      "name": "oxiguitar-test-song.gpx",
+      "filePath": "fixtures/gp/oxiguitar-test-song.gpx",
+      "summary": "Guitar Pro GPX fixture file (14 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gpx",
+      "complexity": "simple"
+    },
+    {
+      "id": "document:fixtures/guitar-pro-7.6/README.md",
+      "type": "document",
+      "name": "README.md",
+      "filePath": "fixtures/guitar-pro-7.6/README.md",
+      "summary": "Project README: overview, features, and usage of the oxiguitar-guitarpro crate",
+      "tags": [
+        "document"
+      ],
+      "language": "markdown",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-7.6/bends.gpif",
+      "type": "data",
+      "name": "bends.gpif",
+      "filePath": "fixtures/guitar-pro-7.6/bends.gpif",
+      "summary": "Guitar Pro GPIF fixture file (772 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gpif",
+      "complexity": "moderate"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-7.6/chord-names.gpif",
+      "type": "data",
+      "name": "chord-names.gpif",
+      "filePath": "fixtures/guitar-pro-7.6/chord-names.gpif",
+      "summary": "Guitar Pro GPIF fixture file (890 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gpif",
+      "complexity": "moderate"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-7.6/drop-d-and-capo.gpif",
+      "type": "data",
+      "name": "drop-d-and-capo.gpif",
+      "filePath": "fixtures/guitar-pro-7.6/drop-d-and-capo.gpif",
+      "summary": "Guitar Pro GPIF fixture file (576 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gpif",
+      "complexity": "moderate"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-7.6/effects-together.gpif",
+      "type": "data",
+      "name": "effects-together.gpif",
+      "filePath": "fixtures/guitar-pro-7.6/effects-together.gpif",
+      "summary": "Guitar Pro GPIF fixture file (889 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gpif",
+      "complexity": "moderate"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-7.6/four-voices.gpif",
+      "type": "data",
+      "name": "four-voices.gpif",
+      "filePath": "fixtures/guitar-pro-7.6/four-voices.gpif",
+      "summary": "Guitar Pro GPIF fixture file (688 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gpif",
+      "complexity": "moderate"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-7.6/header-and-credits.gpif",
+      "type": "data",
+      "name": "header-and-credits.gpif",
+      "filePath": "fixtures/guitar-pro-7.6/header-and-credits.gpif",
+      "summary": "Guitar Pro GPIF fixture file (664 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gpif",
+      "complexity": "moderate"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-7.6/nylon-guitar-default.gp",
+      "type": "data",
+      "name": "nylon-guitar-default.gp",
+      "filePath": "fixtures/guitar-pro-7.6/nylon-guitar-default.gp",
+      "summary": "Guitar Pro GP fixture file (37 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-7.6/pianos-high-low.gp",
+      "type": "data",
+      "name": "pianos-high-low.gp",
+      "filePath": "fixtures/guitar-pro-7.6/pianos-high-low.gp",
+      "summary": "Guitar Pro GP fixture file (37 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-7.6/repeats-and-endings.gpif",
+      "type": "data",
+      "name": "repeats-and-endings.gpif",
+      "filePath": "fixtures/guitar-pro-7.6/repeats-and-endings.gpif",
+      "summary": "Guitar Pro GPIF fixture file (737 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gpif",
+      "complexity": "moderate"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-7.6/sections-and-directions.gpif",
+      "type": "data",
+      "name": "sections-and-directions.gpif",
+      "filePath": "fixtures/guitar-pro-7.6/sections-and-directions.gpif",
+      "summary": "Guitar Pro GPIF fixture file (767 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gpif",
+      "complexity": "moderate"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-7.6/tempo-changes.gpif",
+      "type": "data",
+      "name": "tempo-changes.gpif",
+      "filePath": "fixtures/guitar-pro-7.6/tempo-changes.gpif",
+      "summary": "Guitar Pro GPIF fixture file (752 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gpif",
+      "complexity": "moderate"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-7.6/unusual-tuplets.gpif",
+      "type": "data",
+      "name": "unusual-tuplets.gpif",
+      "filePath": "fixtures/guitar-pro-7.6/unusual-tuplets.gpif",
+      "summary": "Guitar Pro GPIF fixture file (803 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gpif",
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:fixtures/guitar-pro-check/README.md",
+      "type": "document",
+      "name": "README.md",
+      "filePath": "fixtures/guitar-pro-check/README.md",
+      "summary": "Project README: overview, features, and usage of the oxiguitar-guitarpro crate",
+      "tags": [
+        "document"
+      ],
+      "language": "markdown",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-check/articulations.gp",
+      "type": "data",
+      "name": "articulations.gp",
+      "filePath": "fixtures/guitar-pro-check/articulations.gp",
+      "summary": "Guitar Pro GP fixture file (11 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-check/articulations.gp5",
+      "type": "data",
+      "name": "articulations.gp5",
+      "filePath": "fixtures/guitar-pro-check/articulations.gp5",
+      "summary": "Guitar Pro GP5 fixture file (4 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp5",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-check/bass.gp",
+      "type": "data",
+      "name": "bass.gp",
+      "filePath": "fixtures/guitar-pro-check/bass.gp",
+      "summary": "Guitar Pro GP fixture file (6 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-check/bass.gp5",
+      "type": "data",
+      "name": "bass.gp5",
+      "filePath": "fixtures/guitar-pro-check/bass.gp5",
+      "summary": "Guitar Pro GP5 fixture file (4 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp5",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-check/beams-and-flags.gp",
+      "type": "data",
+      "name": "beams-and-flags.gp",
+      "filePath": "fixtures/guitar-pro-check/beams-and-flags.gp",
+      "summary": "Guitar Pro GP fixture file (13 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-check/beams-and-flags.gp5",
+      "type": "data",
+      "name": "beams-and-flags.gp5",
+      "filePath": "fixtures/guitar-pro-check/beams-and-flags.gp5",
+      "summary": "Guitar Pro GP5 fixture file (7 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp5",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-check/beat-text.gp",
+      "type": "data",
+      "name": "beat-text.gp",
+      "filePath": "fixtures/guitar-pro-check/beat-text.gp",
+      "summary": "Guitar Pro GP fixture file (5 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-check/beat-text.gp5",
+      "type": "data",
+      "name": "beat-text.gp5",
+      "filePath": "fixtures/guitar-pro-check/beat-text.gp5",
+      "summary": "Guitar Pro GP5 fixture file (7 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp5",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-check/bends.gp",
+      "type": "data",
+      "name": "bends.gp",
+      "filePath": "fixtures/guitar-pro-check/bends.gp",
+      "summary": "Guitar Pro GP fixture file (7 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-check/bends.gp5",
+      "type": "data",
+      "name": "bends.gp5",
+      "filePath": "fixtures/guitar-pro-check/bends.gp5",
+      "summary": "Guitar Pro GP5 fixture file (5 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp5",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-check/chord-names.gp",
+      "type": "data",
+      "name": "chord-names.gp",
+      "filePath": "fixtures/guitar-pro-check/chord-names.gp",
+      "summary": "Guitar Pro GP fixture file (11 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-check/chord-names.gp5",
+      "type": "data",
+      "name": "chord-names.gp5",
+      "filePath": "fixtures/guitar-pro-check/chord-names.gp5",
+      "summary": "Guitar Pro GP5 fixture file (4 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp5",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-check/chords-and-accidentals.gp",
+      "type": "data",
+      "name": "chords-and-accidentals.gp",
+      "filePath": "fixtures/guitar-pro-check/chords-and-accidentals.gp",
+      "summary": "Guitar Pro GP fixture file (8 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-check/chords-and-accidentals.gp5",
+      "type": "data",
+      "name": "chords-and-accidentals.gp5",
+      "filePath": "fixtures/guitar-pro-check/chords-and-accidentals.gp5",
+      "summary": "Guitar Pro GP5 fixture file (4 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp5",
+      "complexity": "simple"
+    },
+    {
+      "id": "document:fixtures/guitar-pro-check/conversions.txt",
+      "type": "document",
+      "name": "conversions.txt",
+      "filePath": "fixtures/guitar-pro-check/conversions.txt",
+      "summary": "Reference documentation or conversion notes",
+      "tags": [
+        "document"
+      ],
+      "language": "txt",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-check/dark-page.gp",
+      "type": "data",
+      "name": "dark-page.gp",
+      "filePath": "fixtures/guitar-pro-check/dark-page.gp",
+      "summary": "Guitar Pro GP fixture file (33 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-check/dark-page.gp5",
+      "type": "data",
+      "name": "dark-page.gp5",
+      "filePath": "fixtures/guitar-pro-check/dark-page.gp5",
+      "summary": "Guitar Pro GP5 fixture file (5 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp5",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-check/dead-ghost-palm-mute.gp",
+      "type": "data",
+      "name": "dead-ghost-palm-mute.gp",
+      "filePath": "fixtures/guitar-pro-check/dead-ghost-palm-mute.gp",
+      "summary": "Guitar Pro GP fixture file (11 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-check/dead-ghost-palm-mute.gp5",
+      "type": "data",
+      "name": "dead-ghost-palm-mute.gp5",
+      "filePath": "fixtures/guitar-pro-check/dead-ghost-palm-mute.gp5",
+      "summary": "Guitar Pro GP5 fixture file (4 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp5",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-check/dots-and-ties.gp",
+      "type": "data",
+      "name": "dots-and-ties.gp",
+      "filePath": "fixtures/guitar-pro-check/dots-and-ties.gp",
+      "summary": "Guitar Pro GP fixture file (7 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-check/dots-and-ties.gp5",
+      "type": "data",
+      "name": "dots-and-ties.gp5",
+      "filePath": "fixtures/guitar-pro-check/dots-and-ties.gp5",
+      "summary": "Guitar Pro GP5 fixture file (4 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp5",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-check/drop-d-and-capo.gp",
+      "type": "data",
+      "name": "drop-d-and-capo.gp",
+      "filePath": "fixtures/guitar-pro-check/drop-d-and-capo.gp",
+      "summary": "Guitar Pro GP fixture file (11 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-check/drop-d-and-capo.gp5",
+      "type": "data",
+      "name": "drop-d-and-capo.gp5",
+      "filePath": "fixtures/guitar-pro-check/drop-d-and-capo.gp5",
+      "summary": "Guitar Pro GP5 fixture file (4 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp5",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-check/drums.gp",
+      "type": "data",
+      "name": "drums.gp",
+      "filePath": "fixtures/guitar-pro-check/drums.gp",
+      "summary": "Guitar Pro GP fixture file (20 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-check/drums.gp5",
+      "type": "data",
+      "name": "drums.gp5",
+      "filePath": "fixtures/guitar-pro-check/drums.gp5",
+      "summary": "Guitar Pro GP5 fixture file (6 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp5",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-check/dynamics-hidden.gp",
+      "type": "data",
+      "name": "dynamics-hidden.gp",
+      "filePath": "fixtures/guitar-pro-check/dynamics-hidden.gp",
+      "summary": "Guitar Pro GP fixture file (8 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-check/dynamics-hidden.gp5",
+      "type": "data",
+      "name": "dynamics-hidden.gp5",
+      "filePath": "fixtures/guitar-pro-check/dynamics-hidden.gp5",
+      "summary": "Guitar Pro GP5 fixture file (4 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp5",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-check/dynamics.gp",
+      "type": "data",
+      "name": "dynamics.gp",
+      "filePath": "fixtures/guitar-pro-check/dynamics.gp",
+      "summary": "Guitar Pro GP fixture file (7 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-check/dynamics.gp5",
+      "type": "data",
+      "name": "dynamics.gp5",
+      "filePath": "fixtures/guitar-pro-check/dynamics.gp5",
+      "summary": "Guitar Pro GP5 fixture file (4 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp5",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-check/effects-together.gp",
+      "type": "data",
+      "name": "effects-together.gp",
+      "filePath": "fixtures/guitar-pro-check/effects-together.gp",
+      "summary": "Guitar Pro GP fixture file (13 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-check/effects-together.gp5",
+      "type": "data",
+      "name": "effects-together.gp5",
+      "filePath": "fixtures/guitar-pro-check/effects-together.gp5",
+      "summary": "Guitar Pro GP5 fixture file (5 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp5",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-check/eight-tracks.gp",
+      "type": "data",
+      "name": "eight-tracks.gp",
+      "filePath": "fixtures/guitar-pro-check/eight-tracks.gp",
+      "summary": "Guitar Pro GP fixture file (38 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-check/eight-tracks.gp5",
+      "type": "data",
+      "name": "eight-tracks.gp5",
+      "filePath": "fixtures/guitar-pro-check/eight-tracks.gp5",
+      "summary": "Guitar Pro GP5 fixture file (7 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp5",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-check/empty-bars.gp",
+      "type": "data",
+      "name": "empty-bars.gp",
+      "filePath": "fixtures/guitar-pro-check/empty-bars.gp",
+      "summary": "Guitar Pro GP fixture file (8 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-check/empty-bars.gp5",
+      "type": "data",
+      "name": "empty-bars.gp5",
+      "filePath": "fixtures/guitar-pro-check/empty-bars.gp5",
+      "summary": "Guitar Pro GP5 fixture file (5 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp5",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-check/four-voices.gp",
+      "type": "data",
+      "name": "four-voices.gp",
+      "filePath": "fixtures/guitar-pro-check/four-voices.gp",
+      "summary": "Guitar Pro GP fixture file (11 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-check/four-voices.gp5",
+      "type": "data",
+      "name": "four-voices.gp5",
+      "filePath": "fixtures/guitar-pro-check/four-voices.gp5",
+      "summary": "Guitar Pro GP5 fixture file (4 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp5",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-check/grace-notes.gp",
+      "type": "data",
+      "name": "grace-notes.gp",
+      "filePath": "fixtures/guitar-pro-check/grace-notes.gp",
+      "summary": "Guitar Pro GP fixture file (11 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-check/grace-notes.gp5",
+      "type": "data",
+      "name": "grace-notes.gp5",
+      "filePath": "fixtures/guitar-pro-check/grace-notes.gp5",
+      "summary": "Guitar Pro GP5 fixture file (4 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp5",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-check/hammer-on-pull-off.gp",
+      "type": "data",
+      "name": "hammer-on-pull-off.gp",
+      "filePath": "fixtures/guitar-pro-check/hammer-on-pull-off.gp",
+      "summary": "Guitar Pro GP fixture file (9 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-check/hammer-on-pull-off.gp5",
+      "type": "data",
+      "name": "hammer-on-pull-off.gp5",
+      "filePath": "fixtures/guitar-pro-check/hammer-on-pull-off.gp5",
+      "summary": "Guitar Pro GP5 fixture file (4 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp5",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-check/harmonics.gp",
+      "type": "data",
+      "name": "harmonics.gp",
+      "filePath": "fixtures/guitar-pro-check/harmonics.gp",
+      "summary": "Guitar Pro GP fixture file (9 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-check/harmonics.gp5",
+      "type": "data",
+      "name": "harmonics.gp5",
+      "filePath": "fixtures/guitar-pro-check/harmonics.gp5",
+      "summary": "Guitar Pro GP5 fixture file (5 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp5",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-check/header-and-credits.gp",
+      "type": "data",
+      "name": "header-and-credits.gp",
+      "filePath": "fixtures/guitar-pro-check/header-and-credits.gp",
+      "summary": "Guitar Pro GP fixture file (10 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-check/header-and-credits.gp5",
+      "type": "data",
+      "name": "header-and-credits.gp5",
+      "filePath": "fixtures/guitar-pro-check/header-and-credits.gp5",
+      "summary": "Guitar Pro GP5 fixture file (4 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp5",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-check/key-signatures.gp",
+      "type": "data",
+      "name": "key-signatures.gp",
+      "filePath": "fixtures/guitar-pro-check/key-signatures.gp",
+      "summary": "Guitar Pro GP fixture file (9 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-check/key-signatures.gp5",
+      "type": "data",
+      "name": "key-signatures.gp5",
+      "filePath": "fixtures/guitar-pro-check/key-signatures.gp5",
+      "summary": "Guitar Pro GP5 fixture file (4 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp5",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-check/layout-horizontal.gp",
+      "type": "data",
+      "name": "layout-horizontal.gp",
+      "filePath": "fixtures/guitar-pro-check/layout-horizontal.gp",
+      "summary": "Guitar Pro GP fixture file (16 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-check/layout-horizontal.gp5",
+      "type": "data",
+      "name": "layout-horizontal.gp5",
+      "filePath": "fixtures/guitar-pro-check/layout-horizontal.gp5",
+      "summary": "Guitar Pro GP5 fixture file (5 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp5",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-check/layout-parchment.gp",
+      "type": "data",
+      "name": "layout-parchment.gp",
+      "filePath": "fixtures/guitar-pro-check/layout-parchment.gp",
+      "summary": "Guitar Pro GP fixture file (26 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-check/layout-parchment.gp5",
+      "type": "data",
+      "name": "layout-parchment.gp5",
+      "filePath": "fixtures/guitar-pro-check/layout-parchment.gp5",
+      "summary": "Guitar Pro GP5 fixture file (5 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp5",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-check/layout-vertical.gp",
+      "type": "data",
+      "name": "layout-vertical.gp",
+      "filePath": "fixtures/guitar-pro-check/layout-vertical.gp",
+      "summary": "Guitar Pro GP fixture file (13 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-check/layout-vertical.gp5",
+      "type": "data",
+      "name": "layout-vertical.gp5",
+      "filePath": "fixtures/guitar-pro-check/layout-vertical.gp5",
+      "summary": "Guitar Pro GP5 fixture file (4 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp5",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-check/let-ring.gp",
+      "type": "data",
+      "name": "let-ring.gp",
+      "filePath": "fixtures/guitar-pro-check/let-ring.gp",
+      "summary": "Guitar Pro GP fixture file (13 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-check/let-ring.gp5",
+      "type": "data",
+      "name": "let-ring.gp5",
+      "filePath": "fixtures/guitar-pro-check/let-ring.gp5",
+      "summary": "Guitar Pro GP5 fixture file (4 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp5",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-check/lyrics.gp",
+      "type": "data",
+      "name": "lyrics.gp",
+      "filePath": "fixtures/guitar-pro-check/lyrics.gp",
+      "summary": "Guitar Pro GP fixture file (12 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-check/lyrics.gp5",
+      "type": "data",
+      "name": "lyrics.gp5",
+      "filePath": "fixtures/guitar-pro-check/lyrics.gp5",
+      "summary": "Guitar Pro GP5 fixture file (6 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp5",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-check/notation-choice.gp",
+      "type": "data",
+      "name": "notation-choice.gp",
+      "filePath": "fixtures/guitar-pro-check/notation-choice.gp",
+      "summary": "Guitar Pro GP fixture file (39 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-check/notation-choice.gp5",
+      "type": "data",
+      "name": "notation-choice.gp5",
+      "filePath": "fixtures/guitar-pro-check/notation-choice.gp5",
+      "summary": "Guitar Pro GP5 fixture file (5 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp5",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-check/notes-and-rests.gp",
+      "type": "data",
+      "name": "notes-and-rests.gp",
+      "filePath": "fixtures/guitar-pro-check/notes-and-rests.gp",
+      "summary": "Guitar Pro GP fixture file (19 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-check/notes-and-rests.gp5",
+      "type": "data",
+      "name": "notes-and-rests.gp5",
+      "filePath": "fixtures/guitar-pro-check/notes-and-rests.gp5",
+      "summary": "Guitar Pro GP5 fixture file (4 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp5",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-check/page-breaks.gp",
+      "type": "data",
+      "name": "page-breaks.gp",
+      "filePath": "fixtures/guitar-pro-check/page-breaks.gp",
+      "summary": "Guitar Pro GP fixture file (27 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-check/page-breaks.gp5",
+      "type": "data",
+      "name": "page-breaks.gp5",
+      "filePath": "fixtures/guitar-pro-check/page-breaks.gp5",
+      "summary": "Guitar Pro GP5 fixture file (4 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp5",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-check/paper-letter.gp",
+      "type": "data",
+      "name": "paper-letter.gp",
+      "filePath": "fixtures/guitar-pro-check/paper-letter.gp",
+      "summary": "Guitar Pro GP fixture file (11 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-check/paper-letter.gp5",
+      "type": "data",
+      "name": "paper-letter.gp5",
+      "filePath": "fixtures/guitar-pro-check/paper-letter.gp5",
+      "summary": "Guitar Pro GP5 fixture file (4 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp5",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-check/piano-grand-staff.gp",
+      "type": "data",
+      "name": "piano-grand-staff.gp",
+      "filePath": "fixtures/guitar-pro-check/piano-grand-staff.gp",
+      "summary": "Guitar Pro GP fixture file (15 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-check/piano-grand-staff.gp5",
+      "type": "data",
+      "name": "piano-grand-staff.gp5",
+      "filePath": "fixtures/guitar-pro-check/piano-grand-staff.gp5",
+      "summary": "Guitar Pro GP5 fixture file (6 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp5",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-check/repeats-and-endings.gp",
+      "type": "data",
+      "name": "repeats-and-endings.gp",
+      "filePath": "fixtures/guitar-pro-check/repeats-and-endings.gp",
+      "summary": "Guitar Pro GP fixture file (18 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-check/repeats-and-endings.gp5",
+      "type": "data",
+      "name": "repeats-and-endings.gp5",
+      "filePath": "fixtures/guitar-pro-check/repeats-and-endings.gp5",
+      "summary": "Guitar Pro GP5 fixture file (4 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp5",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-check/rhythm-on-tab.gp",
+      "type": "data",
+      "name": "rhythm-on-tab.gp",
+      "filePath": "fixtures/guitar-pro-check/rhythm-on-tab.gp",
+      "summary": "Guitar Pro GP fixture file (11 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-check/rhythm-on-tab.gp5",
+      "type": "data",
+      "name": "rhythm-on-tab.gp5",
+      "filePath": "fixtures/guitar-pro-check/rhythm-on-tab.gp5",
+      "summary": "Guitar Pro GP5 fixture file (4 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp5",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-check/sections-and-directions.gp",
+      "type": "data",
+      "name": "sections-and-directions.gp",
+      "filePath": "fixtures/guitar-pro-check/sections-and-directions.gp",
+      "summary": "Guitar Pro GP fixture file (14 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-check/sections-and-directions.gp5",
+      "type": "data",
+      "name": "sections-and-directions.gp5",
+      "filePath": "fixtures/guitar-pro-check/sections-and-directions.gp5",
+      "summary": "Guitar Pro GP5 fixture file (4 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp5",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-check/seven-string.gp",
+      "type": "data",
+      "name": "seven-string.gp",
+      "filePath": "fixtures/guitar-pro-check/seven-string.gp",
+      "summary": "Guitar Pro GP fixture file (8 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-check/seven-string.gp5",
+      "type": "data",
+      "name": "seven-string.gp5",
+      "filePath": "fixtures/guitar-pro-check/seven-string.gp5",
+      "summary": "Guitar Pro GP5 fixture file (4 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp5",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-check/slides.gp",
+      "type": "data",
+      "name": "slides.gp",
+      "filePath": "fixtures/guitar-pro-check/slides.gp",
+      "summary": "Guitar Pro GP fixture file (7 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-check/slides.gp5",
+      "type": "data",
+      "name": "slides.gp5",
+      "filePath": "fixtures/guitar-pro-check/slides.gp5",
+      "summary": "Guitar Pro GP5 fixture file (4 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp5",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-check/standard-only.gp",
+      "type": "data",
+      "name": "standard-only.gp",
+      "filePath": "fixtures/guitar-pro-check/standard-only.gp",
+      "summary": "Guitar Pro GP fixture file (7 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-check/standard-only.gp5",
+      "type": "data",
+      "name": "standard-only.gp5",
+      "filePath": "fixtures/guitar-pro-check/standard-only.gp5",
+      "summary": "Guitar Pro GP5 fixture file (4 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp5",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-check/strings-treble-and-bass.gp",
+      "type": "data",
+      "name": "strings-treble-and-bass.gp",
+      "filePath": "fixtures/guitar-pro-check/strings-treble-and-bass.gp",
+      "summary": "Guitar Pro GP fixture file (10 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-check/strings-treble-and-bass.gp5",
+      "type": "data",
+      "name": "strings-treble-and-bass.gp5",
+      "filePath": "fixtures/guitar-pro-check/strings-treble-and-bass.gp5",
+      "summary": "Guitar Pro GP5 fixture file (5 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp5",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-check/strums-and-techniques.gp",
+      "type": "data",
+      "name": "strums-and-techniques.gp",
+      "filePath": "fixtures/guitar-pro-check/strums-and-techniques.gp",
+      "summary": "Guitar Pro GP fixture file (5 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-check/strums-and-techniques.gp5",
+      "type": "data",
+      "name": "strums-and-techniques.gp5",
+      "filePath": "fixtures/guitar-pro-check/strums-and-techniques.gp5",
+      "summary": "Guitar Pro GP5 fixture file (4 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp5",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-check/tall-system-shrinks.gp",
+      "type": "data",
+      "name": "tall-system-shrinks.gp",
+      "filePath": "fixtures/guitar-pro-check/tall-system-shrinks.gp",
+      "summary": "Guitar Pro GP fixture file (45 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-check/tall-system-shrinks.gp5",
+      "type": "data",
+      "name": "tall-system-shrinks.gp5",
+      "filePath": "fixtures/guitar-pro-check/tall-system-shrinks.gp5",
+      "summary": "Guitar Pro GP5 fixture file (7 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp5",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-check/tempo-changes.gp",
+      "type": "data",
+      "name": "tempo-changes.gp",
+      "filePath": "fixtures/guitar-pro-check/tempo-changes.gp",
+      "summary": "Guitar Pro GP fixture file (11 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-check/tempo-changes.gp5",
+      "type": "data",
+      "name": "tempo-changes.gp5",
+      "filePath": "fixtures/guitar-pro-check/tempo-changes.gp5",
+      "summary": "Guitar Pro GP5 fixture file (4 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp5",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-check/test-song-from-gp.gp",
+      "type": "data",
+      "name": "test-song-from-gp.gp",
+      "filePath": "fixtures/guitar-pro-check/test-song-from-gp.gp",
+      "summary": "Guitar Pro GP fixture file (12 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-check/test-song-from-gp.gp5",
+      "type": "data",
+      "name": "test-song-from-gp.gp5",
+      "filePath": "fixtures/guitar-pro-check/test-song-from-gp.gp5",
+      "summary": "Guitar Pro GP5 fixture file (6 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp5",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-check/test-song-from-gp3.gp",
+      "type": "data",
+      "name": "test-song-from-gp3.gp",
+      "filePath": "fixtures/guitar-pro-check/test-song-from-gp3.gp",
+      "summary": "Guitar Pro GP fixture file (7 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-check/test-song-from-gp3.gp5",
+      "type": "data",
+      "name": "test-song-from-gp3.gp5",
+      "filePath": "fixtures/guitar-pro-check/test-song-from-gp3.gp5",
+      "summary": "Guitar Pro GP5 fixture file (6 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp5",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-check/test-song-from-gp4.gp",
+      "type": "data",
+      "name": "test-song-from-gp4.gp",
+      "filePath": "fixtures/guitar-pro-check/test-song-from-gp4.gp",
+      "summary": "Guitar Pro GP fixture file (6 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-check/test-song-from-gp4.gp5",
+      "type": "data",
+      "name": "test-song-from-gp4.gp5",
+      "filePath": "fixtures/guitar-pro-check/test-song-from-gp4.gp5",
+      "summary": "Guitar Pro GP5 fixture file (6 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp5",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-check/test-song-from-gp5.gp",
+      "type": "data",
+      "name": "test-song-from-gp5.gp",
+      "filePath": "fixtures/guitar-pro-check/test-song-from-gp5.gp",
+      "summary": "Guitar Pro GP fixture file (9 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-check/test-song-from-gp5.gp5",
+      "type": "data",
+      "name": "test-song-from-gp5.gp5",
+      "filePath": "fixtures/guitar-pro-check/test-song-from-gp5.gp5",
+      "summary": "Guitar Pro GP5 fixture file (6 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp5",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-check/test-song-from-gpx.gp",
+      "type": "data",
+      "name": "test-song-from-gpx.gp",
+      "filePath": "fixtures/guitar-pro-check/test-song-from-gpx.gp",
+      "summary": "Guitar Pro GP fixture file (12 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-check/test-song-from-gpx.gp5",
+      "type": "data",
+      "name": "test-song-from-gpx.gp5",
+      "filePath": "fixtures/guitar-pro-check/test-song-from-gpx.gp5",
+      "summary": "Guitar Pro GP5 fixture file (6 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp5",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-check/time-signatures.gp",
+      "type": "data",
+      "name": "time-signatures.gp",
+      "filePath": "fixtures/guitar-pro-check/time-signatures.gp",
+      "summary": "Guitar Pro GP fixture file (16 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-check/time-signatures.gp5",
+      "type": "data",
+      "name": "time-signatures.gp5",
+      "filePath": "fixtures/guitar-pro-check/time-signatures.gp5",
+      "summary": "Guitar Pro GP5 fixture file (4 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp5",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-check/tremolo-picking.gp",
+      "type": "data",
+      "name": "tremolo-picking.gp",
+      "filePath": "fixtures/guitar-pro-check/tremolo-picking.gp",
+      "summary": "Guitar Pro GP fixture file (11 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-check/tremolo-picking.gp5",
+      "type": "data",
+      "name": "tremolo-picking.gp5",
+      "filePath": "fixtures/guitar-pro-check/tremolo-picking.gp5",
+      "summary": "Guitar Pro GP5 fixture file (6 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp5",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-check/triplets.gp",
+      "type": "data",
+      "name": "triplets.gp",
+      "filePath": "fixtures/guitar-pro-check/triplets.gp",
+      "summary": "Guitar Pro GP fixture file (8 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-check/triplets.gp5",
+      "type": "data",
+      "name": "triplets.gp5",
+      "filePath": "fixtures/guitar-pro-check/triplets.gp5",
+      "summary": "Guitar Pro GP5 fixture file (4 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp5",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-check/two-voices.gp",
+      "type": "data",
+      "name": "two-voices.gp",
+      "filePath": "fixtures/guitar-pro-check/two-voices.gp",
+      "summary": "Guitar Pro GP fixture file (13 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-check/two-voices.gp5",
+      "type": "data",
+      "name": "two-voices.gp5",
+      "filePath": "fixtures/guitar-pro-check/two-voices.gp5",
+      "summary": "Guitar Pro GP5 fixture file (5 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp5",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-check/unusual-tuplets.gp",
+      "type": "data",
+      "name": "unusual-tuplets.gp",
+      "filePath": "fixtures/guitar-pro-check/unusual-tuplets.gp",
+      "summary": "Guitar Pro GP fixture file (11 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-check/unusual-tuplets.gp5",
+      "type": "data",
+      "name": "unusual-tuplets.gp5",
+      "filePath": "fixtures/guitar-pro-check/unusual-tuplets.gp5",
+      "summary": "Guitar Pro GP5 fixture file (4 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp5",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-check/vibrato-and-trill.gp",
+      "type": "data",
+      "name": "vibrato-and-trill.gp",
+      "filePath": "fixtures/guitar-pro-check/vibrato-and-trill.gp",
+      "summary": "Guitar Pro GP fixture file (14 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-check/vibrato-and-trill.gp5",
+      "type": "data",
+      "name": "vibrato-and-trill.gp5",
+      "filePath": "fixtures/guitar-pro-check/vibrato-and-trill.gp5",
+      "summary": "Guitar Pro GP5 fixture file (5 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp5",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-check/whammy-and-fade-in.gp",
+      "type": "data",
+      "name": "whammy-and-fade-in.gp",
+      "filePath": "fixtures/guitar-pro-check/whammy-and-fade-in.gp",
+      "summary": "Guitar Pro GP fixture file (9 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/guitar-pro-check/whammy-and-fade-in.gp5",
+      "type": "data",
+      "name": "whammy-and-fade-in.gp5",
+      "filePath": "fixtures/guitar-pro-check/whammy-and-fade-in.gp5",
+      "summary": "Guitar Pro GP5 fixture file (4 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp5",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/reference/articulations.gp",
+      "type": "data",
+      "name": "articulations.gp",
+      "filePath": "fixtures/reference/articulations.gp",
+      "summary": "Guitar Pro GP fixture file (3 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/reference/bass.gp",
+      "type": "data",
+      "name": "bass.gp",
+      "filePath": "fixtures/reference/bass.gp",
+      "summary": "Guitar Pro GP fixture file (9 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/reference/beams-and-flags.gp",
+      "type": "data",
+      "name": "beams-and-flags.gp",
+      "filePath": "fixtures/reference/beams-and-flags.gp",
+      "summary": "Guitar Pro GP fixture file (5 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/reference/beat-text.gp",
+      "type": "data",
+      "name": "beat-text.gp",
+      "filePath": "fixtures/reference/beat-text.gp",
+      "summary": "Guitar Pro GP fixture file (5 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/reference/bends.gp",
+      "type": "data",
+      "name": "bends.gp",
+      "filePath": "fixtures/reference/bends.gp",
+      "summary": "Guitar Pro GP fixture file (7 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/reference/chord-names.gp",
+      "type": "data",
+      "name": "chord-names.gp",
+      "filePath": "fixtures/reference/chord-names.gp",
+      "summary": "Guitar Pro GP fixture file (9 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/reference/chords-and-accidentals.gp",
+      "type": "data",
+      "name": "chords-and-accidentals.gp",
+      "filePath": "fixtures/reference/chords-and-accidentals.gp",
+      "summary": "Guitar Pro GP fixture file (4 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/reference/dark-page.gp",
+      "type": "data",
+      "name": "dark-page.gp",
+      "filePath": "fixtures/reference/dark-page.gp",
+      "summary": "Guitar Pro GP fixture file (9 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/reference/dead-ghost-palm-mute.gp",
+      "type": "data",
+      "name": "dead-ghost-palm-mute.gp",
+      "filePath": "fixtures/reference/dead-ghost-palm-mute.gp",
+      "summary": "Guitar Pro GP fixture file (3 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/reference/dots-and-ties.gp",
+      "type": "data",
+      "name": "dots-and-ties.gp",
+      "filePath": "fixtures/reference/dots-and-ties.gp",
+      "summary": "Guitar Pro GP fixture file (4 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/reference/drop-d-and-capo.gp",
+      "type": "data",
+      "name": "drop-d-and-capo.gp",
+      "filePath": "fixtures/reference/drop-d-and-capo.gp",
+      "summary": "Guitar Pro GP fixture file (9 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/reference/drums.gp",
+      "type": "data",
+      "name": "drums.gp",
+      "filePath": "fixtures/reference/drums.gp",
+      "summary": "Guitar Pro GP fixture file (11 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/reference/dynamics-hidden.gp",
+      "type": "data",
+      "name": "dynamics-hidden.gp",
+      "filePath": "fixtures/reference/dynamics-hidden.gp",
+      "summary": "Guitar Pro GP fixture file (4 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/reference/dynamics.gp",
+      "type": "data",
+      "name": "dynamics.gp",
+      "filePath": "fixtures/reference/dynamics.gp",
+      "summary": "Guitar Pro GP fixture file (4 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/reference/effects-together.gp",
+      "type": "data",
+      "name": "effects-together.gp",
+      "filePath": "fixtures/reference/effects-together.gp",
+      "summary": "Guitar Pro GP fixture file (9 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/reference/eight-tracks.gp",
+      "type": "data",
+      "name": "eight-tracks.gp",
+      "filePath": "fixtures/reference/eight-tracks.gp",
+      "summary": "Guitar Pro GP fixture file (27 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/reference/empty-bars.gp",
+      "type": "data",
+      "name": "empty-bars.gp",
+      "filePath": "fixtures/reference/empty-bars.gp",
+      "summary": "Guitar Pro GP fixture file (4 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/reference/four-voices.gp",
+      "type": "data",
+      "name": "four-voices.gp",
+      "filePath": "fixtures/reference/four-voices.gp",
+      "summary": "Guitar Pro GP fixture file (13 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/reference/grace-notes.gp",
+      "type": "data",
+      "name": "grace-notes.gp",
+      "filePath": "fixtures/reference/grace-notes.gp",
+      "summary": "Guitar Pro GP fixture file (11 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/reference/hammer-on-pull-off.gp",
+      "type": "data",
+      "name": "hammer-on-pull-off.gp",
+      "filePath": "fixtures/reference/hammer-on-pull-off.gp",
+      "summary": "Guitar Pro GP fixture file (7 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/reference/harmonics.gp",
+      "type": "data",
+      "name": "harmonics.gp",
+      "filePath": "fixtures/reference/harmonics.gp",
+      "summary": "Guitar Pro GP fixture file (7 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/reference/header-and-credits.gp",
+      "type": "data",
+      "name": "header-and-credits.gp",
+      "filePath": "fixtures/reference/header-and-credits.gp",
+      "summary": "Guitar Pro GP fixture file (8 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/reference/key-signatures.gp",
+      "type": "data",
+      "name": "key-signatures.gp",
+      "filePath": "fixtures/reference/key-signatures.gp",
+      "summary": "Guitar Pro GP fixture file (8 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/reference/layout-horizontal.gp",
+      "type": "data",
+      "name": "layout-horizontal.gp",
+      "filePath": "fixtures/reference/layout-horizontal.gp",
+      "summary": "Guitar Pro GP fixture file (9 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/reference/layout-parchment.gp",
+      "type": "data",
+      "name": "layout-parchment.gp",
+      "filePath": "fixtures/reference/layout-parchment.gp",
+      "summary": "Guitar Pro GP fixture file (30 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/reference/layout-vertical.gp",
+      "type": "data",
+      "name": "layout-vertical.gp",
+      "filePath": "fixtures/reference/layout-vertical.gp",
+      "summary": "Guitar Pro GP fixture file (9 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/reference/let-ring.gp",
+      "type": "data",
+      "name": "let-ring.gp",
+      "filePath": "fixtures/reference/let-ring.gp",
+      "summary": "Guitar Pro GP fixture file (7 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/reference/lyrics.gp",
+      "type": "data",
+      "name": "lyrics.gp",
+      "filePath": "fixtures/reference/lyrics.gp",
+      "summary": "Guitar Pro GP fixture file (4 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/reference/notation-choice.gp",
+      "type": "data",
+      "name": "notation-choice.gp",
+      "filePath": "fixtures/reference/notation-choice.gp",
+      "summary": "Guitar Pro GP fixture file (28 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/reference/notes-and-rests.gp",
+      "type": "data",
+      "name": "notes-and-rests.gp",
+      "filePath": "fixtures/reference/notes-and-rests.gp",
+      "summary": "Guitar Pro GP fixture file (6 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/reference/page-breaks.gp",
+      "type": "data",
+      "name": "page-breaks.gp",
+      "filePath": "fixtures/reference/page-breaks.gp",
+      "summary": "Guitar Pro GP fixture file (35 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/reference/paper-letter.gp",
+      "type": "data",
+      "name": "paper-letter.gp",
+      "filePath": "fixtures/reference/paper-letter.gp",
+      "summary": "Guitar Pro GP fixture file (11 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/reference/piano-grand-staff.gp",
+      "type": "data",
+      "name": "piano-grand-staff.gp",
+      "filePath": "fixtures/reference/piano-grand-staff.gp",
+      "summary": "Guitar Pro GP fixture file (9 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/reference/repeats-and-endings.gp",
+      "type": "data",
+      "name": "repeats-and-endings.gp",
+      "filePath": "fixtures/reference/repeats-and-endings.gp",
+      "summary": "Guitar Pro GP fixture file (10 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/reference/rhythm-on-tab.gp",
+      "type": "data",
+      "name": "rhythm-on-tab.gp",
+      "filePath": "fixtures/reference/rhythm-on-tab.gp",
+      "summary": "Guitar Pro GP fixture file (9 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/reference/sections-and-directions.gp",
+      "type": "data",
+      "name": "sections-and-directions.gp",
+      "filePath": "fixtures/reference/sections-and-directions.gp",
+      "summary": "Guitar Pro GP fixture file (14 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/reference/seven-string.gp",
+      "type": "data",
+      "name": "seven-string.gp",
+      "filePath": "fixtures/reference/seven-string.gp",
+      "summary": "Guitar Pro GP fixture file (7 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/reference/slides.gp",
+      "type": "data",
+      "name": "slides.gp",
+      "filePath": "fixtures/reference/slides.gp",
+      "summary": "Guitar Pro GP fixture file (4 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/reference/standard-only.gp",
+      "type": "data",
+      "name": "standard-only.gp",
+      "filePath": "fixtures/reference/standard-only.gp",
+      "summary": "Guitar Pro GP fixture file (11 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/reference/strings-treble-and-bass.gp",
+      "type": "data",
+      "name": "strings-treble-and-bass.gp",
+      "filePath": "fixtures/reference/strings-treble-and-bass.gp",
+      "summary": "Guitar Pro GP fixture file (5 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/reference/strums-and-techniques.gp",
+      "type": "data",
+      "name": "strums-and-techniques.gp",
+      "filePath": "fixtures/reference/strums-and-techniques.gp",
+      "summary": "Guitar Pro GP fixture file (6 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/reference/tall-system-shrinks.gp",
+      "type": "data",
+      "name": "tall-system-shrinks.gp",
+      "filePath": "fixtures/reference/tall-system-shrinks.gp",
+      "summary": "Guitar Pro GP fixture file (49 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/reference/tempo-changes.gp",
+      "type": "data",
+      "name": "tempo-changes.gp",
+      "filePath": "fixtures/reference/tempo-changes.gp",
+      "summary": "Guitar Pro GP fixture file (10 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/reference/time-signatures.gp",
+      "type": "data",
+      "name": "time-signatures.gp",
+      "filePath": "fixtures/reference/time-signatures.gp",
+      "summary": "Guitar Pro GP fixture file (11 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/reference/tremolo-picking.gp",
+      "type": "data",
+      "name": "tremolo-picking.gp",
+      "filePath": "fixtures/reference/tremolo-picking.gp",
+      "summary": "Guitar Pro GP fixture file (6 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/reference/triplets.gp",
+      "type": "data",
+      "name": "triplets.gp",
+      "filePath": "fixtures/reference/triplets.gp",
+      "summary": "Guitar Pro GP fixture file (10 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/reference/two-voices.gp",
+      "type": "data",
+      "name": "two-voices.gp",
+      "filePath": "fixtures/reference/two-voices.gp",
+      "summary": "Guitar Pro GP fixture file (12 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/reference/unusual-tuplets.gp",
+      "type": "data",
+      "name": "unusual-tuplets.gp",
+      "filePath": "fixtures/reference/unusual-tuplets.gp",
+      "summary": "Guitar Pro GP fixture file (12 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/reference/vibrato-and-trill.gp",
+      "type": "data",
+      "name": "vibrato-and-trill.gp",
+      "filePath": "fixtures/reference/vibrato-and-trill.gp",
+      "summary": "Guitar Pro GP fixture file (7 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fixtures/reference/whammy-and-fade-in.gp",
+      "type": "data",
+      "name": "whammy-and-fade-in.gp",
+      "filePath": "fixtures/reference/whammy-and-fade-in.gp",
+      "summary": "Guitar Pro GP fixture file (10 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "gp",
+      "complexity": "simple"
+    },
+    {
+      "id": "config:fuzz/Cargo.toml",
+      "type": "config",
+      "name": "Cargo.toml",
+      "filePath": "fuzz/Cargo.toml",
+      "summary": "Cargo manifest for Cargo.toml",
+      "tags": [
+        "config"
+      ],
+      "language": "toml",
+      "complexity": "simple"
+    },
+    {
+      "id": "document:fuzz/README.md",
+      "type": "document",
+      "name": "README.md",
+      "filePath": "fuzz/README.md",
+      "summary": "Project README: overview, features, and usage of the oxiguitar-guitarpro crate",
+      "tags": [
+        "document"
+      ],
+      "language": "markdown",
+      "complexity": "simple"
+    },
+    {
+      "id": "file:fuzz/fuzz_targets/any_file.rs",
+      "type": "file",
+      "name": "any_file",
+      "filePath": "fuzz/fuzz_targets/any_file.rs",
+      "summary": "Fuzz target: any_file",
+      "tags": [
+        "file",
+        "fuzz-testing"
+      ],
+      "language": "rust",
+      "complexity": "simple"
+    },
+    {
+      "id": "file:fuzz/fuzz_targets/gp_writer.rs",
+      "type": "file",
+      "name": "gp_writer",
+      "filePath": "fuzz/fuzz_targets/gp_writer.rs",
+      "summary": "Fuzz target: gp_writer",
+      "tags": [
+        "file",
+        "fuzz-testing"
+      ],
+      "language": "rust",
+      "complexity": "simple"
+    },
+    {
+      "id": "file:fuzz/fuzz_targets/gpif.rs",
+      "type": "file",
+      "name": "gpif",
+      "filePath": "fuzz/fuzz_targets/gpif.rs",
+      "summary": "Fuzz target: gpif",
+      "tags": [
+        "file",
+        "fuzz-testing"
+      ],
+      "language": "rust",
+      "complexity": "simple"
+    },
+    {
+      "id": "file:fuzz/fuzz_targets/guitar_pro_3_5.rs",
+      "type": "file",
+      "name": "guitar_pro_3_5",
+      "filePath": "fuzz/fuzz_targets/guitar_pro_3_5.rs",
+      "summary": "Fuzz target: guitar_pro_3_5",
+      "tags": [
+        "file",
+        "fuzz-testing"
+      ],
+      "language": "rust",
+      "complexity": "simple"
+    },
+    {
+      "id": "file:fuzz/fuzz_targets/guitar_pro_6.rs",
+      "type": "file",
+      "name": "guitar_pro_6",
+      "filePath": "fuzz/fuzz_targets/guitar_pro_6.rs",
+      "summary": "Fuzz target: guitar_pro_6",
+      "tags": [
+        "file",
+        "fuzz-testing"
+      ],
+      "language": "rust",
+      "complexity": "simple"
+    },
+    {
+      "id": "file:fuzz/fuzz_targets/guitar_pro_7.rs",
+      "type": "file",
+      "name": "guitar_pro_7",
+      "filePath": "fuzz/fuzz_targets/guitar_pro_7.rs",
+      "summary": "Fuzz target: guitar_pro_7",
+      "tags": [
+        "file",
+        "fuzz-testing"
+      ],
+      "language": "rust",
+      "complexity": "simple"
+    },
+    {
+      "id": "file:fuzz/fuzz_targets/plugin_dispatch.rs",
+      "type": "file",
+      "name": "plugin_dispatch",
+      "filePath": "fuzz/fuzz_targets/plugin_dispatch.rs",
+      "summary": "Fuzz target: plugin_dispatch",
+      "tags": [
+        "file",
+        "fuzz-testing"
+      ],
+      "language": "rust",
+      "complexity": "simple"
+    },
+    {
+      "id": "data:fuzz/gpif.dict",
+      "type": "data",
+      "name": "gpif.dict",
+      "filePath": "fuzz/gpif.dict",
+      "summary": "Guitar Pro DICT fixture file (758 lines)",
+      "tags": [
+        "data"
+      ],
+      "language": "dict",
+      "complexity": "moderate"
+    },
+    {
+      "id": "script:fuzz/run.sh",
+      "type": "script",
+      "name": "run.sh",
+      "filePath": "fuzz/run.sh",
+      "summary": "Fuzz testing helper script",
+      "tags": [
+        "script"
+      ],
+      "language": "shell",
+      "complexity": "simple"
+    },
+    {
+      "id": "script:fuzz/seeds.sh",
+      "type": "script",
+      "name": "seeds.sh",
+      "filePath": "fuzz/seeds.sh",
+      "summary": "Fuzz testing helper script",
+      "tags": [
+        "script"
+      ],
+      "language": "shell",
+      "complexity": "simple"
+    },
+    {
+      "id": "config:plugins/gp/Cargo.toml",
+      "type": "config",
+      "name": "gp",
+      "filePath": "plugins/gp/Cargo.toml",
+      "summary": "Cargo manifest for gp",
+      "tags": [
+        "config"
+      ],
+      "language": "toml",
+      "complexity": "simple"
+    },
+    {
+      "id": "config:plugins/gp/manifest.json",
+      "type": "config",
+      "name": "manifest.json",
+      "filePath": "plugins/gp/manifest.json",
+      "summary": "JSON configuration file",
+      "tags": [
+        "config"
+      ],
+      "language": "json",
+      "complexity": "simple"
+    },
+    {
+      "id": "file:plugins/gp/src/lib.rs",
+      "type": "file",
+      "name": "lib",
+      "filePath": "plugins/gp/src/lib.rs",
+      "summary": "gp plugin: thin wrapper over oxiguitar-formats reader",
+      "tags": [
+        "file",
+        "plugin"
+      ],
+      "language": "rust",
+      "complexity": "simple"
+    },
+    {
+      "id": "file:plugins/gp/tests/contract.rs",
+      "type": "file",
+      "name": "contract",
+      "filePath": "plugins/gp/tests/contract.rs",
+      "summary": "gp plugin: thin wrapper over oxiguitar-formats reader",
+      "tags": [
+        "file",
+        "plugin"
+      ],
+      "language": "rust",
+      "complexity": "simple"
+    },
+    {
+      "id": "config:plugins/gp3/Cargo.toml",
+      "type": "config",
+      "name": "gp3",
+      "filePath": "plugins/gp3/Cargo.toml",
+      "summary": "Cargo manifest for gp3",
+      "tags": [
+        "config"
+      ],
+      "language": "toml",
+      "complexity": "simple"
+    },
+    {
+      "id": "config:plugins/gp3/manifest.json",
+      "type": "config",
+      "name": "manifest.json",
+      "filePath": "plugins/gp3/manifest.json",
+      "summary": "JSON configuration file",
+      "tags": [
+        "config"
+      ],
+      "language": "json",
+      "complexity": "simple"
+    },
+    {
+      "id": "file:plugins/gp3/src/lib.rs",
+      "type": "file",
+      "name": "lib",
+      "filePath": "plugins/gp3/src/lib.rs",
+      "summary": "gp3 plugin: thin wrapper over oxiguitar-formats reader",
+      "tags": [
+        "file",
+        "plugin"
+      ],
+      "language": "rust",
+      "complexity": "simple"
+    },
+    {
+      "id": "file:plugins/gp3/tests/contract.rs",
+      "type": "file",
+      "name": "contract",
+      "filePath": "plugins/gp3/tests/contract.rs",
+      "summary": "gp3 plugin: thin wrapper over oxiguitar-formats reader",
+      "tags": [
+        "file",
+        "plugin"
+      ],
+      "language": "rust",
+      "complexity": "simple"
+    },
+    {
+      "id": "config:plugins/gp4/Cargo.toml",
+      "type": "config",
+      "name": "gp4",
+      "filePath": "plugins/gp4/Cargo.toml",
+      "summary": "Cargo manifest for gp4",
+      "tags": [
+        "config"
+      ],
+      "language": "toml",
+      "complexity": "simple"
+    },
+    {
+      "id": "config:plugins/gp4/manifest.json",
+      "type": "config",
+      "name": "manifest.json",
+      "filePath": "plugins/gp4/manifest.json",
+      "summary": "JSON configuration file",
+      "tags": [
+        "config"
+      ],
+      "language": "json",
+      "complexity": "simple"
+    },
+    {
+      "id": "file:plugins/gp4/src/lib.rs",
+      "type": "file",
+      "name": "lib",
+      "filePath": "plugins/gp4/src/lib.rs",
+      "summary": "gp4 plugin: thin wrapper over oxiguitar-formats reader",
+      "tags": [
+        "file",
+        "plugin"
+      ],
+      "language": "rust",
+      "complexity": "simple"
+    },
+    {
+      "id": "file:plugins/gp4/tests/contract.rs",
+      "type": "file",
+      "name": "contract",
+      "filePath": "plugins/gp4/tests/contract.rs",
+      "summary": "gp4 plugin: thin wrapper over oxiguitar-formats reader",
+      "tags": [
+        "file",
+        "plugin"
+      ],
+      "language": "rust",
+      "complexity": "simple"
+    },
+    {
+      "id": "config:plugins/gp5/Cargo.toml",
+      "type": "config",
+      "name": "gp5",
+      "filePath": "plugins/gp5/Cargo.toml",
+      "summary": "Cargo manifest for gp5",
+      "tags": [
+        "config"
+      ],
+      "language": "toml",
+      "complexity": "simple"
+    },
+    {
+      "id": "config:plugins/gp5/manifest.json",
+      "type": "config",
+      "name": "manifest.json",
+      "filePath": "plugins/gp5/manifest.json",
+      "summary": "JSON configuration file",
+      "tags": [
+        "config"
+      ],
+      "language": "json",
+      "complexity": "simple"
+    },
+    {
+      "id": "file:plugins/gp5/src/lib.rs",
+      "type": "file",
+      "name": "lib",
+      "filePath": "plugins/gp5/src/lib.rs",
+      "summary": "gp5 plugin: thin wrapper over oxiguitar-formats reader",
+      "tags": [
+        "file",
+        "plugin"
+      ],
+      "language": "rust",
+      "complexity": "simple"
+    },
+    {
+      "id": "file:plugins/gp5/tests/contract.rs",
+      "type": "file",
+      "name": "contract",
+      "filePath": "plugins/gp5/tests/contract.rs",
+      "summary": "gp5 plugin: thin wrapper over oxiguitar-formats reader",
+      "tags": [
+        "file",
+        "plugin"
+      ],
+      "language": "rust",
+      "complexity": "simple"
+    },
+    {
+      "id": "config:plugins/gpx/Cargo.toml",
+      "type": "config",
+      "name": "gpx",
+      "filePath": "plugins/gpx/Cargo.toml",
+      "summary": "Cargo manifest for gpx",
+      "tags": [
+        "config"
+      ],
+      "language": "toml",
+      "complexity": "simple"
+    },
+    {
+      "id": "config:plugins/gpx/manifest.json",
+      "type": "config",
+      "name": "manifest.json",
+      "filePath": "plugins/gpx/manifest.json",
+      "summary": "JSON configuration file",
+      "tags": [
+        "config"
+      ],
+      "language": "json",
+      "complexity": "simple"
+    },
+    {
+      "id": "file:plugins/gpx/src/lib.rs",
+      "type": "file",
+      "name": "lib",
+      "filePath": "plugins/gpx/src/lib.rs",
+      "summary": "gpx plugin: thin wrapper over oxiguitar-formats reader",
+      "tags": [
+        "file",
+        "plugin"
+      ],
+      "language": "rust",
+      "complexity": "simple"
+    },
+    {
+      "id": "file:plugins/gpx/tests/contract.rs",
+      "type": "file",
+      "name": "contract",
+      "filePath": "plugins/gpx/tests/contract.rs",
+      "summary": "gpx plugin: thin wrapper over oxiguitar-formats reader",
+      "tags": [
+        "file",
+        "plugin"
+      ],
+      "language": "rust",
+      "complexity": "simple"
+    },
+    {
+      "id": "config:rustfmt.toml",
+      "type": "config",
+      "name": "rustfmt.toml",
+      "filePath": "rustfmt.toml",
+      "summary": "Rustfmt code formatting configuration",
+      "tags": [
+        "config"
+      ],
+      "language": "toml",
+      "complexity": "simple"
+    },
+    {
+      "id": "script:scripts/check-dco.sh",
+      "type": "script",
+      "name": "check-dco.sh",
+      "filePath": "scripts/check-dco.sh",
+      "summary": "Build/automation script (shell)",
+      "tags": [
+        "script"
+      ],
+      "language": "shell",
+      "complexity": "simple"
+    },
+    {
+      "id": "script:scripts/guitar-pro-check.sh",
+      "type": "script",
+      "name": "guitar-pro-check.sh",
+      "filePath": "scripts/guitar-pro-check.sh",
+      "summary": "Build/automation script (shell)",
+      "tags": [
+        "script"
+      ],
+      "language": "shell",
+      "complexity": "simple"
+    },
+    {
+      "id": "file:scripts/interop/alphatab.mjs",
+      "type": "file",
+      "name": "alphatab.mjs",
+      "filePath": "scripts/interop/alphatab.mjs",
+      "summary": "Javascript source file",
+      "tags": [
+        "file"
+      ],
+      "language": "javascript",
+      "complexity": "simple"
+    },
+    {
+      "id": "file:scripts/interop/musescore.py",
+      "type": "file",
+      "name": "musescore.py",
+      "filePath": "scripts/interop/musescore.py",
+      "summary": "Python source file",
+      "tags": [
+        "file"
+      ],
+      "language": "python",
+      "complexity": "simple"
+    },
+    {
+      "id": "config:scripts/interop/package.json",
+      "type": "config",
+      "name": "package.json",
+      "filePath": "scripts/interop/package.json",
+      "summary": "JSON configuration file",
+      "tags": [
+        "config"
+      ],
+      "language": "json",
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:crates/oxiguitar-formats/src/lib.rs",
+      "target": "file:crates/oxiguitar-formats/src/binary.rs",
+      "type": "imports"
+    },
+    {
+      "source": "file:crates/oxiguitar-formats/src/lib.rs",
+      "target": "file:crates/oxiguitar-formats/src/container.rs",
+      "type": "imports"
+    },
+    {
+      "source": "file:crates/oxiguitar-formats/src/lib.rs",
+      "target": "file:crates/oxiguitar-formats/src/detect.rs",
+      "type": "imports"
+    },
+    {
+      "source": "file:crates/oxiguitar-formats/src/lib.rs",
+      "target": "file:crates/oxiguitar-formats/src/error.rs",
+      "type": "imports"
+    },
+    {
+      "source": "file:crates/oxiguitar-formats/src/lib.rs",
+      "target": "file:crates/oxiguitar-formats/src/gp/mod.rs",
+      "type": "imports"
+    },
+    {
+      "source": "file:crates/oxiguitar-formats/src/lib.rs",
+      "target": "file:crates/oxiguitar-formats/src/gpif/mod.rs",
+      "type": "imports"
+    },
+    {
+      "source": "file:crates/oxiguitar-formats/src/lib.rs",
+      "target": "file:crates/oxiguitar-formats/src/plugin.rs",
+      "type": "imports"
+    },
+    {
+      "source": "file:crates/oxiguitar-formats/src/lib.rs",
+      "target": "file:crates/oxiguitar-formats/src/xml.rs",
+      "type": "imports"
+    },
+    {
+      "source": "file:crates/oxiguitar-formats/src/plugin.rs",
+      "target": "file:crates/oxiguitar-formats/src/lib.rs",
+      "type": "imports"
+    },
+    {
+      "source": "file:crates/oxiguitar-formats/src/plugin.rs",
+      "target": "file:crates/oxiguitar-formats/src/detect.rs",
+      "type": "imports"
+    },
+    {
+      "source": "file:crates/oxiguitar-formats/src/plugin.rs",
+      "target": "file:crates/oxiguitar-formats/src/error.rs",
+      "type": "imports"
+    },
+    {
+      "source": "file:crates/oxiguitar-formats/src/gp/mod.rs",
+      "target": "file:crates/oxiguitar-formats/src/binary.rs",
+      "type": "imports"
+    },
+    {
+      "source": "file:crates/oxiguitar-formats/src/gp/mod.rs",
+      "target": "file:crates/oxiguitar-formats/src/error.rs",
+      "type": "imports"
+    },
+    {
+      "source": "file:crates/oxiguitar-formats/src/gp/mod.rs",
+      "target": "file:crates/oxiguitar-formats/src/xml.rs",
+      "type": "imports"
+    },
+    {
+      "source": "file:crates/oxiguitar-formats/src/gp/write.rs",
+      "target": "file:crates/oxiguitar-formats/src/binary.rs",
+      "type": "imports"
+    },
+    {
+      "source": "file:crates/oxiguitar-formats/src/gp/write.rs",
+      "target": "file:crates/oxiguitar-formats/src/gp/mod.rs",
+      "type": "imports"
+    },
+    {
+      "source": "file:crates/oxiguitar-formats/src/gpif/mod.rs",
+      "target": "file:crates/oxiguitar-formats/src/error.rs",
+      "type": "imports"
+    },
+    {
+      "source": "file:crates/oxiguitar-formats/src/gpif/mod.rs",
+      "target": "file:crates/oxiguitar-formats/src/xml.rs",
+      "type": "imports"
+    },
+    {
+      "source": "file:crates/oxiguitar-formats/src/gpif/mod.rs",
+      "target": "file:crates/oxiguitar-formats/src/gpif/effects.rs",
+      "type": "imports"
+    },
+    {
+      "source": "file:crates/oxiguitar-formats/src/gpif/mod.rs",
+      "target": "file:crates/oxiguitar-formats/src/gpif/write/mod.rs",
+      "type": "imports"
+    },
+    {
+      "source": "file:crates/oxiguitar-formats/src/gpif/write/mod.rs",
+      "target": "file:crates/oxiguitar-formats/src/gpif/write/chord.rs",
+      "type": "imports"
+    },
+    {
+      "source": "file:crates/oxiguitar-formats/src/gpif/write/mod.rs",
+      "target": "file:crates/oxiguitar-formats/src/gpif/write/tables.rs",
+      "type": "imports"
+    },
+    {
+      "source": "file:crates/oxiguitar-formats/src/gpif/write/mod.rs",
+      "target": "file:crates/oxiguitar-formats/src/xml.rs",
+      "type": "imports"
+    },
+    {
+      "source": "file:crates/oxiguitar-formats/src/container.rs",
+      "target": "file:crates/oxiguitar-formats/src/error.rs",
+      "type": "imports"
+    },
+    {
+      "source": "file:crates/oxiguitar-formats/src/container.rs",
+      "target": "file:crates/oxiguitar-formats/src/gp/mod.rs",
+      "type": "imports"
+    },
+    {
+      "source": "file:crates/oxiguitar-formats/src/container.rs",
+      "target": "file:crates/oxiguitar-formats/src/gpif/mod.rs",
+      "type": "imports"
+    },
+    {
+      "source": "file:crates/oxiguitar-formats/src/detect.rs",
+      "target": "file:crates/oxiguitar-formats/src/error.rs",
+      "type": "imports"
+    },
+    {
+      "source": "file:crates/oxiguitar-formats/src/binary.rs",
+      "target": "file:crates/oxiguitar-formats/src/error.rs",
+      "type": "imports"
+    },
+    {
+      "source": "file:crates/oxiguitar-formats/src/xml.rs",
+      "target": "file:crates/oxiguitar-formats/src/error.rs",
+      "type": "imports"
+    },
+    {
+      "source": "file:crates/oxiguitar-formats/tests/support/gp_writer.rs",
+      "target": "file:crates/oxiguitar-formats/src/binary.rs",
+      "type": "imports"
+    },
+    {
+      "source": "file:crates/oxiguitar-formats/tests/support/gp_writer.rs",
+      "target": "file:crates/oxiguitar-formats/src/gp/mod.rs",
+      "type": "imports"
+    },
+    {
+      "source": "file:crates/oxiguitar-formats/tests/support/gp_writer.rs",
+      "target": "file:crates/oxiguitar-formats/src/gp/write.rs",
+      "type": "imports"
+    },
+    {
+      "source": "file:crates/oxiguitar-formats/tests/support/gpif_writer.rs",
+      "target": "file:crates/oxiguitar-formats/src/gpif/mod.rs",
+      "type": "imports"
+    },
+    {
+      "source": "file:crates/oxiguitar-formats/tests/support/gpif_writer.rs",
+      "target": "file:crates/oxiguitar-formats/src/gpif/write/mod.rs",
+      "type": "imports"
+    },
+    {
+      "source": "file:crates/oxiguitar-formats/tests/support/gpif_writer.rs",
+      "target": "file:crates/oxiguitar-formats/src/container.rs",
+      "type": "imports"
+    },
+    {
+      "source": "file:crates/oxiguitar-formats/tests/gp5_round_trip.rs",
+      "target": "file:crates/oxiguitar-formats/src/lib.rs",
+      "type": "imports"
+    },
+    {
+      "source": "file:crates/oxiguitar-formats/tests/gp5_round_trip.rs",
+      "target": "file:crates/oxiguitar-formats/src/gp/write.rs",
+      "type": "imports"
+    },
+    {
+      "source": "file:crates/oxiguitar-formats/tests/gp5_round_trip.rs",
+      "target": "file:crates/oxiguitar-formats/tests/support/gp_writer.rs",
+      "type": "imports"
+    },
+    {
+      "source": "file:crates/oxiguitar-formats/tests/gp5_round_trip.rs",
+      "target": "file:crates/oxiguitar-formats/tests/support/song_check.rs",
+      "type": "imports"
+    },
+    {
+      "source": "file:crates/oxiguitar-formats/tests/round_trip.rs",
+      "target": "file:crates/oxiguitar-formats/src/lib.rs",
+      "type": "imports"
+    },
+    {
+      "source": "file:crates/oxiguitar-formats/tests/round_trip.rs",
+      "target": "file:crates/oxiguitar-formats/tests/support/song_check.rs",
+      "type": "imports"
+    },
+    {
+      "source": "file:crates/oxiguitar-formats/tests/guitar_pro.rs",
+      "target": "file:crates/oxiguitar-formats/src/lib.rs",
+      "type": "imports"
+    },
+    {
+      "source": "file:crates/oxiguitar-formats/tests/guitar_pro.rs",
+      "target": "file:crates/oxiguitar-formats/tests/support/song_check.rs",
+      "type": "imports"
+    },
+    {
+      "source": "file:crates/oxiguitar-formats/tests/gpif.rs",
+      "target": "file:crates/oxiguitar-formats/src/lib.rs",
+      "type": "imports"
+    },
+    {
+      "source": "file:crates/oxiguitar-formats/tests/gpif.rs",
+      "target": "file:crates/oxiguitar-formats/tests/support/gpif_writer.rs",
+      "type": "imports"
+    },
+    {
+      "source": "file:crates/oxiguitar-formats/tests/gpif.rs",
+      "target": "file:crates/oxiguitar-formats/tests/support/song_check.rs",
+      "type": "imports"
+    },
+    {
+      "source": "file:crates/oxiguitar-formats/tests/corpus.rs",
+      "target": "file:crates/oxiguitar-formats/src/lib.rs",
+      "type": "imports"
+    },
+    {
+      "source": "file:crates/oxiguitar-formats/tests/corpus.rs",
+      "target": "file:crates/oxiguitar-formats/tests/support/song_check.rs",
+      "type": "imports"
+    },
+    {
+      "source": "file:crates/oxiguitar-formats/tests/host.rs",
+      "target": "file:crates/oxiguitar-formats/src/lib.rs",
+      "type": "imports"
+    },
+    {
+      "source": "file:crates/oxiguitar-formats/tests/host.rs",
+      "target": "file:crates/oxiguitar-formats/tests/support/song_check.rs",
+      "type": "imports"
+    },
+    {
+      "source": "file:crates/oxiguitar-formats/tests/plugin_formats.rs",
+      "target": "file:crates/oxiguitar-formats/src/lib.rs",
+      "type": "imports"
+    },
+    {
+      "source": "file:crates/oxiguitar-formats/tests/guitar_pro_7_6_own.rs",
+      "target": "file:crates/oxiguitar-formats/src/lib.rs",
+      "type": "imports"
+    },
+    {
+      "source": "file:crates/oxiguitar-formats/tests/guitar_pro_7_6_own.rs",
+      "target": "file:crates/oxiguitar-formats/tests/support/song_check.rs",
+      "type": "imports"
+    },
+    {
+      "source": "file:crates/oxiguitar-formats/tests/wire.rs",
+      "target": "file:crates/oxiguitar-formats/src/lib.rs",
+      "type": "imports"
+    },
+    {
+      "source": "file:crates/oxiguitar-formats/examples/write_gp.rs",
+      "target": "file:crates/oxiguitar-formats/src/lib.rs",
+      "type": "imports"
+    },
+    {
+      "source": "file:crates/oxiguitar-formats/examples/write_gp.rs",
+      "target": "file:crates/oxiguitar-formats/src/gp/write.rs",
+      "type": "imports"
+    },
+    {
+      "source": "file:crates/oxiguitar-formats/examples/corpus_manifest/main.rs",
+      "target": "file:crates/oxiguitar-formats/examples/corpus_manifest/sha256.rs",
+      "type": "imports"
+    },
+    {
+      "source": "file:plugins/gp/src/lib.rs",
+      "target": "file:crates/oxiguitar-formats/src/plugin.rs",
+      "type": "imports"
+    },
+    {
+      "source": "file:plugins/gp/src/lib.rs",
+      "target": "file:crates/oxiguitar-formats/src/gpif/mod.rs",
+      "type": "imports"
+    },
+    {
+      "source": "file:plugins/gpx/src/lib.rs",
+      "target": "file:crates/oxiguitar-formats/src/plugin.rs",
+      "type": "imports"
+    },
+    {
+      "source": "file:plugins/gpx/src/lib.rs",
+      "target": "file:crates/oxiguitar-formats/src/gpif/mod.rs",
+      "type": "imports"
+    },
+    {
+      "source": "file:plugins/gp5/src/lib.rs",
+      "target": "file:crates/oxiguitar-formats/src/plugin.rs",
+      "type": "imports"
+    },
+    {
+      "source": "file:plugins/gp5/src/lib.rs",
+      "target": "file:crates/oxiguitar-formats/src/gp/mod.rs",
+      "type": "imports"
+    },
+    {
+      "source": "file:plugins/gp4/src/lib.rs",
+      "target": "file:crates/oxiguitar-formats/src/plugin.rs",
+      "type": "imports"
+    },
+    {
+      "source": "file:plugins/gp4/src/lib.rs",
+      "target": "file:crates/oxiguitar-formats/src/gp/mod.rs",
+      "type": "imports"
+    },
+    {
+      "source": "file:plugins/gp3/src/lib.rs",
+      "target": "file:crates/oxiguitar-formats/src/plugin.rs",
+      "type": "imports"
+    },
+    {
+      "source": "file:plugins/gp3/src/lib.rs",
+      "target": "file:crates/oxiguitar-formats/src/gp/mod.rs",
+      "type": "imports"
+    },
+    {
+      "source": "file:crates/oxiguitar-formats/src/gpif/write/chord.rs",
+      "target": "file:crates/oxiguitar-formats/src/gpif/write/mod.rs",
+      "type": "imports"
+    },
+    {
+      "source": "file:crates/oxiguitar-formats/src/gpif/write/tables.rs",
+      "target": "file:crates/oxiguitar-formats/src/gpif/write/mod.rs",
+      "type": "imports"
+    },
+    {
+      "source": "file:crates/oxiguitar-formats/src/gp/effects.rs",
+      "target": "file:crates/oxiguitar-formats/src/gp/mod.rs",
+      "type": "imports"
+    },
+    {
+      "source": "file:crates/oxiguitar-formats/src/gpif/effects.rs",
+      "target": "file:crates/oxiguitar-formats/src/gpif/mod.rs",
+      "type": "imports"
+    },
+    {
+      "source": "file:crates/oxiguitar-formats/examples/corpus_manifest/sha256.rs",
+      "target": "file:crates/oxiguitar-formats/examples/corpus_manifest/main.rs",
+      "type": "imports"
+    },
+    {
+      "source": "file:plugins/gp3/src/lib.rs",
+      "target": "file:crates/oxiguitar-formats/src/gp/mod.rs",
+      "type": "implements"
+    },
+    {
+      "source": "file:plugins/gp4/src/lib.rs",
+      "target": "file:crates/oxiguitar-formats/src/gp/mod.rs",
+      "type": "implements"
+    },
+    {
+      "source": "file:plugins/gp5/src/lib.rs",
+      "target": "file:crates/oxiguitar-formats/src/gp/mod.rs",
+      "type": "implements"
+    },
+    {
+      "source": "file:plugins/gpx/src/lib.rs",
+      "target": "file:crates/oxiguitar-formats/src/gpif/mod.rs",
+      "type": "implements"
+    },
+    {
+      "source": "file:plugins/gp/src/lib.rs",
+      "target": "file:crates/oxiguitar-formats/src/gpif/mod.rs",
+      "type": "implements"
+    },
+    {
+      "source": "file:crates/oxiguitar-formats/tests/gp5_round_trip.rs",
+      "target": "file:crates/oxiguitar-formats/src/gp/write.rs",
+      "type": "tested_by"
+    },
+    {
+      "source": "file:crates/oxiguitar-formats/tests/gp5_round_trip.rs",
+      "target": "file:crates/oxiguitar-formats/src/gp/mod.rs",
+      "type": "tested_by"
+    },
+    {
+      "source": "file:crates/oxiguitar-formats/tests/gp5_round_trip.rs",
+      "target": "file:crates/oxiguitar-formats/src/binary.rs",
+      "type": "tested_by"
+    },
+    {
+      "source": "file:crates/oxiguitar-formats/tests/round_trip.rs",
+      "target": "file:crates/oxiguitar-formats/src/lib.rs",
+      "type": "tested_by"
+    },
+    {
+      "source": "file:crates/oxiguitar-formats/tests/round_trip.rs",
+      "target": "file:crates/oxiguitar-formats/src/container.rs",
+      "type": "tested_by"
+    },
+    {
+      "source": "file:crates/oxiguitar-formats/tests/round_trip.rs",
+      "target": "file:crates/oxiguitar-formats/src/detect.rs",
+      "type": "tested_by"
+    },
+    {
+      "source": "file:crates/oxiguitar-formats/tests/guitar_pro.rs",
+      "target": "file:crates/oxiguitar-formats/src/gpif/mod.rs",
+      "type": "tested_by"
+    },
+    {
+      "source": "file:crates/oxiguitar-formats/tests/guitar_pro.rs",
+      "target": "file:crates/oxiguitar-formats/src/gpif/write/mod.rs",
+      "type": "tested_by"
+    },
+    {
+      "source": "file:crates/oxiguitar-formats/tests/gpif.rs",
+      "target": "file:crates/oxiguitar-formats/src/gpif/mod.rs",
+      "type": "tested_by"
+    },
+    {
+      "source": "file:crates/oxiguitar-formats/tests/gpif.rs",
+      "target": "file:crates/oxiguitar-formats/src/gpif/write/mod.rs",
+      "type": "tested_by"
+    },
+    {
+      "source": "file:crates/oxiguitar-formats/tests/corpus.rs",
+      "target": "file:crates/oxiguitar-formats/src/lib.rs",
+      "type": "tested_by"
+    },
+    {
+      "source": "file:crates/oxiguitar-formats/tests/corpus.rs",
+      "target": "file:crates/oxiguitar-formats/src/gp/mod.rs",
+      "type": "tested_by"
+    },
+    {
+      "source": "file:crates/oxiguitar-formats/tests/corpus.rs",
+      "target": "file:crates/oxiguitar-formats/src/gpif/mod.rs",
+      "type": "tested_by"
+    },
+    {
+      "source": "file:crates/oxiguitar-formats/tests/host.rs",
+      "target": "file:crates/oxiguitar-formats/src/lib.rs",
+      "type": "tested_by"
+    },
+    {
+      "source": "file:crates/oxiguitar-formats/tests/host.rs",
+      "target": "file:crates/oxiguitar-formats/src/plugin.rs",
+      "type": "tested_by"
+    },
+    {
+      "source": "file:crates/oxiguitar-formats/tests/plugin_formats.rs",
+      "target": "file:crates/oxiguitar-formats/src/plugin.rs",
+      "type": "tested_by"
+    },
+    {
+      "source": "file:crates/oxiguitar-formats/tests/guitar_pro_7_6_own.rs",
+      "target": "file:crates/oxiguitar-formats/src/gpif/mod.rs",
+      "type": "tested_by"
+    },
+    {
+      "source": "file:crates/oxiguitar-formats/tests/wire.rs",
+      "target": "file:crates/oxiguitar-formats/src/lib.rs",
+      "type": "tested_by"
+    },
+    {
+      "source": "file:crates/oxiguitar-formats/examples/write_gp.rs",
+      "target": "file:crates/oxiguitar-formats/src/lib.rs",
+      "type": "uses"
+    },
+    {
+      "source": "file:crates/oxiguitar-formats/examples/write_gp.rs",
+      "target": "file:crates/oxiguitar-formats/src/gp/write.rs",
+      "type": "uses"
+    },
+    {
+      "source": "file:fuzz/fuzz_targets/gp_writer.rs",
+      "target": "file:crates/oxiguitar-formats/src/gp/write.rs",
+      "type": "fuzzes"
+    },
+    {
+      "source": "file:fuzz/fuzz_targets/gp_writer.rs",
+      "target": "file:crates/oxiguitar-formats/src/binary.rs",
+      "type": "fuzzes"
+    },
+    {
+      "source": "file:fuzz/fuzz_targets/gpif.rs",
+      "target": "file:crates/oxiguitar-formats/src/gpif/mod.rs",
+      "type": "fuzzes"
+    },
+    {
+      "source": "file:fuzz/fuzz_targets/guitar_pro_3_5.rs",
+      "target": "file:crates/oxiguitar-formats/src/gp/mod.rs",
+      "type": "fuzzes"
+    },
+    {
+      "source": "file:fuzz/fuzz_targets/guitar_pro_6.rs",
+      "target": "file:crates/oxiguitar-formats/src/gpif/mod.rs",
+      "type": "fuzzes"
+    },
+    {
+      "source": "file:fuzz/fuzz_targets/guitar_pro_7.rs",
+      "target": "file:crates/oxiguitar-formats/src/gpif/mod.rs",
+      "type": "fuzzes"
+    },
+    {
+      "source": "file:fuzz/fuzz_targets/plugin_dispatch.rs",
+      "target": "file:crates/oxiguitar-formats/src/plugin.rs",
+      "type": "fuzzes"
+    },
+    {
+      "source": "file:fuzz/fuzz_targets/any_file.rs",
+      "target": "file:crates/oxiguitar-formats/src/lib.rs",
+      "type": "fuzzes"
+    }
+  ],
+  "layers": [
+    {
+      "id": "layer:core-formats",
+      "name": "Core Formats",
+      "description": "oxiguitar-formats crate: binary and XML readers/writers for GP3-GP8 formats, format detection, error handling, and plugin integration",
+      "nodeIds": [
+        "file:crates/oxiguitar-formats/src/binary.rs",
+        "file:crates/oxiguitar-formats/src/container.rs",
+        "file:crates/oxiguitar-formats/src/detect.rs",
+        "file:crates/oxiguitar-formats/src/error.rs",
+        "file:crates/oxiguitar-formats/src/gp/effects.rs",
+        "file:crates/oxiguitar-formats/src/gp/mod.rs",
+        "file:crates/oxiguitar-formats/src/gp/write.rs",
+        "file:crates/oxiguitar-formats/src/gpif/effects.rs",
+        "file:crates/oxiguitar-formats/src/gpif/mod.rs",
+        "file:crates/oxiguitar-formats/src/gpif/write/chord.rs",
+        "file:crates/oxiguitar-formats/src/gpif/write/mod.rs",
+        "file:crates/oxiguitar-formats/src/gpif/write/tables.rs",
+        "file:crates/oxiguitar-formats/src/lib.rs",
+        "file:crates/oxiguitar-formats/src/plugin.rs",
+        "file:crates/oxiguitar-formats/src/xml.rs"
+      ]
+    },
+    {
+      "id": "layer:plugins",
+      "name": "Plugins",
+      "description": "Five thin plugin crates (gp3, gp4, gp5, gpx, gp) that wrap oxiguitar-formats readers and implement the oxiguitar-plugin-api trait",
+      "nodeIds": [
+        "file:plugins/gp/src/lib.rs",
+        "file:plugins/gp/tests/contract.rs",
+        "file:plugins/gp3/src/lib.rs",
+        "file:plugins/gp3/tests/contract.rs",
+        "file:plugins/gp4/src/lib.rs",
+        "file:plugins/gp4/tests/contract.rs",
+        "file:plugins/gp5/src/lib.rs",
+        "file:plugins/gp5/tests/contract.rs",
+        "file:plugins/gpx/src/lib.rs",
+        "file:plugins/gpx/tests/contract.rs"
+      ]
+    },
+    {
+      "id": "layer:testing",
+      "name": "Testing",
+      "description": "Integration tests, round-trip tests, corpus tests, fuzz targets, and test support utilities",
+      "nodeIds": [
+        "file:crates/oxiguitar-formats/tests/corpus.rs",
+        "file:crates/oxiguitar-formats/tests/gp5_round_trip.rs",
+        "file:crates/oxiguitar-formats/tests/gpif.rs",
+        "file:crates/oxiguitar-formats/tests/guitar_pro.rs",
+        "file:crates/oxiguitar-formats/tests/guitar_pro_7_6_own.rs",
+        "file:crates/oxiguitar-formats/tests/host.rs",
+        "file:crates/oxiguitar-formats/tests/plugin_formats.rs",
+        "file:crates/oxiguitar-formats/tests/round_trip.rs",
+        "file:crates/oxiguitar-formats/tests/support/compare.rs",
+        "file:crates/oxiguitar-formats/tests/support/gp_writer.rs",
+        "file:crates/oxiguitar-formats/tests/support/gpif_writer.rs",
+        "file:crates/oxiguitar-formats/tests/support/song_check.rs",
+        "file:crates/oxiguitar-formats/tests/wire.rs",
+        "file:fuzz/fuzz_targets/any_file.rs",
+        "file:fuzz/fuzz_targets/gp_writer.rs",
+        "file:fuzz/fuzz_targets/gpif.rs",
+        "file:fuzz/fuzz_targets/guitar_pro_3_5.rs",
+        "file:fuzz/fuzz_targets/guitar_pro_6.rs",
+        "file:fuzz/fuzz_targets/guitar_pro_7.rs",
+        "file:fuzz/fuzz_targets/plugin_dispatch.rs",
+        "data:fuzz/gpif.dict",
+        "script:fuzz/run.sh",
+        "script:fuzz/seeds.sh"
+      ]
+    },
+    {
+      "id": "layer:examples",
+      "name": "Examples",
+      "description": "Example programs demonstrating read/write usage of the formats crate",
+      "nodeIds": [
+        "file:crates/oxiguitar-formats/examples/corpus_manifest/main.rs",
+        "file:crates/oxiguitar-formats/examples/corpus_manifest/sha256.rs",
+        "file:crates/oxiguitar-formats/examples/write_gp.rs"
+      ]
+    },
+    {
+      "id": "layer:fixtures",
+      "name": "Fixtures",
+      "description": "Guitar Pro test files across all formats: GP3/GP4/GP5 binary, GPX/GP XML/GPIF, organized by feature coverage",
+      "nodeIds": [
+        "data:fixtures/gp/oxiguitar-test-song.gp",
+        "data:fixtures/gp/oxiguitar-test-song.gp3",
+        "data:fixtures/gp/oxiguitar-test-song.gp4",
+        "data:fixtures/gp/oxiguitar-test-song.gp5",
+        "data:fixtures/gp/oxiguitar-test-song.gpx",
+        "data:fixtures/guitar-pro-7.6/bends.gpif",
+        "data:fixtures/guitar-pro-7.6/chord-names.gpif",
+        "data:fixtures/guitar-pro-7.6/drop-d-and-capo.gpif",
+        "data:fixtures/guitar-pro-7.6/effects-together.gpif",
+        "data:fixtures/guitar-pro-7.6/four-voices.gpif",
+        "data:fixtures/guitar-pro-7.6/header-and-credits.gpif",
+        "data:fixtures/guitar-pro-7.6/nylon-guitar-default.gp",
+        "data:fixtures/guitar-pro-7.6/pianos-high-low.gp",
+        "data:fixtures/guitar-pro-7.6/repeats-and-endings.gpif",
+        "data:fixtures/guitar-pro-7.6/sections-and-directions.gpif",
+        "data:fixtures/guitar-pro-7.6/tempo-changes.gpif",
+        "data:fixtures/guitar-pro-7.6/unusual-tuplets.gpif",
+        "data:fixtures/guitar-pro-check/articulations.gp",
+        "data:fixtures/guitar-pro-check/articulations.gp5",
+        "data:fixtures/guitar-pro-check/bass.gp",
+        "data:fixtures/guitar-pro-check/bass.gp5",
+        "data:fixtures/guitar-pro-check/beams-and-flags.gp",
+        "data:fixtures/guitar-pro-check/beams-and-flags.gp5",
+        "data:fixtures/guitar-pro-check/beat-text.gp",
+        "data:fixtures/guitar-pro-check/beat-text.gp5",
+        "data:fixtures/guitar-pro-check/bends.gp",
+        "data:fixtures/guitar-pro-check/bends.gp5",
+        "data:fixtures/guitar-pro-check/chord-names.gp",
+        "data:fixtures/guitar-pro-check/chord-names.gp5",
+        "data:fixtures/guitar-pro-check/chords-and-accidentals.gp",
+        "data:fixtures/guitar-pro-check/chords-and-accidentals.gp5",
+        "data:fixtures/guitar-pro-check/dark-page.gp",
+        "data:fixtures/guitar-pro-check/dark-page.gp5",
+        "data:fixtures/guitar-pro-check/dead-ghost-palm-mute.gp",
+        "data:fixtures/guitar-pro-check/dead-ghost-palm-mute.gp5",
+        "data:fixtures/guitar-pro-check/dots-and-ties.gp",
+        "data:fixtures/guitar-pro-check/dots-and-ties.gp5",
+        "data:fixtures/guitar-pro-check/drop-d-and-capo.gp",
+        "data:fixtures/guitar-pro-check/drop-d-and-capo.gp5",
+        "data:fixtures/guitar-pro-check/drums.gp",
+        "data:fixtures/guitar-pro-check/drums.gp5",
+        "data:fixtures/guitar-pro-check/dynamics-hidden.gp",
+        "data:fixtures/guitar-pro-check/dynamics-hidden.gp5",
+        "data:fixtures/guitar-pro-check/dynamics.gp",
+        "data:fixtures/guitar-pro-check/dynamics.gp5",
+        "data:fixtures/guitar-pro-check/effects-together.gp",
+        "data:fixtures/guitar-pro-check/effects-together.gp5",
+        "data:fixtures/guitar-pro-check/eight-tracks.gp",
+        "data:fixtures/guitar-pro-check/eight-tracks.gp5",
+        "data:fixtures/guitar-pro-check/empty-bars.gp",
+        "data:fixtures/guitar-pro-check/empty-bars.gp5",
+        "data:fixtures/guitar-pro-check/four-voices.gp",
+        "data:fixtures/guitar-pro-check/four-voices.gp5",
+        "data:fixtures/guitar-pro-check/grace-notes.gp",
+        "data:fixtures/guitar-pro-check/grace-notes.gp5",
+        "data:fixtures/guitar-pro-check/hammer-on-pull-off.gp",
+        "data:fixtures/guitar-pro-check/hammer-on-pull-off.gp5",
+        "data:fixtures/guitar-pro-check/harmonics.gp",
+        "data:fixtures/guitar-pro-check/harmonics.gp5",
+        "data:fixtures/guitar-pro-check/header-and-credits.gp",
+        "data:fixtures/guitar-pro-check/header-and-credits.gp5",
+        "data:fixtures/guitar-pro-check/key-signatures.gp",
+        "data:fixtures/guitar-pro-check/key-signatures.gp5",
+        "data:fixtures/guitar-pro-check/layout-horizontal.gp",
+        "data:fixtures/guitar-pro-check/layout-horizontal.gp5",
+        "data:fixtures/guitar-pro-check/layout-parchment.gp",
+        "data:fixtures/guitar-pro-check/layout-parchment.gp5",
+        "data:fixtures/guitar-pro-check/layout-vertical.gp",
+        "data:fixtures/guitar-pro-check/layout-vertical.gp5",
+        "data:fixtures/guitar-pro-check/let-ring.gp",
+        "data:fixtures/guitar-pro-check/let-ring.gp5",
+        "data:fixtures/guitar-pro-check/lyrics.gp",
+        "data:fixtures/guitar-pro-check/lyrics.gp5",
+        "data:fixtures/guitar-pro-check/notation-choice.gp",
+        "data:fixtures/guitar-pro-check/notation-choice.gp5",
+        "data:fixtures/guitar-pro-check/notes-and-rests.gp",
+        "data:fixtures/guitar-pro-check/notes-and-rests.gp5",
+        "data:fixtures/guitar-pro-check/page-breaks.gp",
+        "data:fixtures/guitar-pro-check/page-breaks.gp5",
+        "data:fixtures/guitar-pro-check/paper-letter.gp",
+        "data:fixtures/guitar-pro-check/paper-letter.gp5",
+        "data:fixtures/guitar-pro-check/piano-grand-staff.gp",
+        "data:fixtures/guitar-pro-check/piano-grand-staff.gp5",
+        "data:fixtures/guitar-pro-check/repeats-and-endings.gp",
+        "data:fixtures/guitar-pro-check/repeats-and-endings.gp5",
+        "data:fixtures/guitar-pro-check/rhythm-on-tab.gp",
+        "data:fixtures/guitar-pro-check/rhythm-on-tab.gp5",
+        "data:fixtures/guitar-pro-check/sections-and-directions.gp",
+        "data:fixtures/guitar-pro-check/sections-and-directions.gp5",
+        "data:fixtures/guitar-pro-check/seven-string.gp",
+        "data:fixtures/guitar-pro-check/seven-string.gp5",
+        "data:fixtures/guitar-pro-check/slides.gp",
+        "data:fixtures/guitar-pro-check/slides.gp5",
+        "data:fixtures/guitar-pro-check/standard-only.gp",
+        "data:fixtures/guitar-pro-check/standard-only.gp5",
+        "data:fixtures/guitar-pro-check/strings-treble-and-bass.gp",
+        "data:fixtures/guitar-pro-check/strings-treble-and-bass.gp5",
+        "data:fixtures/guitar-pro-check/strums-and-techniques.gp",
+        "data:fixtures/guitar-pro-check/strums-and-techniques.gp5",
+        "data:fixtures/guitar-pro-check/tall-system-shrinks.gp",
+        "data:fixtures/guitar-pro-check/tall-system-shrinks.gp5",
+        "data:fixtures/guitar-pro-check/tempo-changes.gp",
+        "data:fixtures/guitar-pro-check/tempo-changes.gp5",
+        "data:fixtures/guitar-pro-check/test-song-from-gp.gp",
+        "data:fixtures/guitar-pro-check/test-song-from-gp.gp5",
+        "data:fixtures/guitar-pro-check/test-song-from-gp3.gp",
+        "data:fixtures/guitar-pro-check/test-song-from-gp3.gp5",
+        "data:fixtures/guitar-pro-check/test-song-from-gp4.gp",
+        "data:fixtures/guitar-pro-check/test-song-from-gp4.gp5",
+        "data:fixtures/guitar-pro-check/test-song-from-gp5.gp",
+        "data:fixtures/guitar-pro-check/test-song-from-gp5.gp5",
+        "data:fixtures/guitar-pro-check/test-song-from-gpx.gp",
+        "data:fixtures/guitar-pro-check/test-song-from-gpx.gp5",
+        "data:fixtures/guitar-pro-check/time-signatures.gp",
+        "data:fixtures/guitar-pro-check/time-signatures.gp5",
+        "data:fixtures/guitar-pro-check/tremolo-picking.gp",
+        "data:fixtures/guitar-pro-check/tremolo-picking.gp5",
+        "data:fixtures/guitar-pro-check/triplets.gp",
+        "data:fixtures/guitar-pro-check/triplets.gp5",
+        "data:fixtures/guitar-pro-check/two-voices.gp",
+        "data:fixtures/guitar-pro-check/two-voices.gp5",
+        "data:fixtures/guitar-pro-check/unusual-tuplets.gp",
+        "data:fixtures/guitar-pro-check/unusual-tuplets.gp5",
+        "data:fixtures/guitar-pro-check/vibrato-and-trill.gp",
+        "data:fixtures/guitar-pro-check/vibrato-and-trill.gp5",
+        "data:fixtures/guitar-pro-check/whammy-and-fade-in.gp",
+        "data:fixtures/guitar-pro-check/whammy-and-fade-in.gp5",
+        "data:fixtures/reference/articulations.gp",
+        "data:fixtures/reference/bass.gp",
+        "data:fixtures/reference/beams-and-flags.gp",
+        "data:fixtures/reference/beat-text.gp",
+        "data:fixtures/reference/bends.gp",
+        "data:fixtures/reference/chord-names.gp",
+        "data:fixtures/reference/chords-and-accidentals.gp",
+        "data:fixtures/reference/dark-page.gp",
+        "data:fixtures/reference/dead-ghost-palm-mute.gp",
+        "data:fixtures/reference/dots-and-ties.gp",
+        "data:fixtures/reference/drop-d-and-capo.gp",
+        "data:fixtures/reference/drums.gp",
+        "data:fixtures/reference/dynamics-hidden.gp",
+        "data:fixtures/reference/dynamics.gp",
+        "data:fixtures/reference/effects-together.gp",
+        "data:fixtures/reference/eight-tracks.gp",
+        "data:fixtures/reference/empty-bars.gp",
+        "data:fixtures/reference/four-voices.gp",
+        "data:fixtures/reference/grace-notes.gp",
+        "data:fixtures/reference/hammer-on-pull-off.gp",
+        "data:fixtures/reference/harmonics.gp",
+        "data:fixtures/reference/header-and-credits.gp",
+        "data:fixtures/reference/key-signatures.gp",
+        "data:fixtures/reference/layout-horizontal.gp",
+        "data:fixtures/reference/layout-parchment.gp",
+        "data:fixtures/reference/layout-vertical.gp",
+        "data:fixtures/reference/let-ring.gp",
+        "data:fixtures/reference/lyrics.gp",
+        "data:fixtures/reference/notation-choice.gp",
+        "data:fixtures/reference/notes-and-rests.gp",
+        "data:fixtures/reference/page-breaks.gp",
+        "data:fixtures/reference/paper-letter.gp",
+        "data:fixtures/reference/piano-grand-staff.gp",
+        "data:fixtures/reference/repeats-and-endings.gp",
+        "data:fixtures/reference/rhythm-on-tab.gp",
+        "data:fixtures/reference/sections-and-directions.gp",
+        "data:fixtures/reference/seven-string.gp",
+        "data:fixtures/reference/slides.gp",
+        "data:fixtures/reference/standard-only.gp",
+        "data:fixtures/reference/strings-treble-and-bass.gp",
+        "data:fixtures/reference/strums-and-techniques.gp",
+        "data:fixtures/reference/tall-system-shrinks.gp",
+        "data:fixtures/reference/tempo-changes.gp",
+        "data:fixtures/reference/time-signatures.gp",
+        "data:fixtures/reference/tremolo-picking.gp",
+        "data:fixtures/reference/triplets.gp",
+        "data:fixtures/reference/two-voices.gp",
+        "data:fixtures/reference/unusual-tuplets.gp",
+        "data:fixtures/reference/vibrato-and-trill.gp",
+        "data:fixtures/reference/whammy-and-fade-in.gp"
+      ]
+    },
+    {
+      "id": "layer:configuration",
+      "name": "Configuration",
+      "description": "Cargo manifests (workspace + sub-crates), clippy/deny/rustfmt config, Dependabot, corpus manifest, and plugin manifests",
+      "nodeIds": [
+        "config:.github/dependabot.yml",
+        "config:Cargo.toml",
+        "config:clippy.toml",
+        "config:corpus/MANIFEST.toml",
+        "config:crates/oxiguitar-formats/Cargo.toml",
+        "config:deny.toml",
+        "config:fuzz/Cargo.toml",
+        "config:plugins/gp/Cargo.toml",
+        "config:plugins/gp/manifest.json",
+        "config:plugins/gp3/Cargo.toml",
+        "config:plugins/gp3/manifest.json",
+        "config:plugins/gp4/Cargo.toml",
+        "config:plugins/gp4/manifest.json",
+        "config:plugins/gp5/Cargo.toml",
+        "config:plugins/gp5/manifest.json",
+        "config:plugins/gpx/Cargo.toml",
+        "config:plugins/gpx/manifest.json",
+        "config:rustfmt.toml"
+      ]
+    },
+    {
+      "id": "layer:ci-cd",
+      "name": "CI/CD",
+      "description": "GitHub Actions workflows: CI, fuzz testing, interoperability, publishing, and release automation",
+      "nodeIds": [
+        "pipeline:.github/workflows/ci.yml",
+        "pipeline:.github/workflows/fuzz.yml",
+        "pipeline:.github/workflows/interop.yml",
+        "pipeline:.github/workflows/publish.yml",
+        "pipeline:.github/workflows/release.yml"
+      ]
+    },
+    {
+      "id": "layer:documentation",
+      "name": "Documentation",
+      "description": "README, changelog, contributing guide, Claude configuration, fixture documentation, and corpus readme",
+      "nodeIds": [
+        "document:.github/pull_request_template.md",
+        "document:CHANGELOG.md",
+        "document:CLAUDE.md",
+        "document:CONTRIBUTING.md",
+        "document:README.md",
+        "document:corpus/README.md",
+        "document:fixtures/guitar-pro-7.6/README.md",
+        "document:fixtures/guitar-pro-check/README.md",
+        "document:fixtures/guitar-pro-check/conversions.txt",
+        "document:fuzz/README.md"
+      ]
+    },
+    {
+      "id": "layer:scripts",
+      "name": "Scripts",
+      "description": "Build scripts, interop converters, and fuzz helper scripts",
+      "nodeIds": [
+        "script:build-oxp.sh",
+        "script:scripts/check-dco.sh",
+        "script:scripts/guitar-pro-check.sh",
+        "file:scripts/interop/alphatab.mjs",
+        "file:scripts/interop/musescore.py",
+        "config:scripts/interop/package.json"
+      ]
+    }
+  ],
+  "tour": [
+    {
+      "order": 1,
+      "title": "Project Overview",
+      "description": "oxiguitar-guitarpro is a Rust workspace providing complete read and write support for Guitar Pro file formats (GP3 through GP8). It consists of a core formats crate and five thin plugin crates, with extensive testing across all supported formats.",
+      "nodeIds": [
+        "document:README.md",
+        "config:Cargo.toml"
+      ]
+    },
+    {
+      "order": 2,
+      "title": "Core Library Entry Point",
+      "description": "The main library re-exports the public API: read() for importing songs from any supported format, write_gp() for GP/GPIF export, write_gp5() for GP5 export, and format detection utilities.",
+      "nodeIds": [
+        "file:crates/oxiguitar-formats/src/lib.rs"
+      ]
+    },
+    {
+      "order": 3,
+      "title": "Binary Format Readers (GP3/GP4/GP5)",
+      "description": "The gp module provides a binary reader for Guitar Pro 3, 4, and 5 formats. It uses the binary module for low-level I/O and parses song structure, tracks, beats, notes, and musical effects directly from binary data.",
+      "nodeIds": [
+        "file:crates/oxiguitar-formats/src/gp/mod.rs",
+        "file:crates/oxiguitar-formats/src/binary.rs",
+        "file:crates/oxiguitar-formats/src/gp/effects.rs"
+      ]
+    },
+    {
+      "order": 4,
+      "title": "XML/GPIF Format Readers (GP6/GP7/GP8)",
+      "description": "The gpif module reads Guitar Pro 6+ formats (GPX and .gp files) which use XML-based Guitar Pro Interchange Format. It includes an XML parser, effects handler, and container support for ZIP archives.",
+      "nodeIds": [
+        "file:crates/oxiguitar-formats/src/gpif/mod.rs",
+        "file:crates/oxiguitar-formats/src/xml.rs",
+        "file:crates/oxiguitar-formats/src/gpif/effects.rs",
+        "file:crates/oxiguitar-formats/src/container.rs"
+      ]
+    },
+    {
+      "order": 5,
+      "title": "Format Writers",
+      "description": "Two writer modules: GP5 writer for binary GP5 output, and GP/GPIF writer for Guitar Pro 6+ XML output. Both serialize the oxiguitar-model song representation back to their respective formats.",
+      "nodeIds": [
+        "file:crates/oxiguitar-formats/src/gp/write.rs",
+        "file:crates/oxiguitar-formats/src/gpif/write/mod.rs",
+        "file:crates/oxiguitar-formats/src/gpif/write/chord.rs",
+        "file:crates/oxiguitar-formats/src/gpif/write/tables.rs"
+      ]
+    },
+    {
+      "order": 6,
+      "title": "Plugin Architecture",
+      "description": "Five plugin crates (gp3, gp4, gp5, gpx, gp) each provide a thin wrapper over the corresponding oxiguitar-formats reader, implementing the oxiguitar-plugin-api trait. Each plugin is feature-gated to only include its own reader, keeping binary size minimal.",
+      "nodeIds": [
+        "file:plugins/gp3/src/lib.rs",
+        "file:plugins/gp4/src/lib.rs",
+        "file:plugins/gp5/src/lib.rs",
+        "file:plugins/gpx/src/lib.rs",
+        "file:plugins/gp/src/lib.rs"
+      ]
+    },
+    {
+      "order": 7,
+      "title": "Testing Infrastructure",
+      "description": "Comprehensive test suite including round-trip tests (read then write, verify), corpus tests (read all known files), format-specific tests, host integration tests, and fuzz testing targets for crash discovery.",
+      "nodeIds": [
+        "file:crates/oxiguitar-formats/tests/round_trip.rs",
+        "file:crates/oxiguitar-formats/tests/gp5_round_trip.rs",
+        "file:crates/oxiguitar-formats/tests/corpus.rs",
+        "file:crates/oxiguitar-formats/tests/guitar_pro.rs",
+        "file:crates/oxiguitar-formats/tests/gpif.rs",
+        "file:crates/oxiguitar-formats/tests/host.rs",
+        "file:crates/oxiguitar-formats/tests/support/song_check.rs"
+      ]
+    },
+    {
+      "order": 8,
+      "title": "Fixture Coverage",
+      "description": "Extensive fixture sets covering all musical features: notes, rests, bends, vibrato, harmonics, chords, dynamics, articulations, repeats, tempo changes, layout options, and more. Organized into gp (multi-format), guitar-pro-check (feature pairs), guitar-pro-7.6 (GP7-specific), and reference (canonical GP files).",
+      "nodeIds": [
+        "document:fixtures/guitar-pro-check/README.md",
+        "document:fixtures/guitar-pro-7.6/README.md"
+      ]
+    }
+  ]
+}
