@@ -26,7 +26,7 @@ You can also copy the `.oxp` files from a zip into OxiGuitar's plugin folder by 
 
 ## Build and test
 
-Rust 1.99 or later from [rustup](https://rustup.rs). The plugin SDK and the score model come from OxiGuitar's repository by git tag (`v0.11.0`, plugin interface 1.4); nothing of OxiGuitar's is on crates.io.
+Rust 1.99 or later from [rustup](https://rustup.rs). The plugin SDK and the score model come from OxiGuitar's repository by git tag (`v0.17.0`, plugin interface 1.6); nothing of OxiGuitar's is on crates.io.
 
 ```sh
 cargo test --workspace      # the readers, the writers, and the five plugins as .oxp files

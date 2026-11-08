@@ -257,6 +257,9 @@ fn first_difference(a: &Score, b: &Score) -> String {
             return format!("master bar {}: {x:?}\n  vs {y:?}", i + 1);
         }
     }
+    if a.layout != b.layout {
+        return format!("bars per system: {:?} vs {:?}", a.layout, b.layout);
+    }
     if a.master_bars.len() != b.master_bars.len() {
         return "bar count".into();
     }
@@ -266,6 +269,12 @@ fn first_difference(a: &Score, b: &Score) -> String {
             return format!(
                 "track {t} name or colour: {:?} {:?} {:?} vs {:?} {:?} {:?}",
                 x.name, x.short_name, x.color, y.name, y.short_name, y.color
+            );
+        }
+        if x.layout != y.layout {
+            return format!(
+                "track {t} bars per system: {:?} vs {:?}",
+                x.layout, y.layout
             );
         }
         if x.instrument != y.instrument {
@@ -486,4 +495,68 @@ fn free_time_round_trips() {
     let written = write_gp(&score).unwrap();
     assert_eq!(written.losses.warning_count(), 0);
     assert_eq!(read(&written.data).unwrap().score, score);
+}
+
+#[test]
+fn the_marks_of_interface_1_6_round_trip() {
+    use oxiguitar_model::{
+        Barre, Beaming, Fade, Fermata, FermataKind, Golpe, Hairpin, Ornament, Ottava, Pedal,
+        Rasgueado, Ratio, Simile, Spelling, StrokeDirection, Vibrato, Wah,
+    };
+    let path =
+        Path::new(env!("CARGO_MANIFEST_DIR")).join("../../fixtures/gp/oxiguitar-test-song.gp");
+    let mut score = read(&std::fs::read(path).unwrap()).unwrap().score;
+    score.layout = vec![2, 1];
+    score.tracks[0].layout = vec![3];
+    score.master_bars[0].fermatas.push(Fermata {
+        position: Ratio::new(1, 4).unwrap(),
+        kind: FermataKind::Long,
+        length: 0.5,
+    });
+    let staff = &mut score.tracks[0].staves[0];
+    let beats = &mut staff.bars[0].voices[0].beats;
+    let b = &mut beats[0];
+    b.slur = true;
+    b.hairpin = Some(Hairpin::Crescendo);
+    b.ottava = Some(Ottava::Bassa8);
+    b.slash = true;
+    b.beaming = Beaming::Break;
+    b.barre = Some(Barre {
+        fret: 3,
+        half: true,
+    });
+    b.effects.fade = Some(Fade::Swell);
+    b.effects.bridge_vibrato = Some(Vibrato::Slight);
+    b.effects.pedal = Some(Pedal::Down);
+    b.effects.wah = Some(Wah::Closed);
+    b.effects.arpeggio = Some(StrokeDirection::Up);
+    b.effects.rasgueado = Some(Rasgueado::PeiAnapaest);
+    b.effects.golpe = Some(Golpe::Thumb);
+    b.effects.dead_slap = true;
+    let n = &mut b.notes[0];
+    n.effects.vibrato = Some(Vibrato::Wide);
+    n.effects.ornament = Some(Ornament::LowerMordent);
+    n.effects.string_number = true;
+    beats[1].beaming = Beaming::BreakSecondary;
+    beats[1].effects.pedal = Some(Pedal::Up);
+    // A spelling that spells the note (string 6 fret 0 is E: F flat).
+    let low_e = staff.bars[0].voices[0]
+        .beats
+        .iter_mut()
+        .flat_map(|b| &mut b.notes)
+        .find(|n| {
+            matches!(
+                n.place,
+                oxiguitar_model::NotePlace::Fretted { string: 6, fret: 0 }
+            )
+        });
+    if let Some(n) = low_e {
+        n.spelling = Some(Spelling { step: 3, alter: -1 });
+    }
+    staff.bars[2].voices = staff.bars[1].voices.clone();
+    staff.bars[2].simile = Some(Simile::Simple);
+    let written = write_gp(&score).unwrap();
+    assert_eq!(written.losses.warning_count(), 0, "{:?}", written.losses);
+    let back = read(&written.data).unwrap().score;
+    assert!(back == score, "{}", first_difference(&back, &score));
 }

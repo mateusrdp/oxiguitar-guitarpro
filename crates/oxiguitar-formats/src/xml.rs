@@ -146,11 +146,6 @@ impl<'a> Element<'a> {
         .map(move |index| Element { doc, index })
     }
 
-    /// Whether the element has child elements.
-    pub(crate) fn has_children(self) -> bool {
-        self.node().first_child != NONE
-    }
-
     /// The first child with this name.
     pub(crate) fn child(self, name: &str) -> Option<Element<'a>> {
         self.children().find(|c| c.name() == name)
