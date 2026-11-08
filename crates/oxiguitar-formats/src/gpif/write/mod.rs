@@ -1561,11 +1561,25 @@ impl<'s> Writer<'s> {
         }
         // A chosen spelling is the written note's: it goes into the
         // transposed pitch, and into the concert pitch too when the staff
-        // isn't transposed.
+        // isn't transposed. A note with none is spelled as OxiGuitar would
+        // spell it in the bar's key, which is what the reader leaves
+        // unchosen (B flat in three flats, not the A sharp a fixed table
+        // gives, which read back as a chosen spelling).
         let written = sounding - transpose;
-        let spelled = note.spelling.filter(|sp| {
-            !percussion && u8::try_from(written.rem_euclid(12)).is_ok_and(|pc| sp.spells(Pitch(pc)))
-        });
+        let written_pc = u8::try_from(written.rem_euclid(12)).ok().map(Pitch);
+        let bar_key = self
+            .score
+            .master_bars
+            .get(self.place.0)
+            .map(|m| m.key_signature)
+            .unwrap_or_default();
+        let spelled = if percussion {
+            None
+        } else {
+            note.spelling
+                .filter(|sp| written_pc.is_some_and(|pc| sp.spells(pc)))
+                .or_else(|| written_pc.map(|pc| Spelling::automatic(pc, bar_key)))
+        };
         let concert = match spelled.filter(|_| transpose == 0) {
             Some(sp) => spelled_pitch_xml(sounding, sp),
             None => pitch_xml(sounding),

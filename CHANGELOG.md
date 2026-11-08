@@ -8,6 +8,15 @@ the plugins' own; the plugin interface they use is in each plugin's
 
 ## [Unreleased]
 
+### Fixed
+
+- **Notes in flat keys no longer gain a spelling when saved as .gp.** A note
+  with no chosen spelling was written with a fixed table of sharps, so in a
+  flat key a B flat was saved as A sharp and came back as a chosen
+  spelling. It is now written as OxiGuitar spells it in the bar's key (as
+  Guitar Pro itself would). Found by OxiGuitar's edit-and-save test, which
+  failed once 0.2.0 was published.
+
 ## [0.2.0] - 2026-11-08
 
 ### Added
