@@ -225,8 +225,8 @@ dependencies = [
 
 [[package]]
 name = "oxiguitar-host"
-version = "0.16.0"
-source = "git+https://github.com/mateusrdp/oxiguitar?rev=3da8d485df815ea3f202a10b3ca426e9a1465681#3da8d485df815ea3f202a10b3ca426e9a1465681"
+version = "0.17.0"
+source = "git+https://github.com/mateusrdp/oxiguitar?tag=v0.17.0#16c129e9db0c0ba5a92811aee22b910f0f72f27d"
 dependencies = [
  "libloading",
  "object",
@@ -236,8 +236,8 @@ dependencies = [
 
 [[package]]
 name = "oxiguitar-model"
-version = "0.16.0"
-source = "git+https://github.com/mateusrdp/oxiguitar?rev=3da8d485df815ea3f202a10b3ca426e9a1465681#3da8d485df815ea3f202a10b3ca426e9a1465681"
+version = "0.17.0"
+source = "git+https://github.com/mateusrdp/oxiguitar?tag=v0.17.0#16c129e9db0c0ba5a92811aee22b910f0f72f27d"
 dependencies = [
  "oxiguitar-plugin-api",
 ]
@@ -245,7 +245,7 @@ dependencies = [
 [[package]]
 name = "oxiguitar-plugin"
 version = "1.6.0"
-source = "git+https://github.com/mateusrdp/oxiguitar?rev=3da8d485df815ea3f202a10b3ca426e9a1465681#3da8d485df815ea3f202a10b3ca426e9a1465681"
+source = "git+https://github.com/mateusrdp/oxiguitar?tag=v0.17.0#16c129e9db0c0ba5a92811aee22b910f0f72f27d"
 dependencies = [
  "oxiguitar-plugin-api",
  "serde_json",
@@ -254,7 +254,7 @@ dependencies = [
 [[package]]
 name = "oxiguitar-plugin-api"
 version = "1.6.0"
-source = "git+https://github.com/mateusrdp/oxiguitar?rev=3da8d485df815ea3f202a10b3ca426e9a1465681#3da8d485df815ea3f202a10b3ca426e9a1465681"
+source = "git+https://github.com/mateusrdp/oxiguitar?tag=v0.17.0#16c129e9db0c0ba5a92811aee22b910f0f72f27d"
 dependencies = [
  "postcard",
  "serde",
@@ -264,7 +264,7 @@ dependencies = [
 [[package]]
 name = "oxiguitar-plugin-test"
 version = "1.6.0"
-source = "git+https://github.com/mateusrdp/oxiguitar?rev=3da8d485df815ea3f202a10b3ca426e9a1465681#3da8d485df815ea3f202a10b3ca426e9a1465681"
+source = "git+https://github.com/mateusrdp/oxiguitar?tag=v0.17.0#16c129e9db0c0ba5a92811aee22b910f0f72f27d"
 dependencies = [
  "libc",
  "oxiguitar-host",
