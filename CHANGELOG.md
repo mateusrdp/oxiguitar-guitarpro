@@ -8,6 +8,8 @@ the plugins' own; the plugin interface they use is in each plugin's
 
 ## [Unreleased]
 
+## [0.2.1] - 2026-11-09
+
 ### Fixed
 
 - **Notes in flat keys no longer gain a spelling when saved as .gp.** A note
