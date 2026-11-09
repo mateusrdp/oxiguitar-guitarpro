@@ -560,3 +560,48 @@ fn the_marks_of_interface_1_6_round_trip() {
     let back = read(&written.data).unwrap().score;
     assert!(back == score, "{}", first_difference(&back, &score));
 }
+
+/// Notes with no chosen spelling stay unchosen in every key: the writer
+/// spells them as OxiGuitar would in the bar's key, which is what the
+/// reader leaves unchosen. (Guitar Pro 0.2.0 wrote a fixed table of sharps,
+/// so in a flat key a B flat came back as a chosen A sharp; OxiGuitar's
+/// edit-and-save test found it.)
+#[test]
+fn unchosen_spellings_stay_unchosen_in_every_key() {
+    use oxiguitar_model::{KeyMode, KeySignature};
+    let path =
+        Path::new(env!("CARGO_MANIFEST_DIR")).join("../../fixtures/gp/oxiguitar-test-song.gp");
+    let original = read(&std::fs::read(path).unwrap()).unwrap().score;
+    for fifths in -7..=7 {
+        for mode in [KeyMode::Major, KeyMode::Minor] {
+            let mut score = original.clone();
+            for m in &mut score.master_bars {
+                m.key_signature = KeySignature { fifths, mode };
+            }
+            // Every pitch class: frets 0 to 11 in turn, untied.
+            let notes = score
+                .tracks
+                .iter_mut()
+                .filter(|t| !t.instrument.percussion)
+                .flat_map(|t| &mut t.staves)
+                .flat_map(|s| &mut s.bars)
+                .flat_map(|b| &mut b.voices)
+                .flat_map(|v| &mut v.beats)
+                .flat_map(|b| &mut b.notes);
+            for (i, n) in notes.enumerate() {
+                if let oxiguitar_model::NotePlace::Fretted { fret, .. } = &mut n.place {
+                    *fret = u8::try_from(i % 12).unwrap();
+                }
+                n.tie = false;
+                n.spelling = None;
+            }
+            let written = write_gp(&score).unwrap();
+            let back = read(&written.data).unwrap().score;
+            assert!(
+                back == score,
+                "{fifths} fifths, {mode:?}: {}",
+                first_difference(&back, &score)
+            );
+        }
+    }
+}
