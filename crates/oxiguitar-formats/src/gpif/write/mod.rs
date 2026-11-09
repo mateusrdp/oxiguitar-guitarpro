@@ -659,9 +659,11 @@ impl<'s> Writer<'s> {
         }
         let _ = writeln!(x, "<Notices>{}</Notices>", cdata(&info.notices.join("\n")));
         if !self.score.layout.is_empty() {
+            let bars = self.score.master_bars.len();
             let _ = writeln!(
                 x,
-                "<ScoreSystemsDefaultLayout>4</ScoreSystemsDefaultLayout>\n<ScoreSystemsLayout>{}</ScoreSystemsLayout>",
+                "<ScoreSystemsDefaultLayout>{}</ScoreSystemsDefaultLayout>\n<ScoreSystemsLayout>{}</ScoreSystemsLayout>",
+                super::default_beside(&self.score.layout, 4, bars),
                 systems(&self.score.layout)
             );
         }
@@ -734,7 +736,13 @@ impl<'s> Writer<'s> {
         let _ = writeln!(x, "<ShortName>{}</ShortName>", cdata(&track.short_name));
         let c = track.color;
         let _ = writeln!(x, "<Color>{} {} {}</Color>", c.r, c.g, c.b);
-        x.push_str("<SystemsDefautLayout>3</SystemsDefautLayout>\n");
+        // A default whose rows aren't the chosen layout, which would then
+        // read back as no choice (`default_rows`).
+        let _ = writeln!(
+            x,
+            "<SystemsDefautLayout>{}</SystemsDefautLayout>",
+            super::default_beside(&track.layout, 3, self.score.master_bars.len())
+        );
         if !track.layout.is_empty() {
             let _ = writeln!(
                 x,
@@ -1561,11 +1569,25 @@ impl<'s> Writer<'s> {
         }
         // A chosen spelling is the written note's: it goes into the
         // transposed pitch, and into the concert pitch too when the staff
-        // isn't transposed.
+        // isn't transposed. A note with none is spelled as OxiGuitar would
+        // spell it in the bar's key, which is what the reader leaves
+        // unchosen (B flat in three flats, not the A sharp a fixed table
+        // gives, which read back as a chosen spelling).
         let written = sounding - transpose;
-        let spelled = note.spelling.filter(|sp| {
-            !percussion && u8::try_from(written.rem_euclid(12)).is_ok_and(|pc| sp.spells(Pitch(pc)))
-        });
+        let written_pc = u8::try_from(written.rem_euclid(12)).ok().map(Pitch);
+        let bar_key = self
+            .score
+            .master_bars
+            .get(self.place.0)
+            .map(|m| m.key_signature)
+            .unwrap_or_default();
+        let spelled = if percussion {
+            None
+        } else {
+            note.spelling
+                .filter(|sp| written_pc.is_some_and(|pc| sp.spells(pc)))
+                .or_else(|| written_pc.map(|pc| Spelling::automatic(pc, bar_key)))
+        };
         let concert = match spelled.filter(|_| transpose == 0) {
             Some(sp) => spelled_pitch_xml(sounding, sp),
             None => pitch_xml(sounding),

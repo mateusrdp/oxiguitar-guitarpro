@@ -134,3 +134,21 @@ fn instruments_without_strings_read_and_write_as_guitar_pro_does() {
     let back = oxiguitar_formats::read(&written.data).unwrap().score;
     assert_eq!(notes(&back), notes(&score));
 }
+
+/// Guitar Pro writes a layout on every track whether or not anyone chose
+/// one (its default bars per system in rows, here one bar): that is no
+/// Design Mode choice, so the files open with OxiGuitar's own layout.
+/// (0.2.0 read it as a choice; OxiGuitar's Guitar Pro 7.6 comparison found
+/// it once 0.2.0 was published.)
+#[test]
+fn guitar_pros_default_layout_is_no_choice() {
+    for name in ["nylon-guitar-default.gp", "pianos-high-low.gp"] {
+        let data = fixture(name);
+        assert!(gpif(&data).contains("<SystemsLayout>"), "{name}");
+        let score = oxiguitar_formats::read(&data).unwrap().score;
+        assert!(score.layout.is_empty(), "{name}: {:?}", score.layout);
+        for t in &score.tracks {
+            assert!(t.layout.is_empty(), "{name}: {:?}", t.layout);
+        }
+    }
+}
