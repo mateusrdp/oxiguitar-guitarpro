@@ -10,6 +10,15 @@ the plugins' own; the plugin interface they use is in each plugin's
 
 ### Changed
 
+- **The Guitar Pro 7–8 format says it keeps the most of a score**
+  (mateusrdp/oxiguitar#293): `"fullest": true` on the format `gp`, plugin
+  interface 1.8. OxiGuitar no longer names this format itself as the one a
+  new score is in and the one it saves in when a file's own format would
+  lose part of the score; the manifest says it. `oxiguitar.gp` now needs an
+  OxiGuitar with interface 1.8; the other four plugins ask for what they
+  did. The SDK and the model are pinned to a commit of
+  mateusrdp/oxiguitar#292 until that interface has a tag.
+
 - **`oxiguitar.gpx` now declares interface 1.6 and answers with score
   version 2**, as the Guitar Pro 7–8 and 5 plugins do. It declared 1.0, so
   OxiGuitar read a Guitar Pro 6 file into score version 1 and dropped the

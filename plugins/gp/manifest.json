@@ -1,5 +1,5 @@
 {
-  "interface": "1.6",
+  "interface": "1.8",
   "id": "oxiguitar.gp",
   "name": "Guitar Pro 7–8",
   "version": "0.2.1",
@@ -14,6 +14,7 @@
       "extensions": ["gp"],
       "read": true,
       "write": true,
+      "fullest": true,
       "signatures": [
         { "zip_member": "Content/score.gpif" }
       ]
