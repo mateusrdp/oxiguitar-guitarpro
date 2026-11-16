@@ -7,7 +7,7 @@
 //! reader only. The host recognises a file as this format from the
 //! signatures in `manifest.json`, without loading the plugin.
 
-use oxiguitar_plugin::{Error, FormatReader, Host, Plugin, Read};
+use oxiguitar_plugin::{Error, FormatReader2, Host, Plugin, Read2};
 
 /// The format's id in `manifest.json`.
 pub const FORMAT: &str = "gpx";
@@ -21,14 +21,15 @@ impl Plugin for Gpx {
         Ok(Gpx)
     }
 
-    fn reader(&self, format: &str) -> Option<&dyn FormatReader> {
-        (format == FORMAT).then_some(self as &dyn FormatReader)
+    // Interface 1.6: the score version 2, which holds the palette's marks.
+    fn reader2(&self, format: &str) -> Option<&dyn FormatReader2> {
+        (format == FORMAT).then_some(self as &dyn FormatReader2)
     }
 }
 
-impl FormatReader for Gpx {
-    fn read(&self, data: &[u8]) -> Result<Read, Error> {
-        oxiguitar_formats::plugin::read(data)
+impl FormatReader2 for Gpx {
+    fn read(&self, data: &[u8]) -> Result<Read2, Error> {
+        oxiguitar_formats::plugin::read2(data)
     }
 }
 
@@ -52,10 +53,10 @@ mod tests {
         // alone (its .oxp file), which oxiguitar-plugin-test checks: tested
         // with other plugins, the formats crate has their readers too.
         let plugin = Gpx::start(Host::detached()).unwrap();
-        let reader = plugin.reader(FORMAT).unwrap();
+        let reader = plugin.reader2(FORMAT).unwrap();
         let read = reader.read(&fixture("gpx")).unwrap();
         assert_eq!(read.score.info.title, "OxiGuitar Test Song");
-        assert!(plugin.reader("gp-something-else").is_none());
+        assert!(plugin.reader2("gp-something-else").is_none());
     }
 
     #[test]

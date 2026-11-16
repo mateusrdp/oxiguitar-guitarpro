@@ -1,8 +1,8 @@
 {
-  "interface": "1.0",
+  "interface": "1.6",
   "id": "oxiguitar.gpx",
   "name": "Guitar Pro 6",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Reads Guitar Pro 6 files (.gpx).",
   "authors": ["Mateus Rocha de Paula", "The OxiGuitar contributors"],
   "license": "GPL-3.0-or-later",
