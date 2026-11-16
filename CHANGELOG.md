@@ -8,6 +8,8 @@ the plugins' own; the plugin interface they use is in each plugin's
 
 ## [Unreleased]
 
+## [0.2.2] - 2026-11-16
+
 ### Changed
 
 - **`oxiguitar.gpx` now declares interface 1.6 and answers with score
