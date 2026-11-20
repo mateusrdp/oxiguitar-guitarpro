@@ -16,13 +16,17 @@ Each file holds only its own reader, so you can leave out the ones you do not ne
 
 ![Triplets, from a Guitar Pro 7 file we wrote, engraved by OxiGuitar](docs/images/triplets.png)
 
-The pictures are OxiGuitar engraving two of the reference songs in [`fixtures/reference/`](fixtures/reference/), which we wrote ourselves. The plugins have no sound of their own: they only read the file. What you hear comes from [oxiguitar-midi](https://github.com/mateusrdp/oxiguitar-midi) and an audio output plugin.
+The pictures are OxiGuitar engraving two of the reference songs in [`fixtures/reference/`](fixtures/reference/), which we wrote ourselves. The plugins have no sound of their own: they only read the file. What you hear comes from a plugin that plays scores and an audio output plugin.
+
+## Manual
+
+The manual is at <https://mateusrdp.github.io/oxiguitar-guitarpro/>. Its source is in [docs/manual](docs/manual). It covers what the plugin is for, how it works, what it needs and how to install it.
 
 ## Install
 
-Every [release](https://github.com/mateusrdp/oxiguitar-guitarpro/releases) holds a zip per system (Linux x86_64 and ARM64, Windows x86_64 and ARM64, macOS), a `.deb` and an `.rpm` for Linux, a per-user installer for Windows (no administrator needed), a `.pkg` for macOS, and a `SHA256SUMS` file. The OxiGuitar manual's [install page](https://mateusrdp.github.io/oxiguitar/installing.html) says which one to use and how to keep the plugins updated through your package manager.
+Every [release](https://github.com/mateusrdp/oxiguitar-guitarpro/releases) holds a zip per system (Linux x86_64 and ARM64, Windows x86_64 and ARM64, macOS), a `.deb` and an `.rpm` for Linux, a per-user installer for Windows (no administrator needed), a `.pkg` for macOS, and a `SHA256SUMS` file. The [manual's install page](https://mateusrdp.github.io/oxiguitar-guitarpro/install.html) says which one to use and how to keep it updated.
 
-You can also copy the `.oxp` files from a zip into OxiGuitar's plugin folder by hand ([Settings and plugins](https://mateusrdp.github.io/oxiguitar/plugins.html)).
+You can also copy the `.oxp` files from a zip into OxiGuitar's plugin folder by hand ([Installing](https://mateusrdp.github.io/oxiguitar-guitarpro/install.html)).
 
 ## Build and test
 
@@ -46,11 +50,11 @@ What is where:
 
 ## Releases
 
-A release is made by the maintainer pushing a `v*` tag (`v` plus the version in `Cargo.toml`) on `main`. [`release.yml`](.github/workflows/release.yml) then builds the five plugins for every system with OxiGuitar's reusable [plugin-release workflow](https://github.com/mateusrdp/oxiguitar/blob/develop/.github/workflows/plugin-release.yml), makes the packages and a draft release; publishing the draft starts [`publish.yml`](.github/workflows/publish.yml), which tells the package repositories. Every pull request gets the same builds as test builds, kept for 14 days under its Release run.
+The maintainer releases with the Release button in [oxiguitar-packages](https://github.com/mateusrdp/oxiguitar-packages): it bumps the version, merges `develop` into `main` and tags it. [`release.yml`](.github/workflows/release.yml) then builds the five plugins for every system with the packages' reusable plugin-release workflow, makes the packages and a draft release; publishing the draft starts [`publish.yml`](.github/workflows/publish.yml), which tells the package repositories. Every pull request gets the same builds as test builds, kept for 14 days under its Release run.
 
 ## History
 
-These plugins lived in the [OxiGuitar repository](https://github.com/mateusrdp/oxiguitar) until its version 0.11.0. Their history came along (`git log` and `git blame` reach back to the first reader); an issue number such as `mateusrdp/oxiguitar#123` in an old commit message is in that repository.
+These plugins lived in the OxiGuitar repository until its version 0.11.0. Their history came along (`git log` and `git blame` reach back to the first reader); an issue number such as `mateusrdp/oxiguitar#123` in an old commit message is in that repository.
 
 ## Licence
 
