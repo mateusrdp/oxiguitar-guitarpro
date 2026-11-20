@@ -1,0 +1,51 @@
+{
+  "repository": "mateusrdp/oxiguitar-guitarpro",
+  "plugins": [
+    {
+      "name": "gp3",
+      "package": "oxiguitar-gp3-plugin",
+      "library": "oxiguitar_gp3_plugin",
+      "manifest": "plugins/gp3/manifest.json"
+    },
+    {
+      "name": "gp4",
+      "package": "oxiguitar-gp4-plugin",
+      "library": "oxiguitar_gp4_plugin",
+      "manifest": "plugins/gp4/manifest.json"
+    },
+    {
+      "name": "gp5",
+      "package": "oxiguitar-gp5-plugin",
+      "library": "oxiguitar_gp5_plugin",
+      "manifest": "plugins/gp5/manifest.json"
+    },
+    {
+      "name": "gpx",
+      "package": "oxiguitar-gpx-plugin",
+      "library": "oxiguitar_gpx_plugin",
+      "manifest": "plugins/gpx/manifest.json"
+    },
+    {
+      "name": "gp",
+      "package": "oxiguitar-gp-plugin",
+      "library": "oxiguitar_gp_plugin",
+      "manifest": "plugins/gp/manifest.json"
+    }
+  ],
+  "corpus": {
+    "uses": true,
+    "through_core": {
+      "extensions": [
+        "gp",
+        "gp3",
+        "gp4",
+        "gp5",
+        "gpx"
+      ],
+      "write_as": [
+        "gp",
+        "gp5"
+      ]
+    }
+  }
+}

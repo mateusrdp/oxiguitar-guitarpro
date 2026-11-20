@@ -35,6 +35,7 @@ Rust 1.99 or later from [rustup](https://rustup.rs). The plugin SDK and the scor
 ```sh
 cargo test --workspace      # the readers, the writers, and the five plugins as .oxp files
 ./build-oxp.sh              # dist/gp3-VERSION-SYSTEM-ARCH.oxp, and the other four
+python3 scripts/test-all.py --corpus DIR   # every test on your own files, as the manual's Testing page says
 ```
 
 `cargo test` builds each plugin as the `.oxp` file we ship and checks it through OxiGuitar's own plugin host (the contract suite of `oxiguitar-plugin-test`), then reads every public fixture through the five files and compares the result with reading it in the same process. [CONTRIBUTING.md](CONTRIBUTING.md) has the rest of the rules.

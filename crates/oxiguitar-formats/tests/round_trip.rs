@@ -2,7 +2,8 @@
 // Copyright (C) 2026 Mateus Rocha de Paula and the OxiGuitar contributors
 
 //! Round trips through the .gp writer (FMT-4), on every fixture and, where
-//! `corpus/files/` exists, every file of the private corpus:
+//! a test corpus is given (`OXIGUITAR_CORPUS`, or `corpus/files/`), every
+//! Guitar Pro file in it:
 //! `cargo test --release -p oxiguitar-formats --test round_trip -- --nocapture`
 //!
 //! - A .gp file read, written and read again is the same score, with no
@@ -14,6 +15,11 @@
 //!   is exact.
 
 #![allow(clippy::unwrap_used, clippy::indexing_slicing, clippy::panic)]
+
+#[path = "support/corpus.rs"]
+mod corpus;
+#[path = "support/pick.rs"]
+mod pick;
 
 use std::path::{Path, PathBuf};
 
@@ -475,15 +481,26 @@ fn fixtures_round_trip() {
     assert!(t.failures.is_empty(), "{} failures", t.failures.len());
 }
 
+/// Every Guitar Pro file of the test corpus (`OXIGUITAR_CORPUS`, or
+/// `corpus/files/`; see `support/corpus.rs`), one at a time, each failing
+/// file named.
 #[test]
 fn corpus_round_trips() {
-    let paths = under("corpus/files");
-    if paths.is_empty() {
-        return;
-    }
-    let t = round_trips(&paths);
-    report("corpus", &t);
-    assert!(t.failures.is_empty(), "{} failures", t.failures.len());
+    let fallback = Path::new(env!("CARGO_MANIFEST_DIR")).join("../../corpus/files");
+    corpus::check("gp round trip", &fallback, |path, data| {
+        if !pick::is_guitar_pro(data) {
+            return Ok(corpus::Outcome::NotTaken);
+        }
+        let t = round_trips(&[path.to_owned()]);
+        if t.files == 0 {
+            return Err("doesn't read".into());
+        }
+        if t.failures.is_empty() {
+            Ok(corpus::Outcome::Passed)
+        } else {
+            Err(t.failures.join("; "))
+        }
+    });
 }
 
 #[test]
