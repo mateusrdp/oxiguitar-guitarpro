@@ -1,81 +1,59 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 // Copyright (C) 2026 Mateus Rocha de Paula and the OxiGuitar contributors
 
-//! Tests on the private corpus. The files are never in the repository (see
-//! `corpus/README.md`); these tests run only when `corpus/files/` holds them
-//! and pass quietly otherwise, so CI and contributors without the files are
-//! unaffected.
+//! The test corpus (`support/corpus.rs`: `OXIGUITAR_CORPUS`, or the
+//! workspace's `corpus/files/`; never committed). Any folder of files,
+//! searched recursively: each Guitar Pro file in it, recognised by its
+//! contents, must read. With no corpus these tests check nothing (unless
+//! `OXIGUITAR_CORPUS_REQUIRED` is set), so CI is unaffected.
 //!
-//! Run with the files in place:
 //! `cargo test --release -p oxiguitar-formats --test corpus -- --nocapture`
 
 mod support {
     pub(crate) mod compare;
+    pub(crate) mod corpus;
+    pub(crate) mod pick;
 }
 
 use std::path::{Path, PathBuf};
 
-use oxiguitar_formats::{Format, read};
+use oxiguitar_formats::read;
+use support::corpus::{self, Outcome};
 
-fn corpus_dir() -> Option<PathBuf> {
-    let dir = Path::new(env!("CARGO_MANIFEST_DIR")).join("../../corpus/files");
-    dir.join("tabs").is_dir().then_some(dir)
+fn fallback() -> PathBuf {
+    Path::new(env!("CARGO_MANIFEST_DIR")).join("../../corpus/files")
 }
 
-fn files_in(dir: &Path) -> Vec<PathBuf> {
-    let mut v: Vec<PathBuf> = std::fs::read_dir(dir)
-        .map(|d| d.filter_map(|e| Some(e.ok()?.path())).collect())
-        .unwrap_or_default();
-    v.sort();
-    v
-}
-
-/// Every Guitar Pro 6, 7 and 8 file opens, with a full structure.
+/// Every Guitar Pro file (3 to 8, recognised by its contents) reads, with
+/// a sound structure and at least one track and bar.
 #[test]
-fn every_gpif_file_reads() {
-    let Some(dir) = corpus_dir() else {
-        eprintln!("corpus/files not present; skipped");
-        return;
-    };
-    let mut count = 0;
-    for set in ["tabs", "scores"] {
-        for path in files_in(&dir.join(set)) {
-            let data = std::fs::read(&path).unwrap();
-            let format = oxiguitar_formats::detect(&data);
-            if !matches!(format, Some(Format::GuitarPro6 | Format::GuitarPro7Plus)) {
-                continue;
-            }
-            count += 1;
-            let imported = read(&data).unwrap_or_else(|e| panic!("{}: {e}", path.display()));
-            let score = &imported.score;
-            score
-                .check_structure()
-                .unwrap_or_else(|e| panic!("{}: {e}", path.display()));
-            assert!(score.bar_count() > 0 && !score.tracks.is_empty());
-            let notes: usize = score
-                .tracks
-                .iter()
-                .flat_map(|t| &t.staves)
-                .flat_map(|s| &s.bars)
-                .flat_map(|b| &b.voices)
-                .flat_map(|v| &v.beats)
-                .map(|b| b.notes.len())
-                .sum();
-            assert!(notes > 0, "{}: no notes", path.display());
-            eprintln!(
-                "{}: {} bars, {} tracks, {} notes, {} warnings",
-                path.file_name().unwrap().to_string_lossy(),
-                score.bar_count(),
-                score.tracks.len(),
-                notes,
-                imported.log.warning_count()
-            );
+fn every_corpus_guitar_pro_file_reads() {
+    corpus::check("guitar pro read", &fallback(), |_, data| {
+        if !support::pick::is_guitar_pro(data) {
+            return Ok(Outcome::NotTaken);
         }
-    }
-    assert_eq!(count, 15, "the corpus has 15 GPX and GP files (3 + 10 + 2)");
+        let format = oxiguitar_formats::detect(data);
+        let imported = read(data).map_err(|e| format!("{format:?} doesn't read: {e}"))?;
+        let score = &imported.score;
+        score
+            .check_structure()
+            .map_err(|e| format!("{format:?}: {e}"))?;
+        if score.bar_count() == 0 || score.tracks.is_empty() {
+            return Err(format!("{format:?}: no bars or no tracks"));
+        }
+        Ok(Outcome::Passed)
+    });
 }
 
-/// Songs saved in two formats read into the same music.
+/// The corpus file named `name`, wherever it is in the corpus.
+fn find(dir: &Path, name: &str) -> Option<PathBuf> {
+    corpus::files(dir)
+        .into_iter()
+        .find(|p| p.file_name().is_some_and(|n| n == name))
+}
+
+/// Songs saved in two formats read into the same music: pairs of files of
+/// our corpus, checked where they are in the corpus at hand.
 ///
 /// The pairs are different editions of each transcription, so they need not
 /// match exactly. Notes are compared by sounding pitch, so a passage fingered
@@ -89,11 +67,9 @@ fn every_gpif_file_reads() {
 /// The thresholds are today's figures, rounded down, to catch regressions.
 #[test]
 fn songs_in_two_formats_agree() {
-    let Some(dir) = corpus_dir() else {
-        eprintln!("corpus/files not present; skipped");
+    let Some(dir) = corpus::folder(&fallback()) else {
         return;
     };
-    let tabs = dir.join("tabs");
     // (newer format, older format, minimum share of matching beats and notes)
     let pairs = [
         (
@@ -121,8 +97,12 @@ fn songs_in_two_formats_agree() {
     ];
     let mut failures = Vec::new();
     for (new, old, min) in pairs {
-        let a = read(&std::fs::read(tabs.join(old)).unwrap()).unwrap().score;
-        let b = read(&std::fs::read(tabs.join(new)).unwrap()).unwrap().score;
+        // Our corpus's pairs: another corpus may have none of them.
+        let (Some(old_path), Some(new_path)) = (find(&dir, old), find(&dir, new)) else {
+            continue;
+        };
+        let a = read(&std::fs::read(old_path).unwrap()).unwrap().score;
+        let b = read(&std::fs::read(new_path).unwrap()).unwrap().score;
         let report = support::compare::compare(&a, &b);
         eprintln!("{old} → {new}\n{}", report.summary());
         let exact = [

@@ -3,10 +3,15 @@
 
 //! The five Guitar Pro plugins, built as the `.oxp` files we ship, through
 //! OxiGuitar's plugin host: each recognising and reading its own format and
-//! nothing else, every public Guitar Pro file (and the private corpus, when
-//! `corpus/files/` is there) read exactly as the reader reads it in-process,
+//! nothing else, every public Guitar Pro file (and every Guitar Pro file of the
+//! test corpus, when one is given) read exactly as the reader reads it in-process,
 //! and the refusals when no plugin recognises a file. Moved from OxiGuitar's
 //! `oxiguitar-plugin-test` tests (#165).
+
+#[path = "support/corpus.rs"]
+mod corpus;
+#[path = "support/pick.rs"]
+mod pick;
 
 use std::path::{Path, PathBuf};
 use std::sync::{Arc, OnceLock};
@@ -141,12 +146,7 @@ fn through_plugins(data: &[u8]) -> Outcome {
 fn guitar_pro_files() -> Vec<PathBuf> {
     let root = workspace();
     let mut files = Vec::new();
-    for dir in [
-        "fixtures/gp",
-        "fixtures/reference",
-        "corpus/files/tabs",
-        "corpus/files/scores",
-    ] {
+    for dir in ["fixtures/gp", "fixtures/reference"] {
         let Ok(entries) = std::fs::read_dir(root.join(dir)) else {
             continue;
         };
@@ -172,8 +172,6 @@ fn the_plugins_read_every_file_exactly_as_the_readers_do() {
         files.len() >= 55,
         "the public fixtures and references are there"
     );
-    let mut later_formats = 0;
-    let mut later_opened = 0;
     for path in &files {
         let data = std::fs::read(path).unwrap();
         let direct = in_process(&data);
@@ -183,26 +181,33 @@ fn the_plugins_read_every_file_exactly_as_the_readers_do() {
             "{}: the plugin path differs",
             path.display()
         );
-        let opened = plugged.is_ok();
-        // M1's gate: Guitar Pro 5 and later, from the file's contents.
-        if data.starts_with(b"\x18FICHIER GUITAR PRO v5")
-            || data.starts_with(b"BCF")
-            || data.starts_with(b"PK")
-        {
-            if path.starts_with(workspace().join("corpus")) {
-                later_formats += 1;
-                later_opened += usize::from(opened);
+    }
+}
+
+/// Every Guitar Pro file of the test corpus (`OXIGUITAR_CORPUS`, or
+/// `corpus/files/`; see `support/corpus.rs`), recognised by its contents,
+/// opens through the plugins exactly as the reader reads it in-process
+/// (M1's gate, for every format).
+#[test]
+fn the_plugins_read_every_corpus_file_as_the_readers_do() {
+    corpus::check(
+        "guitar pro through the plugins",
+        &workspace().join("corpus/files"),
+        |_, data| {
+            if !pick::is_guitar_pro(data) {
+                return Ok(corpus::Outcome::NotTaken);
             }
-        } else if path.starts_with(workspace().join("corpus")) {
-            assert!(opened, "{}: {:?}", path.display(), plugged.err());
-        }
-    }
-    if later_formats > 0 {
-        println!(
-            "corpus, Guitar Pro 5 and later: {later_opened} of {later_formats} open through the plugins"
-        );
-        assert_eq!((later_opened, later_formats), (42, 42));
-    }
+            let direct = in_process(data);
+            let plugged = through_plugins(data);
+            if direct != plugged {
+                return Err("the plugin path differs from the reader's".into());
+            }
+            match plugged {
+                Ok(_) => Ok(corpus::Outcome::Passed),
+                Err(e) => Err(format!("doesn't open through the plugins: {e:?}")),
+            }
+        },
+    );
 }
 
 #[test]

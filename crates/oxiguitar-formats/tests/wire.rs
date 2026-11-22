@@ -11,6 +11,11 @@
 //! private corpus when `corpus/files/` holds it:
 //! `cargo test --release -p oxiguitar-formats --test wire -- --nocapture`
 
+#[path = "support/corpus.rs"]
+mod corpus;
+#[path = "support/pick.rs"]
+mod pick;
+
 use std::path::{Path, PathBuf};
 
 use oxiguitar_model::wire::{from_wire, from_wire2, to_wire, to_wire2};
@@ -34,33 +39,57 @@ fn round_trip_all(dirs: &[PathBuf]) -> usize {
     let mut bytes_total = 0;
     for path in dirs.iter().flat_map(|d| files(d)) {
         let data = std::fs::read(&path).unwrap();
-        let Ok(imported) = oxiguitar_formats::read(&data) else {
-            continue;
-        };
-        let mut score = imported.score;
-        let encoded = encode(&to_wire(&score)).unwrap();
-        bytes_total += encoded.len();
-        let decoded: WireScore = decode(&encoded).unwrap();
-        let back = from_wire(decoded).unwrap_or_else(|e| panic!("{}: {e}", path.display()));
+        if let Some(bytes) = cross(&path, &data, true) {
+            bytes_total += bytes;
+            count += 1;
+        }
+    }
+    eprintln!("{count} scores crossed, {bytes_total} bytes encoded in all");
+    count
+}
+
+/// One file across the interface, both versions: the bytes encoded, or
+/// `None` when it doesn't read. Panics, naming the file, when the score
+/// changes. Version 1 (interface 1.0) predates parts of the model, such as
+/// Design Mode's bars per line, and leaves them out: with `v1_exact` it
+/// must still carry the whole score (our fixtures use none of those
+/// parts); otherwise what it carries must cross again unchanged. Version 2
+/// always carries everything.
+fn cross(path: &Path, data: &[u8], v1_exact: bool) -> Option<usize> {
+    let mut bytes_total = 0;
+    let Ok(imported) = oxiguitar_formats::read(data) else {
+        return None;
+    };
+    let mut score = imported.score;
+    let encoded = encode(&to_wire(&score)).unwrap();
+    bytes_total += encoded.len();
+    let decoded: WireScore = decode(&encoded).unwrap();
+    let back = from_wire(decoded).unwrap_or_else(|e| panic!("{}: {e}", path.display()));
+    if v1_exact {
         assert!(
             back == score,
             "{} changed crossing the interface",
             path.display()
         );
-        // Version 2, with a bar in free time.
-        score.master_bars[0].free_time = true;
-        let encoded = encode(&to_wire2(&score)).unwrap();
-        let decoded: Score2 = decode(&encoded).unwrap();
-        let back = from_wire2(decoded).unwrap_or_else(|e| panic!("{}: {e}", path.display()));
+    } else {
+        let decoded: WireScore = decode(&encode(&to_wire(&back)).unwrap()).unwrap();
         assert!(
-            back == score,
-            "{} changed crossing as version 2",
+            from_wire(decoded).unwrap() == back,
+            "{} changed crossing the interface (version 1) a second time",
             path.display()
         );
-        count += 1;
     }
-    eprintln!("{count} scores crossed, {bytes_total} bytes encoded in all");
-    count
+    // Version 2, with a bar in free time.
+    score.master_bars[0].free_time = true;
+    let encoded = encode(&to_wire2(&score)).unwrap();
+    let decoded: Score2 = decode(&encoded).unwrap();
+    let back = from_wire2(decoded).unwrap_or_else(|e| panic!("{}: {e}", path.display()));
+    assert!(
+        back == score,
+        "{} changed crossing as version 2",
+        path.display()
+    );
+    Some(bytes_total)
 }
 
 #[test]
@@ -70,13 +99,23 @@ fn fixtures_and_references_cross_without_loss() {
     assert!(n >= 55, "only {n} fixtures read");
 }
 
+/// Every Guitar Pro file of the test corpus (`OXIGUITAR_CORPUS`, or
+/// `corpus/files/`; see `support/corpus.rs`): exactly as version 2, stably
+/// as version 1.
 #[test]
 fn the_corpus_crosses_without_loss() {
-    let dir = Path::new(env!("CARGO_MANIFEST_DIR")).join("../../corpus/files");
-    if !dir.join("tabs").is_dir() {
-        eprintln!("corpus/files not present; skipped");
-        return;
-    }
-    let n = round_trip_all(&[dir.join("tabs"), dir.join("scores")]);
-    assert!(n >= 100, "only {n} corpus files read");
+    let fallback = Path::new(env!("CARGO_MANIFEST_DIR")).join("../../corpus/files");
+    corpus::check(
+        "guitar pro across the interface",
+        &fallback,
+        |path, data| {
+            if !pick::is_guitar_pro(data) {
+                return Ok(corpus::Outcome::NotTaken);
+            }
+            match cross(path, data, false) {
+                Some(_) => Ok(corpus::Outcome::Passed),
+                None => Err("doesn't read".into()),
+            }
+        },
+    );
 }

@@ -2,7 +2,8 @@
 // Copyright (C) 2026 Mateus Rocha de Paula and the OxiGuitar contributors
 
 //! Round trips through the .gp5 writer (FMT-4), on every fixture and, where
-//! `corpus/files/` exists, every file of the private corpus:
+//! a test corpus is given (`OXIGUITAR_CORPUS`, or `corpus/files/`), every
+//! Guitar Pro file in it:
 //! `cargo test --release -p oxiguitar-formats --test gp5_round_trip -- --nocapture`
 //!
 //! - A Guitar Pro 3, 4 or 5 file read, written as .gp5 and read again is
@@ -14,6 +15,11 @@
 //!   is exact.
 
 #![allow(clippy::unwrap_used, clippy::indexing_slicing, clippy::panic)]
+
+#[path = "support/corpus.rs"]
+mod corpus;
+#[path = "support/pick.rs"]
+mod pick;
 
 use std::path::{Path, PathBuf};
 
@@ -119,6 +125,11 @@ fn normal(s: &Score) -> Score {
             }
             for v in &mut bar.voices {
                 normal_voice(v, &map, percussion);
+                // Chosen spellings are left out, an Info: Guitar Pro 5
+                // works them out itself.
+                for n in v.beats.iter_mut().flat_map(|b| &mut b.notes) {
+                    n.spelling = None;
+                }
             }
         }
     }
@@ -455,15 +466,26 @@ fn fixtures_round_trip() {
     assert!(t.failures.is_empty(), "{} failures", t.failures.len());
 }
 
+/// Every Guitar Pro file of the test corpus (`OXIGUITAR_CORPUS`, or
+/// `corpus/files/`; see `support/corpus.rs`), one at a time, each failing
+/// file named.
 #[test]
 fn corpus_round_trips() {
-    let paths = under("corpus/files");
-    if paths.is_empty() {
-        return;
-    }
-    let t = round_trips(&paths);
-    report("corpus", &t);
-    assert!(t.failures.is_empty(), "{} failures", t.failures.len());
+    let fallback = Path::new(env!("CARGO_MANIFEST_DIR")).join("../../corpus/files");
+    corpus::check("gp5 round trip", &fallback, |path, data| {
+        if !pick::is_guitar_pro(data) {
+            return Ok(corpus::Outcome::NotTaken);
+        }
+        let t = round_trips(&[path.to_owned()]);
+        if t.files == 0 {
+            return Err("doesn't read".into());
+        }
+        if t.failures.is_empty() {
+            Ok(corpus::Outcome::Passed)
+        } else {
+            Err(t.failures.join("; "))
+        }
+    });
 }
 
 #[test]
