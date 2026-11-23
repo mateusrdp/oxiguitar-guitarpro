@@ -2,6 +2,8 @@
 
 The Guitar Pro plugins for [OxiGuitar](https://github.com/mateusrdp/oxiguitar), a free, open-source guitar tablature and score viewer, editor and player for Windows, macOS and Linux. They are what lets OxiGuitar open, and for Guitar Pro 5 and 7-8 also save, the files that tab collections have been kept in since the 90s.
 
+In plain words: most tabs on the internet are Guitar Pro files, from Arobas Music's tab editor. Tablature shows which fret to press on which string, and Guitar Pro files hold it together with standard notation, rhythm, tempo and every track of the band. The format changed over the years (binary in Guitar Pro 3 to 5, XML in a container for 6, XML in a ZIP for 7 and 8), hence one plugin per generation. The [manual](https://mateusrdp.github.io/oxiguitar-guitarpro/) explains more.
+
 | Plugin file | Id | Reads | Writes |
 | --- | --- | --- | --- |
 | `gp3.oxp` | `oxiguitar.gp3` | Guitar Pro 3 (.gp3) | |
@@ -56,6 +58,10 @@ The maintainer releases with the Release button in [oxiguitar-packages](https://
 ## History
 
 These plugins lived in the OxiGuitar repository until its version 0.11.0. Their history came along (`git log` and `git blame` reach back to the first reader); an issue number such as `mateusrdp/oxiguitar#123` in an old commit message is in that repository.
+
+## Credits
+
+The readers and writers are our own code. We learned the formats from [alphaTab](https://github.com/CoderLine/alphaTab) (MPL-2.0), [PyGuitarPro](https://github.com/Perlence/PyGuitarPro) (LGPL-3.0) and [TuxGuitar](https://github.com/helge17/tuxguitar) (LGPL-2.1), and check what we write with alphaTab and [MuseScore](https://github.com/musescore/MuseScore). Archives by [zip](https://github.com/zip-rs/zip2) with [zlib-rs](https://github.com/trifectatechfoundation/zlib-rs), XML by [quick-xml](https://github.com/tafia/quick-xml). Built on OxiGuitar's plugin SDK. Guitar Pro is a trademark of Arobas Music; these plugins are not affiliated with it. The manual's [Credits](https://mateusrdp.github.io/oxiguitar-guitarpro/credits.html) page lists every project with its authors and licence. Thank you to all of them.
 
 ## Licence
 
