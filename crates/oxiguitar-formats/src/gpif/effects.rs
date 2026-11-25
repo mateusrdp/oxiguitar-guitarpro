@@ -449,6 +449,7 @@ impl Reader<'_> {
 
         let place = self.place_of(ctx, sctx, string, fret, midi, octave_tone, drum)?;
         Some(Note {
+            plugins: Default::default(),
             place,
             tie,
             dynamic: oxiguitar_model::Dynamic::default(),

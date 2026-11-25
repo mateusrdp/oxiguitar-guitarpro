@@ -878,6 +878,7 @@ impl<'a> Reader<'a> {
         };
         let sctx = ctx.staves.get(staff_index).cloned().unwrap_or_default();
         let mut bar = Bar {
+            plugins: Default::default(),
             clef,
             voices: Vec::new(),
             simile,
@@ -1120,6 +1121,7 @@ impl Reader<'_> {
 
 fn empty_bar(ctx: &TrackContext) -> Bar {
     Bar {
+        plugins: Default::default(),
         simile: None,
         clef: if ctx.percussion {
             Clef::Neutral
