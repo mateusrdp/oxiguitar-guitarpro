@@ -590,7 +590,7 @@ dependencies = [
 
 [[package]]
 name = "oxiguitar-formats"
-version = "0.2.2"
+version = "0.3.0"
 dependencies = [
  "oxiguitar-host",
  "oxiguitar-model",
@@ -604,7 +604,7 @@ dependencies = [
 
 [[package]]
 name = "oxiguitar-gp-plugin"
-version = "0.2.2"
+version = "0.3.0"
 dependencies = [
  "oxiguitar-formats",
  "oxiguitar-plugin",
@@ -614,7 +614,7 @@ dependencies = [
 
 [[package]]
 name = "oxiguitar-gp3-plugin"
-version = "0.2.2"
+version = "0.3.0"
 dependencies = [
  "oxiguitar-formats",
  "oxiguitar-plugin",
@@ -624,7 +624,7 @@ dependencies = [
 
 [[package]]
 name = "oxiguitar-gp4-plugin"
-version = "0.2.2"
+version = "0.3.0"
 dependencies = [
  "oxiguitar-formats",
  "oxiguitar-plugin",
@@ -634,7 +634,7 @@ dependencies = [
 
 [[package]]
 name = "oxiguitar-gp5-plugin"
-version = "0.2.2"
+version = "0.3.0"
 dependencies = [
  "oxiguitar-formats",
  "oxiguitar-plugin",
@@ -644,7 +644,7 @@ dependencies = [
 
 [[package]]
 name = "oxiguitar-gpx-plugin"
-version = "0.2.2"
+version = "0.3.0"
 dependencies = [
  "oxiguitar-formats",
  "oxiguitar-plugin",
