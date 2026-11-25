@@ -23,12 +23,12 @@ publish = false
 # OxiGuitar's SDK and score model, by git tag: interface 1.6 (the rest of
 # the palette) at v0.17.0. Nothing of OxiGuitar's is on crates.io. The
 # readers read into the core's model and convert it for the plugin interface.
-# Now at the commit of mateusrdp/oxiguitar#348 (plugin files are tar
-# archives, #347), until a release tags it.
-oxiguitar-model = { git = "https://github.com/mateusrdp/oxiguitar", rev = "b88431f763df71c66fe4f54f8ee4a5d0663dbec1" }
-oxiguitar-plugin-api = { git = "https://github.com/mateusrdp/oxiguitar", rev = "b88431f763df71c66fe4f54f8ee4a5d0663dbec1" }
-oxiguitar-plugin = { git = "https://github.com/mateusrdp/oxiguitar", rev = "b88431f763df71c66fe4f54f8ee4a5d0663dbec1" }
-oxiguitar-plugin-test = { git = "https://github.com/mateusrdp/oxiguitar", rev = "b88431f763df71c66fe4f54f8ee4a5d0663dbec1" }
+# Now at v0.23.0 (plugin interface 1.16; plugin files are tar archives,
+# mateusrdp/oxiguitar#347).
+oxiguitar-model = { git = "https://github.com/mateusrdp/oxiguitar", tag = "v0.23.0" }
+oxiguitar-plugin-api = { git = "https://github.com/mateusrdp/oxiguitar", tag = "v0.23.0" }
+oxiguitar-plugin = { git = "https://github.com/mateusrdp/oxiguitar", tag = "v0.23.0" }
+oxiguitar-plugin-test = { git = "https://github.com/mateusrdp/oxiguitar", tag = "v0.23.0" }
 oxiguitar-formats = { path = "crates/oxiguitar-formats" }
 serde_json = "1"
 # Guitar Pro 7/8 files are ZIP archives. No default features: they build
