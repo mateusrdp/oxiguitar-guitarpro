@@ -2,7 +2,7 @@
 
 ## Requirements
 
-- OxiGuitar 0.17 or later for the Guitar Pro 5, 6 and 7-8 plugins (plugin interface 1.6). The Guitar Pro 3 and 4 plugins ask for less. See [the OxiGuitar manual](https://mateusrdp.github.io/oxiguitar/).
+- OxiGuitar 0.23 or later, which reads plugin files as archives. The Guitar Pro 5, 6 and 7-8 plugins ask for plugin interface 1.6, the Guitar Pro 3 and 4 plugins for less. See [the OxiGuitar manual](https://mateusrdp.github.io/oxiguitar/).
 - Windows, macOS or Linux. Linux and Windows builds exist for x86_64 and ARM64.
 - To hear a song you also need a plugin that plays scores and an audio output plugin. These plugins don't make sound.
 

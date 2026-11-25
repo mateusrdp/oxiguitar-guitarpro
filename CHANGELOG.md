@@ -8,6 +8,10 @@ the plugins' own; the plugin interface they use is in each plugin's
 
 ## [Unreleased]
 
+### Documentation
+
+- **The manual's Requirements say OxiGuitar 0.23 or later**, which reads plugin files as archives (mateusrdp/oxiguitar#347); they named the release that brought the plugin interface the plugin asks for.
+
 ## [0.3.0] - 2026-11-25
 
 ### Changed
