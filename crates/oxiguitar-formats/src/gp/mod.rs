@@ -631,6 +631,7 @@ impl Reader<'_> {
             .and_then(|t| t.staves.first())
             .map_or(6, Staff::string_count);
         let mut bar = Bar {
+            plugins: Default::default(),
             clef: score.tracks.get(ti).map_or(Clef::Treble8vb, clef_for),
             voices: Vec::new(),
             simile: None,

@@ -29,6 +29,27 @@ host="$(rustc -vV | sed -n 's/^host: //p')"
 rm -rf dist
 mkdir -p dist
 
+# pack LIBRARY OUT [MANIFEST]: the plugin file OUT (mateusrdp/oxiguitar#347),
+# an uncompressed tar archive holding MANIFEST (default manifest.json) as
+# manifest.json first, the library second as plugin.so, plugin.dll or
+# plugin.dylib, then the ui and assets folders beside the manifest, if
+# there are any. COPYFILE_DISABLE keeps macOS's tar from adding ._ files.
+pack() {
+    local ext="${1##*.}" manifest="${3:-manifest.json}" stage folder
+    local more=()
+    stage="$(mktemp -d)"
+    cp "$manifest" "$stage/manifest.json"
+    cp "$1" "$stage/plugin.$ext"
+    for folder in ui assets; do
+        if [[ -d "$(dirname "$manifest")/$folder" ]]; then
+            cp -R "$(dirname "$manifest")/$folder" "$stage/"
+            more+=("$folder")
+        fi
+    done
+    (cd "$stage" && COPYFILE_DISABLE=1 tar --format=ustar -cf - manifest.json "plugin.$ext" ${more[@]+"${more[@]}"}) > "$2"
+    rm -rf "$stage"
+}
+
 for name in "${NAMES[@]}"; do
     package="oxiguitar-$name-plugin"
     library="oxiguitar_${name}_plugin"
@@ -41,21 +62,22 @@ for name in "${NAMES[@]}"; do
             for target in aarch64-apple-darwin x86_64-apple-darwin; do
                 build --target "$target"
             done
-            lipo -create -output "$out" \
+            lipo -create -output "target/$(basename "${out%.oxp}").dylib" \
                 "target/aarch64-apple-darwin/release/lib$library.dylib" \
                 "target/x86_64-apple-darwin/release/lib$library.dylib"
+            pack "target/$(basename "${out%.oxp}").dylib" "$out" "plugins/$name/manifest.json"
             ;;
         *windows*)
             arch="${host%%-*}"
             [[ "$arch" == aarch64 ]] && arch=arm64
             out="dist/$name-$version-windows-$arch.oxp"
             build
-            cp "target/release/$library.dll" "$out"
+            pack "target/release/$library.dll" "$out" "plugins/$name/manifest.json"
             ;;
         *)
             out="dist/$name-$version-linux-${host%%-*}.oxp"
             build
-            cp "target/release/lib$library.so" "$out"
+            pack "target/release/lib$library.so" "$out" "plugins/$name/manifest.json"
             ;;
     esac
     echo "$out"

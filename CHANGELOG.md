@@ -8,6 +8,10 @@ the plugins' own; the plugin interface they use is in each plugin's
 
 ## [Unreleased]
 
+### Changed
+
+- **The plugin file is a tar archive** (mateusrdp/oxiguitar#347): `build-oxp.sh` packs `manifest.json` first and the library second (`plugin.so`, `plugin.dll` or `plugin.dylib`), as OxiGuitar 0.23 and later read plugin files, which older OxiGuitars can't load. The SDK is at OxiGuitar v0.23.0 (interface 1.16); the readers give the score model's newer fields (plugins' data) their defaults, and the host tests name no display system (`NO_DISPLAY`), as the SDK now has them. `scripts/test-all.py` 1.1.0, as in every repository.
+
 ### Added
 
 - **Every test with one command** (mateusrdp/oxiguitar#273): `scripts/test-all.py` builds and runs all of this repository's tests on your own corpus (`--corpus DIR` or `OXIGUITAR_CORPUS`), and tests the plugin against the newest OxiGuitar release, with a progress bar, a summary to paste into an issue and a log to diagnose from. The manual has a Features page naming the tests of every feature (CI checks it) and a Testing page.

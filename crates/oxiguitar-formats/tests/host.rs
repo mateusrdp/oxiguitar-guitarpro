@@ -57,7 +57,7 @@ fn plugins() -> &'static Plugins {
         Plugins::discover(
             &[ours().to_owned()],
             SharedSettings::default(),
-            oxiguitar_host::display_system(),
+            oxiguitar_host::NO_DISPLAY,
             Arc::new(Unheard),
         )
     })
@@ -253,7 +253,7 @@ fn a_disabled_plugin_and_no_plugin_at_all() {
     let disabled = Plugins::discover(
         &[ours().to_owned()],
         SharedSettings::new(settings, None),
-        oxiguitar_host::display_system(),
+        oxiguitar_host::NO_DISPLAY,
         Arc::new(Unheard),
     );
     let e = disabled.recognise(b"hello", Some("gp5")).unwrap_err();
@@ -271,7 +271,7 @@ fn a_disabled_plugin_and_no_plugin_at_all() {
     let none = Plugins::discover(
         &[empty],
         SharedSettings::default(),
-        oxiguitar_host::display_system(),
+        oxiguitar_host::NO_DISPLAY,
         Arc::new(Unheard),
     );
     let e = none.recognise(&gp5, Some("gp5")).unwrap_err();
